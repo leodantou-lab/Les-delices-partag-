@@ -702,18 +702,30 @@ let recipes=[], visitors=[], subscribers=[];
 let isAdmin=false, currentRec=null, currentSrv=4, baseSrv=4;
 let adminClickCount=0, adminClickTimer=null;
 
+// ══ JSONBIN CONFIG ══
+const BIN_ID   = '69f8dd9f856a682189a6865f';
+const BIN_KEY  = '$2a$10$tlY8wLn4Ra9Uk2svxR/N8.3drIl6JEaK7FvCWd9WxF72u.YmXB2u';
+const BIN_URL  = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const BIN_HEADERS = {'Content-Type':'application/json','X-Master-Key':BIN_KEY,'X-Bin-Versioning':'false'};
+
 // ══ STORAGE ══
-function load(){
+async function load(){
   try{
-    recipes     = JSON.parse(localStorage.getItem('ldp_r3'))||[];
+    const res = await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':BIN_KEY}});
+    const data = await res.json();
+    const record = data.record || {};
+    recipes     = record.recipes     || [];
+    subscribers = record.subscribers || [];
     visitors    = JSON.parse(localStorage.getItem('ldp_v3'))||[];
-    subscribers = JSON.parse(localStorage.getItem('ldp_s3'))||[];
-  }catch(e){recipes=[];visitors=[];subscribers=[];}
+  }catch(e){recipes=[];subscribers=[];visitors=[];}
 }
-function save(){
-  localStorage.setItem('ldp_r3',JSON.stringify(recipes));
+async function save(){
+  // visitors stockés localement (données privées par visiteur)
   localStorage.setItem('ldp_v3',JSON.stringify(visitors));
-  localStorage.setItem('ldp_s3',JSON.stringify(subscribers));
+  // recipes et subscribers stockés sur JSONBin (partagés entre tous)
+  try{
+    await fetch(BIN_URL,{method:'PUT',headers:BIN_HEADERS,body:JSON.stringify({recipes,subscribers})});
+  }catch(e){console.error('Erreur sauvegarde JSONBin',e);}
 }
 
 // ══ HERO STORY SCROLL ══
@@ -909,7 +921,7 @@ function openForm(){
 }
 document.getElementById('formClose').addEventListener('click',()=>closeOverlay('formOverlay'));
 document.getElementById('formCancel').addEventListener('click',()=>closeOverlay('formOverlay'));
-document.getElementById('submitBtn').addEventListener('click',()=>{
+document.getElementById('submitBtn').addEventListener('click',async()=>{
   const nom=document.getElementById('fNom').value.trim();
   const couv=document.getElementById('fCouverts').value;
   const temps=document.getElementById('fTemps').value.trim();
@@ -929,15 +941,20 @@ document.getElementById('submitBtn').addEventListener('click',()=>{
     region:document.getElementById('fRegion').value.trim(),
     date:new Date().toLocaleDateString('fr-FR'),img:''
   };
-  recipes.push(r); save(); renderAll();
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.textContent='Publication…';
+  recipes.push(r);
+  await save();
+  renderAll();
+  btn.disabled=false; btn.textContent='Publier la recette';
   ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('formSuccess').style.display='block';
   toast('Recette publiée !');
   setTimeout(()=>closeOverlay('formOverlay'),2200);
 });
-function delRec(idx){
+async function delRec(idx){
   if(!confirm(`Supprimer "${recipes[idx].nom}" ?`))return;
-  recipes.splice(idx,1); save(); renderAll(); toast('Recette supprimée.');
+  recipes.splice(idx,1); await save(); renderAll(); toast('Recette supprimée.');
 }
 
 // ══ NEWSLETTER ══
@@ -950,7 +967,7 @@ document.getElementById('nlSubmit').addEventListener('click',async()=>{
   let ip='inconnu';
   try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();ip=d.ip;}catch(e){}
   subscribers.push({nom,email,ip,date:new Date().toLocaleDateString('fr-FR')});
-  save();
+  await save();
   document.getElementById('heroStatNl').textContent=subscribers.length;
   toast(`Bienvenue ${nom} !`);
   closeOverlay('nlOverlay');
@@ -1024,17 +1041,17 @@ function refreshPanel(){
   if(!subscribers.length){ntb.innerHTML='';noNl.style.display='block';}
   else{noNl.style.display='none';ntb.innerHTML=subscribers.map((s,i)=>`<tr><td>${s.nom}</td><td>${s.email}</td><td style="font-size:.74rem;">${s.date}</td><td><button class="table-del" onclick="removeSub(${i})">Retirer</button></td></tr>`).join('');}
 }
-function adminDelRec(idx){
+async function adminDelRec(idx){
   if(!confirm(`Supprimer "${recipes[idx].nom}" ?`))return;
-  recipes.splice(idx,1); save(); renderAll(); refreshPanel(); toast('Recette supprimée.');
+  recipes.splice(idx,1); await save(); renderAll(); refreshPanel(); toast('Recette supprimée.');
 }
-function removeSub(idx){
+async function removeSub(idx){
   if(!confirm(`Retirer ${subscribers[idx].email} ?`))return;
-  subscribers.splice(idx,1); save(); refreshPanel(); toast('Abonné retiré.');
+  subscribers.splice(idx,1); await save(); refreshPanel(); toast('Abonné retiré.');
 }
-document.getElementById('deleteAllBtn').addEventListener('click',()=>{
+document.getElementById('deleteAllBtn').addEventListener('click',async()=>{
   if(!confirm('Supprimer TOUTES les recettes ?'))return;
-  recipes=[]; save(); renderAll(); refreshPanel(); toast('Toutes les recettes supprimées.');
+  recipes=[]; await save(); renderAll(); refreshPanel(); toast('Toutes les recettes supprimées.');
 });
 document.getElementById('sendNlBtn').addEventListener('click',()=>{
   if(!subscribers.length){toast('Aucun abonné.');return;}
@@ -1060,7 +1077,7 @@ document.getElementById('aboutAddBtn').addEventListener('click',()=>openForm());
 document.getElementById('footAddBtn').addEventListener('click',e=>{e.preventDefault();openForm();});
 
 // ══ INIT ══
-load(); renderAll(); trackVisit();
+(async()=>{ await load(); renderAll(); trackVisit(); })();
 </script>
 </body>
 </html>
