@@ -47,7 +47,7 @@ nav.scrolled{background:rgba(26,22,18,.95);backdrop-filter:blur(18px);box-shadow
   background:linear-gradient(180deg,rgba(26,22,18,.2) 0%,rgba(26,22,18,.5) 50%,rgba(26,22,18,.9) 100%);
 }
 
-/* Légende scène — bas de l'image, texte propre SANS superposition avec le titre */
+/* Légende scène */
 .story-label{
   position:absolute;bottom:13%;left:0;right:0;
   text-align:center;z-index:4;
@@ -66,7 +66,7 @@ nav.scrolled{background:rgba(26,22,18,.95);backdrop-filter:blur(18px);box-shadow
   letter-spacing:.04em;display:block;
 }
 
-/* Titre principal — UNIQUEMENT slide 0 visible */
+/* Titre principal */
 .story-main{
   position:absolute;inset:0;z-index:3;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -357,7 +357,6 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
 <div class="hero-story" id="heroStory">
   <div class="hero-sticky" id="heroSticky">
 
-    <!-- 3 images plein écran -->
     <div class="story-slide" id="ss0"
       style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1800&q=90');"></div>
     <div class="story-slide" id="ss1"
@@ -365,7 +364,6 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
     <div class="story-slide" id="ss2"
       style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=90');"></div>
 
-    <!-- Légendes (affichées selon la scène, JAMAIS en même temps que le titre) -->
     <div class="story-label" id="slabel1">
       <span class="story-label-num">02 · La recette</span>
       <span class="story-label-text">Elle note chaque geste, chaque ingrédient</span>
@@ -375,7 +373,6 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
       <span class="story-label-text">Elle offre sa création à la communauté</span>
     </div>
 
-    <!-- Contenu principal (scène 1 seulement) -->
     <div class="story-main" id="storyMain">
       <div class="hero-eyebrow"><span></span>La table de tous · Depuis 2024<span></span></div>
       <h1 class="hero-title">La cuisine,<br>un art qui <em>se partage</em></h1>
@@ -386,23 +383,19 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
       </div>
     </div>
 
-    <!-- Points navigation -->
     <div class="story-dots" id="storyDots">
       <div class="story-dot active" data-s="0"></div>
       <div class="story-dot" data-s="1"></div>
       <div class="story-dot" data-s="2"></div>
     </div>
 
-    <!-- Hint scroll -->
     <div class="story-hint" id="storyHint">
       <div class="hint-line"></div>
       <span>Faites défiler</span>
     </div>
 
-    <!-- Barre progression -->
     <div class="story-bar" id="storyBar"></div>
 
-    <!-- Stats -->
     <div class="hero-stats">
       <div class="hero-stat"><span class="stat-n" id="heroStatCount">0</span><span class="stat-l">Recettes partagées</span></div>
       <div class="hero-stat"><span class="stat-n" id="heroStatNl">0</span><span class="stat-l">Abonnés newsletter</span></div>
@@ -697,72 +690,86 @@ const ADMIN_EMAIL = 'leodantou695@gmail.com';
 const ADMIN_PWD   = 'leonard@admin2024';
 const MAX_SLOTS   = 100;
 
-// ══ STATE ══
-let recipes=[], visitors=[], subscribers=[];
-let isAdmin=false, currentRec=null, currentSrv=4, baseSrv=4;
-let adminClickCount=0, adminClickTimer=null;
-
 // ══ JSONBIN CONFIG ══
+// Toutes les données (recettes, abonnés, visiteurs) sont stockées en ligne via JSONBin.
+// Remplacez BIN_ID et BIN_KEY par vos identifiants JSONBin si nécessaire.
 const BIN_ID  = '69f8dd9f856a682189a6865f';
 const BIN_KEY = '$2a$10$tlY8wLn4Ra9Uk2svxR/N8.3drIl6JEaK7FvCWd9WxF72u.YmXB2u';
 const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
 
-// ══ STORAGE ══
+// ══ STATE ══
+let recipes=[], visitors=[], subscribers=[];
+let isAdmin=false, currentRec=null, currentSrv=4, baseSrv=4;
+let adminClickCount=0, adminClickTimer=null;
+// File d'attente de sauvegarde pour éviter les conflits
+let saveQueue=Promise.resolve();
+
+// ══ STORAGE — 100% en ligne via JSONBin ══
 async function load(){
   try{
     const res = await fetch(BIN_URL + '/latest', {
       method: 'GET',
-      headers: { 'X-Master-Key': BIN_KEY, 'X-Bin-Versioning': 'false' }
+      headers: {
+        'X-Master-Key': BIN_KEY,
+        'X-Bin-Versioning': 'false'
+      }
     });
-    if(!res.ok){ console.error('JSONBin load error', res.status, await res.text()); recipes=[];subscribers=[];visitors=JSON.parse(localStorage.getItem('ldp_v3'))||[]; return; }
+    if(!res.ok){
+      console.error('JSONBin load error', res.status);
+      // Fallback : données vides (pas de localStorage)
+      recipes=[]; subscribers=[]; visitors=[];
+      return;
+    }
     const data = await res.json();
     const record = data.record || {};
-    recipes     = record.recipes     || [];
-    subscribers = record.subscribers || [];
-    visitors    = JSON.parse(localStorage.getItem('ldp_v3'))||[];
-    console.log('JSONBin charge OK', recipes.length, 'recettes');
-  }catch(e){ console.error('JSONBin load exception', e); recipes=[];subscribers=[];visitors=[]; }
+    recipes     = Array.isArray(record.recipes)     ? record.recipes     : [];
+    subscribers = Array.isArray(record.subscribers) ? record.subscribers : [];
+    visitors    = Array.isArray(record.visitors)    ? record.visitors    : [];
+    console.log('JSONBin chargé :', recipes.length, 'recettes,', visitors.length, 'visiteurs,', subscribers.length, 'abonnés');
+  }catch(e){
+    console.error('JSONBin load exception', e);
+    recipes=[]; subscribers=[]; visitors=[];
+  }
 }
-async function save(){
-  localStorage.setItem('ldp_v3', JSON.stringify(visitors));
-  try{
-    const res = await fetch(BIN_URL, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': BIN_KEY, 'X-Bin-Versioning': 'false' },
-      body: JSON.stringify({recipes, subscribers})
-    });
-    if(!res.ok) console.error('JSONBin save error', res.status, await res.text());
-    else console.log('JSONBin sauvegarde OK');
-  }catch(e){ console.error('JSONBin save exception', e); }
+
+// Sauvegarde sérialisée pour éviter les écritures simultanées
+function save(){
+  saveQueue = saveQueue.then(async ()=>{
+    try{
+      const res = await fetch(BIN_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': BIN_KEY,
+          'X-Bin-Versioning': 'false'
+        },
+        body: JSON.stringify({ recipes, subscribers, visitors })
+      });
+      if(!res.ok) console.error('JSONBin save error', res.status, await res.text());
+      else console.log('JSONBin sauvegardé ✓');
+    }catch(e){
+      console.error('JSONBin save exception', e);
+    }
+  });
+  return saveQueue;
 }
 
 // ══ HERO STORY SCROLL ══
-// L'utilisateur scrolle dans les 300vh → ça avance entre 3 scènes avec zoom
-// Scène 0 (0–33%) : cuisine, titre visible, image zoomée depuis scale(1)→(1.15)
-// Scène 1 (33–66%) : note sa recette, légende visible, zoom
-// Scène 2 (66–100%) : partage, légende visible, zoom
-
 function updateStory(){
   const story    = document.getElementById('heroStory');
   const storyTop = story.getBoundingClientRect().top + window.scrollY;
   const scrollY  = window.scrollY - storyTop;
-  const storyH   = story.offsetHeight - window.innerHeight; // scrollable distance
-  const progress = Math.max(0, Math.min(1, scrollY / storyH)); // 0 → 1
+  const storyH   = story.offsetHeight - window.innerHeight;
+  const progress = Math.max(0, Math.min(1, scrollY / storyH));
 
-  // Barre de progression
   document.getElementById('storyBar').style.width = (progress * 100) + '%';
 
-  // Quel slide ? 0, 1 ou 2
   const slideIdx = progress < 0.333 ? 0 : progress < 0.666 ? 1 : 2;
-  // Progression DANS le slide courant (0→1)
   const localP = progress < 0.333 ? progress / 0.333
                : progress < 0.666 ? (progress - 0.333) / 0.333
                :                    (progress - 0.666) / 0.334;
-
-  // Zoom : scale 1 → 1.18 dans chaque slide
   const scale = 1 + localP * 0.18;
 
-  // Mettre à jour les slides
   for(let i=0; i<3; i++){
     const el = document.getElementById('ss'+i);
     if(i === slideIdx){
@@ -774,37 +781,32 @@ function updateStory(){
     }
   }
 
-  // Titre principal : visible slide 0, disparaît ensuite
   const mainEl = document.getElementById('storyMain');
   if(slideIdx === 0){
-    mainEl.style.opacity = String(1 - localP * 2.5); // fade out vers la fin du slide 0
+    mainEl.style.opacity = String(1 - localP * 2.5);
     mainEl.style.pointerEvents = localP > 0.4 ? 'none' : 'auto';
   } else {
     mainEl.style.opacity = '0';
     mainEl.style.pointerEvents = 'none';
   }
 
-  // Légendes slides 1 et 2
   const l1 = document.getElementById('slabel1');
   const l2 = document.getElementById('slabel2');
   l1.style.opacity = slideIdx === 1 ? String(Math.min(1, localP * 3)) : '0';
   l2.style.opacity = slideIdx === 2 ? String(Math.min(1, localP * 3)) : '0';
 
-  // Points de navigation
   document.querySelectorAll('.story-dot').forEach((d,i)=>{
     d.classList.toggle('active', i === slideIdx);
   });
 
-  // Hint : disparaît dès qu'on scroll
   const hint = document.getElementById('storyHint');
   hint.style.opacity = String(Math.max(0, 1 - progress * 8));
 
-  // Nav bar
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 }
 
 window.addEventListener('scroll', updateStory, {passive:true});
-updateStory(); // init
+updateStory();
 
 // ══ TOAST ══
 function toast(msg){
@@ -822,20 +824,23 @@ function closeOverlay(id){document.getElementById(id).classList.remove('open');d
   });
 });
 
-// ══ TRACKING IP ══
+// ══ TRACKING IP — stocké en ligne dans JSONBin ══
 async function trackVisit(){
   try{
     const res = await fetch('https://api.ipify.org?format=json');
     const {ip} = await res.json();
     const now = new Date().toLocaleString('fr-FR');
     let v = visitors.find(x=>x.ip===ip);
-    if(!v){v={ip,visits:0,first:now,last:now,nlShown:false};visitors.push(v);}
-    v.visits++; v.last=now; save();
+    if(!v){ v={ip,visits:0,first:now,last:now,nlShown:false}; visitors.push(v); }
+    v.visits++;
+    v.last = now;
+    await save(); // sauvegarde en ligne
     if(v.visits>=3 && !v.nlShown && !subscribers.find(s=>s.ip===ip)){
-      v.nlShown=true; save();
+      v.nlShown=true;
+      await save();
       setTimeout(()=>openOverlay('nlOverlay'),3500);
     }
-  }catch(e){}
+  }catch(e){ console.warn('Tracking IP échoué', e); }
 }
 
 // ══ RENDER ══
@@ -950,14 +955,14 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
     date:new Date().toLocaleDateString('fr-FR'),img:''
   };
   const btn=document.getElementById('submitBtn');
-  btn.disabled=true; btn.textContent='Publication…';
+  btn.disabled=true; btn.textContent='Publication en ligne…';
   recipes.push(r);
-  await save();
+  await save(); // sauvegarde en ligne
   renderAll();
-  btn.disabled=false; btn.textContent='Publier la recette';
+  btn.disabled=false; btn.textContent='Publier ma recette';
   ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('formSuccess').style.display='block';
-  toast('Recette publiée !');
+  toast('Recette publiée en ligne ! 🎉');
   setTimeout(()=>closeOverlay('formOverlay'),2200);
 });
 async function delRec(idx){
