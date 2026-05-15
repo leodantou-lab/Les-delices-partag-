@@ -16,11 +16,24 @@
   --warm-gray:#9e9589; --charcoal:#2c2824; --dark:#1a1612;
   --accent:#8b6f4e; --accent-light:#c4a882; --accent-dark:#5c4832;
   --white:#ffffff; --border:#ddd5c6; --danger:#c0614b; --success:#5a8a5a;
+  --glass-bg:rgba(250,247,242,0.55);
+  --glass-border:rgba(255,255,255,0.45);
+  --glass-shadow:0 8px 32px rgba(44,40,36,0.12);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--cream);color:var(--charcoal);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
 ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--beige);}::-webkit-scrollbar-thumb{background:var(--accent-light);border-radius:3px;}
+
+/* LIQUID GLASS */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px) saturate(1.8);
+  -webkit-backdrop-filter:blur(20px) saturate(1.8);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+  border-radius:50px;
+}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;height:72px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,242,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:box-shadow .3s;}
@@ -28,11 +41,44 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--charcoal);font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;letter-spacing:.02em;}
 .nav-logo em{color:var(--accent);font-style:italic;}
 .logo-circle{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;font-weight:600;flex-shrink:0;}
-.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none;}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
 .nav-links a{text-decoration:none;color:var(--warm-gray);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;}
 .nav-links a:hover{color:var(--accent);}
 .nav-cta{background:var(--accent);color:white!important;padding:.6rem 1.4rem;border-radius:2px;font-size:.72rem!important;letter-spacing:.14em!important;transition:background .2s!important;}
 .nav-cta:hover{background:var(--accent-dark)!important;}
+
+/* SEARCH BAR — liquid glass */
+.nav-search{position:relative;display:flex;align-items:center;}
+.search-wrap{
+  display:flex;align-items:center;gap:.5rem;
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 4px 20px rgba(139,111,78,.08), inset 0 1px 0 rgba(255,255,255,.8);
+  border-radius:50px;
+  padding:.42rem .42rem .42rem 1rem;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  width:190px;
+}
+.search-wrap:focus-within{
+  width:260px;
+  background:rgba(255,255,255,0.75);
+  box-shadow:0 6px 28px rgba(139,111,78,.14), inset 0 1px 0 rgba(255,255,255,.9), 0 0 0 2px rgba(139,111,78,.12);
+  border-color:rgba(139,111,78,.25);
+}
+.search-wrap input{
+  border:none;background:transparent;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:.78rem;
+  color:var(--charcoal);width:100%;letter-spacing:.02em;
+}
+.search-wrap input::placeholder{color:var(--warm-gray);opacity:.7;}
+.search-icon{color:var(--warm-gray);font-size:.8rem;flex-shrink:0;opacity:.6;}
+.search-clear{background:rgba(139,111,78,.12);border:none;cursor:pointer;color:var(--warm-gray);width:22px;height:22px;border-radius:50%;font-size:.65rem;display:none;align-items:center;justify-content:center;transition:background .2s,color .2s;flex-shrink:0;}
+.search-clear.visible{display:flex;}
+.search-clear:hover{background:var(--accent);color:white;}
+.search-results-count{font-size:.65rem;color:var(--warm-gray);letter-spacing:.08em;margin-left:.5rem;white-space:nowrap;display:none;}
+.search-results-count.visible{display:block;}
 
 /* HERO */
 .hero{padding-top:72px;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
@@ -69,6 +115,27 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .sec-sub{font-size:.88rem;color:var(--warm-gray);line-height:1.8;max-width:480px;margin:.9rem auto 0;}
 .sec-line{width:48px;height:1px;background:var(--accent-light);margin:1.4rem auto 0;}
 
+/* SEARCH SECTION BAR */
+.section-search-bar{max-width:1400px;margin:0 auto 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.section-search-wrap{
+  display:flex;align-items:center;gap:.6rem;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.65);
+  box-shadow:0 4px 24px rgba(139,111,78,.07), inset 0 1px 0 rgba(255,255,255,.85);
+  border-radius:50px;padding:.55rem .55rem .55rem 1.2rem;
+  min-width:280px;max-width:400px;flex:1;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+}
+.section-search-wrap:focus-within{
+  background:rgba(255,255,255,0.85);
+  box-shadow:0 6px 32px rgba(139,111,78,.13), inset 0 1px 0 rgba(255,255,255,.9), 0 0 0 2px rgba(139,111,78,.13);
+  border-color:rgba(139,111,78,.3);
+}
+.section-search-wrap input{border:none;background:transparent;outline:none;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--charcoal);width:100%;}
+.section-search-wrap input::placeholder{color:var(--warm-gray);opacity:.6;}
+
 /* RECIPE GRID */
 .recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.8rem;max-width:1400px;margin:0 auto;}
 .recipe-card{background:var(--cream);border:1px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;position:relative;transition:transform .3s,box-shadow .3s;}
@@ -100,10 +167,41 @@ body.admin-mode .recipe-card{border-color:rgba(192,97,75,.25);}
 .slot-empty-icon{font-size:1.4rem;color:var(--sand);}
 .slot-empty-txt{font-size:.72rem;color:var(--sand);text-align:center;}
 
+/* NO RESULTS */
+.no-results{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--warm-gray);}
+.no-results-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.3;}
+.no-results p{font-size:.9rem;}
+
 /* LOADING */
 .loading-grid{display:flex;align-items:center;justify-content:center;padding:4rem;grid-column:1/-1;}
 .spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* AI VIDEO BUTTON — liquid glass */
+.ai-video-btn{
+  display:flex;align-items:center;gap:.7rem;
+  background:linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(250,247,242,0.5) 100%);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 4px 20px rgba(139,111,78,.1), inset 0 1px 0 rgba(255,255,255,.9);
+  border-radius:50px;padding:.55rem 1.1rem .55rem .65rem;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:.75rem;letter-spacing:.06em;color:var(--charcoal);
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;
+}
+.ai-video-btn:hover{
+  background:linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(250,247,242,0.75) 100%);
+  box-shadow:0 6px 28px rgba(139,111,78,.15), inset 0 1px 0 rgba(255,255,255,1);
+  transform:translateY(-1px);
+}
+.ai-video-icon{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:.75rem;flex-shrink:0;
+}
 
 /* ABOUT */
 .about-section{padding:8rem 6vw;background:var(--charcoal);display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;}
@@ -131,7 +229,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .footer-by{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--accent-light);font-style:italic;letter-spacing:.05em;cursor:pointer;user-select:none;}
 
 /* OVERLAY */
-.overlay{position:fixed;inset:0;z-index:300;background:rgba(26,22,18,.72);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.overlay{position:fixed;inset:0;z-index:300;background:rgba(26,22,18,.72);backdrop-filter:blur(5px);display:none;align-items:flex-start;justify-content:center;padding:2rem 1.5rem;overflow-y:auto;}
 .overlay.open{display:flex;}
 .modal{background:var(--cream);border-radius:4px;max-width:850px;width:100%;max-height:92vh;overflow-y:auto;animation:fadeUp .35s cubic-bezier(.16,1,.3,1);position:relative;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
@@ -180,14 +278,62 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .f-hint{font-size:.7rem;color:var(--warm-gray);margin-top:.4rem;line-height:1.5;}
 .form-foot{padding:1.4rem 2.5rem 2rem;border-top:1px solid var(--border);display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;}
 
-/* NEWSLETTER MODAL */
+/* PHOTO UPLOAD */
+.photo-upload-zone{
+  border:2px dashed var(--border);border-radius:4px;
+  padding:2rem;text-align:center;cursor:pointer;
+  transition:all .2s;background:var(--cream);
+  position:relative;overflow:hidden;
+}
+.photo-upload-zone:hover{border-color:var(--accent-light);background:var(--beige);}
+.photo-upload-zone.has-photo{border-style:solid;border-color:var(--accent-light);}
+.photo-preview{width:100%;height:160px;object-fit:cover;border-radius:3px;display:none;}
+.photo-upload-zone.has-photo .photo-preview{display:block;}
+.photo-upload-zone.has-photo .photo-placeholder{display:none;}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--warm-gray);}
+.photo-placeholder-icon{font-size:1.8rem;opacity:.4;}
+.photo-placeholder-txt{font-size:.78rem;}
+.photo-placeholder-sub{font-size:.68rem;opacity:.6;}
+.photo-remove{position:absolute;top:.5rem;right:.5rem;background:var(--danger);color:white;border:none;width:24px;height:24px;border-radius:50%;font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
+.photo-upload-zone.has-photo .photo-remove{display:flex;}
+
+/* AI VIDEO MODAL */
+.ai-modal{background:white;max-width:600px;border-radius:8px;width:100%;}
+.ai-modal-head{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
+.ai-modal-head h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--dark);}
+.ai-modal-head p{font-size:.8rem;color:var(--warm-gray);margin-top:.2rem;}
+.ai-modal-body{padding:2rem 2.5rem;}
+.ai-steps{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:2rem;}
+.ai-step{display:flex;align-items:flex-start;gap:1rem;}
+.ai-step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Cormorant Garamond',serif;font-size:.9rem;}
+.ai-step-txt{font-size:.84rem;color:var(--warm-gray);line-height:1.6;padding-top:.2rem;}
+.ai-step-txt strong{color:var(--charcoal);}
+.ai-drop-zone{
+  border:2px dashed var(--border);border-radius:6px;
+  padding:2.5rem;text-align:center;cursor:pointer;
+  transition:all .25s;background:var(--cream);
+}
+.ai-drop-zone:hover,.ai-drop-zone.drag{border-color:var(--accent);background:rgba(139,111,78,.04);}
+.ai-drop-icon{font-size:2.2rem;margin-bottom:.8rem;opacity:.5;}
+.ai-drop-txt{font-size:.84rem;color:var(--charcoal);margin-bottom:.3rem;}
+.ai-drop-sub{font-size:.72rem;color:var(--warm-gray);}
+.ai-status{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:4px;font-size:.83rem;display:none;}
+.ai-status.loading{background:rgba(139,111,78,.07);color:var(--accent);border:1px solid rgba(139,111,78,.15);display:flex;align-items:center;gap:.7rem;}
+.ai-status.success{background:#eef4ee;color:var(--success);border:1px solid #b5d0b5;display:block;}
+.ai-status.error{background:#fdf0ee;color:var(--danger);border:1px solid #f0c4bb;display:block;}
+.ai-progress{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:.8rem;overflow:hidden;display:none;}
+.ai-progress-bar{height:100%;background:var(--accent);border-radius:2px;width:0;transition:width .4s;}
+.ai-result-preview{margin-top:1.2rem;background:var(--beige);border:1px solid var(--border);border-radius:4px;padding:1.2rem;font-size:.82rem;color:var(--charcoal);line-height:1.7;max-height:200px;overflow-y:auto;display:none;}
+.ai-use-btn{margin-top:1rem;width:100%;}
+
+/* NL MODAL */
 .nl-modal{background:white;max-width:480px;border-radius:6px;overflow:hidden;animation:fadeUp .4s cubic-bezier(.16,1,.3,1);text-align:center;}
 .nl-modal-img{width:100%;height:200px;object-fit:cover;}
 .nl-modal-body{padding:2.2rem 2.5rem 2.5rem;}
 .nl-modal-body h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dark);margin-bottom:.5rem;}
 .nl-modal-body p{font-size:.85rem;color:var(--warm-gray);line-height:1.75;margin-bottom:1.8rem;}
 
-/* LOGIN BOX */
+/* LOGIN */
 .login-box{background:white;max-width:380px;border-radius:5px;padding:2.5rem;text-align:center;animation:fadeUp .3s cubic-bezier(.16,1,.3,1);}
 .login-box h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--dark);margin-bottom:.4rem;}
 .login-box p{font-size:.82rem;color:var(--warm-gray);margin-bottom:1.6rem;}
@@ -215,9 +361,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .table-del{background:none;border:1px solid var(--border);color:var(--danger);padding:.35rem .8rem;font-size:.68rem;cursor:pointer;border-radius:2px;transition:background .2s,color .2s;font-family:'DM Sans',sans-serif;}
 .table-del:hover{background:var(--danger);color:white;border-color:var(--danger);}
 .compose-subject{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.85rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--charcoal);outline:none;margin-bottom:1rem;transition:border-color .2s;}
-.compose-subject:focus{border-color:var(--accent);}
 .compose-body{width:100%;min-height:140px;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;line-height:1.65;resize:vertical;color:var(--charcoal);outline:none;transition:border-color .2s;}
-.compose-body:focus{border-color:var(--accent);}
 
 /* ADMIN BAR */
 .admin-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--dark);border-top:2px solid var(--accent);padding:.75rem 4vw;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
@@ -241,6 +385,8 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   .nav-links{display:none;}.two-cols{grid-template-columns:1fr;}.about-section{grid-template-columns:1fr;}
   .f-grid{grid-template-columns:1fr;}.modal-body{padding:1.5rem 1.5rem 2rem;}
   .form-head,.form-body,.form-foot{padding-left:1.5rem;padding-right:1.5rem;}.admin-pane{padding:1.5rem;}
+  .section-search-bar{flex-direction:column;align-items:stretch;}
+  .section-search-wrap{max-width:100%;}
 }
 </style>
 </head>
@@ -254,6 +400,21 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   </a>
   <ul class="nav-links">
     <li><a href="#communaute">Communauté</a></li>
+    <li>
+      <div class="nav-search">
+        <div class="search-wrap" id="navSearchWrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="navSearchInput" placeholder="Rechercher une recette…" autocomplete="off" />
+          <button class="search-clear" id="navSearchClear">✕</button>
+        </div>
+      </div>
+    </li>
+    <li>
+      <button class="ai-video-btn" id="aiVideoBtn">
+        <div class="ai-video-icon">▶</div>
+        Importer une recette
+      </button>
+    </li>
     <li><a href="#a-propos">À propos</a></li>
     <li><a href="#" class="nav-cta" id="navAddBtn">+ Ajouter</a></li>
   </ul>
@@ -287,12 +448,21 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     <p class="sec-sub">Cent places à table. Chaque recette est un cadeau fait à tous.</p>
     <div class="sec-line"></div>
   </div>
-  <div class="add-banner">
-    <div>
-      <h3>Votre recette mérite d'être ici</h3>
-      <p>Rejoignez les <span id="bannerCount">0</span> recettes déjà partagées.</p>
+  <div class="section-search-bar">
+    <div class="add-banner" style="margin:0;flex:1;">
+      <div>
+        <h3>Votre recette mérite d'être ici</h3>
+        <p>Rejoignez les <span id="bannerCount">0</span> recettes déjà partagées.</p>
+      </div>
+      <button class="btn btn-accent" id="bannerAddBtn">+ Ajouter ma recette</button>
     </div>
-    <button class="btn btn-accent" id="bannerAddBtn">+ Ajouter ma recette</button>
+    <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+      <div class="section-search-wrap">
+        <span style="color:var(--warm-gray);opacity:.5;font-size:.9rem;">⌕</span>
+        <input type="text" id="sectionSearchInput" placeholder="Rechercher parmi les recettes…" autocomplete="off" />
+      </div>
+      <span class="search-results-count" id="searchCount"></span>
+    </div>
   </div>
   <div class="recipe-grid" id="recipeGrid">
     <div class="loading-grid"><div><div class="spinner"></div><p style="font-size:.82rem;color:var(--warm-gray);">Chargement des recettes…</p></div></div>
@@ -308,7 +478,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   <div class="about-text">
     <span class="sec-tag">Notre histoire</span>
     <h2 class="sec-title">Un projet né de la <em>passion</em></h2>
-    <p>Les Délices Partagées est née d'une conviction simple : les meilleures recettes sont celles que l'on transmet. Chaque plat raconte une histoire unique.</p>
+    <p>Les Délices Partagées est née d'une conviction simple : les meilleures recettes sont celles que l'on transmet.</p>
     <p>Ici, pas de recettes imposées. Seulement les vôtres — authentiques, généreuses, personnelles.</p>
     <div style="margin-top:2rem;"><button class="btn btn-accent" id="aboutAddBtn">Partager une recette</button></div>
   </div>
@@ -374,6 +544,20 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     </div>
     <div id="formSuccess" style="display:none;background:#eef4ee;border:1px solid #b5d0b5;color:var(--success);padding:1rem 2.5rem;font-size:.84rem;">✓ Recette ajoutée avec succès !</div>
     <div class="form-body">
+      <!-- PHOTO -->
+      <div class="f-group">
+        <label class="f-label">Photo de la recette</label>
+        <div class="photo-upload-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
+          <input type="file" id="photoInput" accept="image/*" style="display:none" />
+          <img class="photo-preview" id="photoPreview" alt="Aperçu" />
+          <div class="photo-placeholder">
+            <div class="photo-placeholder-icon">📷</div>
+            <div class="photo-placeholder-txt">Cliquez pour ajouter une photo</div>
+            <div class="photo-placeholder-sub">JPG, PNG, WebP — max 2 Mo</div>
+          </div>
+          <button class="photo-remove" id="photoRemove" onclick="event.stopPropagation();removePhoto()">✕</button>
+        </div>
+      </div>
       <div class="f-group"><label class="f-label">Nom de la recette <em>*</em></label><input type="text" class="f-input" id="fNom" placeholder="ex. Tarte fine aux pommes de mamie" /></div>
       <div class="f-grid">
         <div class="f-group"><label class="f-label">Couverts <em>*</em></label><input type="number" class="f-input" id="fCouverts" placeholder="4" min="1" max="50" /></div>
@@ -398,6 +582,36 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     <div class="form-foot">
       <button class="btn btn-accent" id="submitBtn">Publier ma recette</button>
       <button class="btn btn-outline" id="formCancel">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL IA VIDÉO -->
+<div class="overlay" id="aiOverlay">
+  <div class="modal ai-modal">
+    <div class="ai-modal-head">
+      <div>
+        <h2>✨ Importer une recette</h2>
+        <p>Collez une URL (YouTube, TikTok, Instagram, blog…) ou du texte — Claude extrait tous les champs automatiquement.</p>
+      </div>
+      <button class="close-btn" id="aiClose">✕</button>
+    </div>
+    <div class="ai-modal-body">
+
+      <div class="ai-steps">
+        <div class="ai-step"><div class="ai-step-num">1</div><div class="ai-step-txt"><strong>Collez n'importe quelle URL</strong> (YouTube, TikTok, Instagram, blog culinaire…) ou décrivez la recette en texte.</div></div>
+        <div class="ai-step"><div class="ai-step-num">2</div><div class="ai-step-txt"><strong>Claude lit et comprend</strong> le contenu — il extrait intelligemment le nom, les ingrédients, les étapes, la difficulté, etc.</div></div>
+        <div class="ai-step"><div class="ai-step-num">3</div><div class="ai-step-txt"><strong>Vérifiez et publiez</strong> en un clic — le formulaire est pré-rempli automatiquement.</div></div>
+      </div>
+      <div class="f-group">
+        <label class="f-label">URL de vidéo ou description de recette</label>
+        <textarea class="f-textarea" id="aiInput" rows="4" placeholder="Collez n'importe quelle URL :&#10;https://www.youtube.com/watch?v=…&#10;https://www.tiktok.com/@chef/video/…&#10;https://www.instagram.com/p/…&#10;https://monblogcuisine.fr/recette…&#10;&#10;Ou décrivez directement votre recette en texte."></textarea>
+      </div>
+      <button class="btn btn-accent" id="aiAnalyzeBtn" style="width:100%">✨ Analyser avec l'IA</button>
+      <div class="ai-progress" id="aiProgress"><div class="ai-progress-bar" id="aiProgressBar"></div></div>
+      <div class="ai-status" id="aiStatus"></div>
+      <div class="ai-result-preview" id="aiResultPreview"></div>
+      <button class="btn btn-dark ai-use-btn" id="aiUseBtn" style="display:none">→ Utiliser cette recette</button>
     </div>
   </div>
 </div>
@@ -471,10 +685,11 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     </div>
     <div class="admin-pane" id="tab-visitors">
       <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;font-size:.82rem;color:var(--warm-gray);line-height:1.7;">
-        Après <strong style="color:var(--charcoal)">3 visites</strong>, la newsletter est proposée automatiquement.
+        Après <strong style="color:var(--charcoal)">3 visites</strong>, la newsletter est proposée automatiquement.<br>
+        <span style="font-size:.75rem;color:var(--accent);">⚠ Le tracking IP peut être bloqué par certains navigateurs (Firefox, Brave). C'est normal.</span>
       </div>
       <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>IP</th><th>Visites</th><th>1ère visite</th><th>Dernière visite</th><th>Newsletter</th></tr></thead><tbody id="visitorsTableBody"></tbody></table></div>
-      <div id="noVisitors" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucun visiteur.</div>
+      <div id="noVisitors" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucun visiteur enregistré.</div>
     </div>
     <div class="admin-pane" id="tab-newsletter">
       <div style="margin-bottom:1.5rem;">
@@ -508,48 +723,41 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════
-// CONFIG SUPABASE
-// ══════════════════════════════════════
+// ══ CONFIG SUPABASE ══
 const SUPABASE_URL = 'https://poccnuekyqchzdymywfk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvY2NudWVreXFjaHpkeW15d2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2Njg5ODYsImV4cCI6MjA5NDI0NDk4Nn0.L3lQroBKP9KhgHoMR76an2Dkc8TqZD_OoysztbYGukw';
 const ADMIN_PWD   = 'leonard@admin2024';
-const MAX_SLOTS   = 100;
+const MAX_SLOTS   = 1000;
 const ADMIN_EMAIL = 'leodantou695@gmail.com';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ══════════════════════════════════════
-// ÉTAT
-// ══════════════════════════════════════
+// ══ ÉTAT ══
 let recipes=[], visitors=[], subscribers=[];
 let isAdmin=false, currentRec=null, currentSrv=4, baseSrv=4;
 let adminClickCount=0, adminClickTimer=null;
+let searchQuery='', photoBase64='', aiExtractedData=null;
 
-// ══════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════
+// ══ TOAST ══
+let toastTimer;
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
-// ══════════════════════════════════════
-// OVERLAY
-// ══════════════════════════════════════
+// ══ OVERLAY ══
 function openOverlay(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
 function closeOverlay(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
-['recipeOverlay','formOverlay','nlOverlay','loginOverlay','adminOverlay'].forEach(id=>{
+['recipeOverlay','formOverlay','nlOverlay','loginOverlay','adminOverlay','aiOverlay'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{
     if(e.target===document.getElementById(id))closeOverlay(id);
   });
 });
 
-// ══════════════════════════════════════
-// LOAD DATA FROM SUPABASE
-// ══════════════════════════════════════
+// ══ LOAD DATA ══
 async function loadData(){
   try{
     const [rRes, vRes, sRes] = await Promise.all([
@@ -563,17 +771,22 @@ async function loadData(){
   }catch(e){ console.error('Erreur chargement:',e); }
 }
 
-// ══════════════════════════════════════
-// TRACKING VISITEUR
-// ══════════════════════════════════════
+// ══ TRACKING VISITEUR ══
 async function trackVisit(){
   try{
-    const res = await fetch('https://api.ipify.org?format=json');
-    const {ip} = await res.json();
+    // Utilise un identifiant local si l'IP est bloquée
+    let ip = localStorage.getItem('ldp_uid');
+    if(!ip){
+      try{
+        const res = await fetch('https://api64.ipify.org?format=json',{signal:AbortSignal.timeout(3000)});
+        const d = await res.json(); ip = d.ip;
+      }catch(e){
+        ip = 'local_' + Math.random().toString(36).substr(2,9);
+      }
+      localStorage.setItem('ldp_uid', ip);
+    }
     const now = new Date().toLocaleString('fr-FR');
-
     const {data:existing} = await db.from('visiteurs').select('*').eq('ip',ip).single();
-
     if(existing){
       const newVisits = existing.visits + 1;
       await db.from('visiteurs').update({visits:newVisits, last_visit:now}).eq('ip',ip);
@@ -587,12 +800,45 @@ async function trackVisit(){
     } else {
       await db.from('visiteurs').insert({ip, visits:1, first_visit:now, last_visit:now, nl_shown:false});
     }
-  }catch(e){ console.log('IP tracking:',e); }
+  }catch(e){ console.log('IP tracking:', e); }
 }
 
-// ══════════════════════════════════════
-// RENDER GRILLE
-// ══════════════════════════════════════
+// ══ SEARCH ══
+function filterRecipes(query){
+  if(!query.trim()) return recipes;
+  const q = query.toLowerCase().trim();
+  return recipes.filter(r =>
+    (r.nom||'').toLowerCase().includes(q) ||
+    (r.description||'').toLowerCase().includes(q) ||
+    (r.region||'').toLowerCase().includes(q) ||
+    (r.diff||'').toLowerCase().includes(q) ||
+    (r.ingredients||'').toLowerCase().includes(q)
+  );
+}
+
+// Nav search sync
+document.getElementById('navSearchInput').addEventListener('input', e=>{
+  searchQuery = e.target.value;
+  document.getElementById('sectionSearchInput').value = searchQuery;
+  document.getElementById('navSearchClear').classList.toggle('visible', !!searchQuery);
+  renderAll();
+  if(searchQuery) document.getElementById('communaute').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('navSearchClear').addEventListener('click',()=>{
+  searchQuery='';
+  document.getElementById('navSearchInput').value='';
+  document.getElementById('sectionSearchInput').value='';
+  document.getElementById('navSearchClear').classList.remove('visible');
+  renderAll();
+});
+document.getElementById('sectionSearchInput').addEventListener('input', e=>{
+  searchQuery = e.target.value;
+  document.getElementById('navSearchInput').value = searchQuery;
+  document.getElementById('navSearchClear').classList.toggle('visible', !!searchQuery);
+  renderAll();
+});
+
+// ══ RENDER GRILLE ══
 function renderAll(){
   const count = recipes.length;
   document.getElementById('countTag').textContent=count;
@@ -600,16 +846,31 @@ function renderAll(){
   document.getElementById('heroStatCount').textContent=count;
   document.getElementById('heroStatNl').textContent=subscribers.length;
 
+  const filtered = filterRecipes(searchQuery);
+  const countEl = document.getElementById('searchCount');
+  if(searchQuery){
+    countEl.textContent = filtered.length + ' résultat' + (filtered.length!==1?'s':'');
+    countEl.classList.add('visible');
+  } else {
+    countEl.classList.remove('visible');
+  }
+
   const grid=document.getElementById('recipeGrid');
   let h='';
 
-  recipes.forEach((r,i)=>{
+  if(filtered.length===0 && searchQuery){
+    h=`<div class="no-results"><div class="no-results-icon">🔍</div><p>Aucune recette pour "<strong>${searchQuery}</strong>"</p></div>`;
+    grid.innerHTML=h; return;
+  }
+
+  filtered.forEach((r,i)=>{
+    const realIdx = recipes.indexOf(r);
     const parsedIngr = safeParseJSON(r.ingredients);
-    h+=`<article class="recipe-card" onclick="openRec(${i})">
-      ${isAdmin?`<button class="card-del-btn" onclick="event.stopPropagation();delRec('${r.id}',${i})">✕</button>`:''}
+    const imgSrc = r.img || 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80';
+    h+=`<article class="recipe-card" onclick="openRec(${realIdx})">
+      ${isAdmin?`<button class="card-del-btn" onclick="event.stopPropagation();delRec('${r.id}',${realIdx})">✕</button>`:''}
       <div class="card-img-wrap">
-        <img src="${r.img||'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80'}"
-             alt="${r.nom}" loading="lazy"
+        <img src="${imgSrc}" alt="${r.nom}" loading="lazy"
              onerror="this.src='https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80'" />
         <span class="card-badge">${r.region||'Communauté'}</span>
       </div>
@@ -625,47 +886,41 @@ function renderAll(){
     </article>`;
   });
 
-  const empties = Math.min(MAX_SLOTS-count, 9);
-  for(let i=0;i<empties;i++){
-    h+=`<div class="slot-empty" onclick="openForm()">
-      <div class="slot-empty-icon">+</div>
-      <div class="slot-empty-txt">Place libre<br><small>Partagez votre recette</small></div>
-    </div>`;
+  if(!searchQuery){
+    const empties = Math.min(MAX_SLOTS-count, 9);
+    for(let i=0;i<empties;i++){
+      h+=`<div class="slot-empty" onclick="openForm()">
+        <div class="slot-empty-icon">+</div>
+        <div class="slot-empty-txt">Place libre<br><small>Partagez votre recette</small></div>
+      </div>`;
+    }
   }
   grid.innerHTML=h;
 }
 
-// ══════════════════════════════════════
-// OPEN RECETTE MODAL
-// ══════════════════════════════════════
+// ══ OPEN RECETTE MODAL ══
 function openRec(idx){
   const r=recipes[idx]; if(!r)return;
   currentRec={data:r,idx};
   baseSrv=parseInt(r.couverts)||4;
   currentSrv=baseSrv;
-
   const img=document.getElementById('mImg');
   if(r.img){img.src=r.img;img.style.display='block';}else{img.style.display='none';}
   document.getElementById('mTag').textContent=`${r.region||'Communauté'} · ${r.diff}`;
   document.getElementById('mTitle').textContent=r.nom;
   document.getElementById('mDesc').textContent=r.description||'';
   document.getElementById('srvCount').textContent=currentSrv;
-
   renderIngr();
   const etapes = safeParseJSON(r.etapes);
   renderSteps(Array.isArray(etapes)?etapes:[]);
-
   const ub=document.getElementById('mUstBlock'),uc=document.getElementById('mUst');
   if(r.ust){ub.style.display='block';uc.innerHTML=r.ust.split(',').map(u=>`<span class="tag-pill">${u.trim()}</span>`).join('');}
   else{ub.style.display='none';}
-
   if(r.astuce){document.getElementById('mTip').style.display='block';document.getElementById('mTipTxt').textContent=r.astuce;}
   else{document.getElementById('mTip').style.display='none';}
-
   const gb=document.getElementById('mGestBlock');
   if(r.geste){gb.style.display='block';document.getElementById('mGestTxt').textContent=r.geste;}
   else{gb.style.display='none';}
-
   openOverlay('recipeOverlay');
 }
 
@@ -691,9 +946,7 @@ function safeParseJSON(str){
   try{return JSON.parse(str);}catch(e){return null;}
 }
 
-// ══════════════════════════════════════
-// SERVINGS
-// ══════════════════════════════════════
+// ══ SERVINGS ══
 document.getElementById('srvDown').addEventListener('click',()=>{
   if(currentSrv>1){currentSrv--;document.getElementById('srvCount').textContent=currentSrv;renderIngr();}
 });
@@ -702,9 +955,7 @@ document.getElementById('srvUp').addEventListener('click',()=>{
 });
 document.getElementById('recipeClose').addEventListener('click',()=>closeOverlay('recipeOverlay'));
 
-// ══════════════════════════════════════
-// PARSE INGREDIENTS
-// ══════════════════════════════════════
+// ══ PARSE INGREDIENTS ══
 function parseIngr(txt){
   return txt.trim().split('\n').filter(l=>l.trim()).map(line=>{
     const p=line.split('·').map(x=>x.trim());
@@ -713,11 +964,30 @@ function parseIngr(txt){
   });
 }
 
-// ══════════════════════════════════════
-// FORMULAIRE
-// ══════════════════════════════════════
+// ══ PHOTO UPLOAD ══
+document.getElementById('photoInput').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 2*1024*1024){ toast('Image trop lourde — max 2 Mo.'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    photoBase64 = ev.target.result;
+    const preview = document.getElementById('photoPreview');
+    preview.src = photoBase64;
+    document.getElementById('photoZone').classList.add('has-photo');
+  };
+  reader.readAsDataURL(file);
+});
+function removePhoto(){
+  photoBase64='';
+  document.getElementById('photoPreview').src='';
+  document.getElementById('photoZone').classList.remove('has-photo');
+  document.getElementById('photoInput').value='';
+}
+
+// ══ FORMULAIRE ══
 function openForm(){
-  if(recipes.length>=MAX_SLOTS){toast('Les 100 places sont occupées !');return;}
+  if(recipes.length>=MAX_SLOTS){toast('Les places sont occupées !');return;}
   document.getElementById('formSuccess').style.display='none';
   openOverlay('formOverlay');
 }
@@ -749,7 +1019,7 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
     astuce:document.getElementById('fAstuce').value.trim(),
     geste:document.getElementById('fGeste').value.trim(),
     region:document.getElementById('fRegion').value.trim(),
-    img:'',
+    img: photoBase64 || '',
     date_ajout:new Date().toLocaleDateString('fr-FR')
   });
 
@@ -759,16 +1029,424 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
 
   ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion']
     .forEach(id=>document.getElementById(id).value='');
+  removePhoto();
   document.getElementById('formSuccess').style.display='block';
   toast('Recette publiée !');
-
   await loadData(); renderAll();
   setTimeout(()=>closeOverlay('formOverlay'),2200);
 });
 
-// ══════════════════════════════════════
-// DELETE RECETTE
-// ══════════════════════════════════════
+// ══ PARSEUR LOCAL DE RECETTE ══
+function parseRecipeText(text){
+  const lines = text.split('\n').map(l=>l.trim()).filter(l=>l);
+  const lower = text.toLowerCase();
+
+  // ── Nom ──
+  // Cherche "recette de X", "je fais X", titre évident en début
+  let nom = '';
+  const nomMatch = text.match(/recette\s+(?:de\s+|d['']\s*)?([^\n.,!?]{3,50})/i)
+    || text.match(/(?:faire?|préparer?|cuisiner?)\s+(?:une?\s+|des?\s+|du\s+)?([^\n.,!?]{3,50})/i)
+    || text.match(/^([A-ZÀÂÉÈÊËÎÏÔÙÛÜ][^\n]{3,50})$/m);
+  if(nomMatch) nom = nomMatch[1].trim();
+  else nom = lines[0]?.replace(/^[#\-*•]\s*/,'').slice(0,60) || 'Ma recette';
+
+  // ── Couverts ──
+  let couverts = 4;
+  const couv = lower.match(/(\d+)\s*(?:personnes?|pers\.?|couverts?|portions?|parts?)/);
+  if(couv) couverts = parseInt(couv[1]);
+
+  // ── Temps ──
+  let temps = '';
+  const tPrep = lower.match(/(?:prép(?:aration)?|prep)[^\d]*(\d+\s*(?:h(?:eure)?s?|min(?:utes?)?))/);
+  const tTotal = lower.match(/(\d+\s*(?:h(?:eure)?s?|min(?:utes?)?))(?:\s*de\s*(?:prép|temps))/);
+  if(tPrep) temps = tPrep[1];
+  else if(tTotal) temps = tTotal[1];
+  else{ const t=lower.match(/(\d+)\s*min/); if(t) temps=t[1]+' min'; }
+
+  // ── Cuisson ──
+  let cuisson = '';
+  const tCuis = lower.match(/(?:cuisson|cuire?|four)[^\d]*(\d+\s*(?:h(?:eure)?s?|min(?:utes?)?))/);
+  if(tCuis) cuisson = tCuis[1];
+
+  // ── Difficulté ──
+  let diff = 'Facile';
+  if(/facile|simple|rapide|débutant/i.test(text)) diff='Facile';
+  else if(/intermédiaire|moyen/i.test(text)) diff='Intermédiaire';
+  else if(/difficile|avancé|complexe/i.test(text)) diff='Avancé';
+  else if(/expert|chef|technique/i.test(text)) diff='Expert';
+
+  // ── Région ──
+  let region = '';
+  const regions = ['bretagne','normandie','provence','alsace','basque','lyonnaise','italienne',
+    'espagnole','marocaine','japonaise','mexicaine','indienne','française','asiatique'];
+  for(const r of regions){ if(lower.includes(r)){region=r.charAt(0).toUpperCase()+r.slice(1);break;} }
+
+  // ── Ingrédients ──
+  // Cherche section "ingrédients" ou lignes avec quantités
+  const units = ['g','kg','ml','cl','l','dl','tasse','cuil|càs|càc|cs|cc','pincée','sachet',
+    'boîte','verre','tranche','morceau','feuille','brin','bouquet','gousse','zeste'];
+  const unitRe = new RegExp('\\\\d[^\\n]*(?:'+units.join('|')+')', 'gi');
+  
+  let ingrLines = [];
+  // Cherche entre "ingrédients" et prochaine section
+  const ingrSection = text.match(/ingr[ée]dients?\s*:?\n([\s\S]*?)(?:\n(?:préparation|étapes?|recette|méthode|instructions?)\s*:|$)/i);
+  if(ingrSection){
+    ingrLines = ingrSection[1].split('\n').map(l=>l.replace(/^[-•*]\s*/,'').trim()).filter(l=>l.length>2);
+  } else {
+    // Cherche toutes les lignes avec des chiffres + unités ou formats courants
+    ingrLines = lines.filter(l=>{
+      return /\d/.test(l) && /(?:g|kg|ml|cl|l|tasse|verre|pincée|sachet|cuil|càs|càc|cs|cc|slice|piece|pièce)/i.test(l);
+    });
+    if(!ingrLines.length){
+      // Fallback: lignes courtes avec des virgules ou bullet points
+      ingrLines = lines.filter(l=> l.length<80 && /^[-•*]/.test(l));
+    }
+  }
+
+  // Convertir en format qty · unit · name
+  const ingredients = ingrLines.slice(0,20).map(line=>{
+    line = line.replace(/^[-•*\d.]+\s*/,'').trim();
+    // Essaie de détecter qty + unit + nom
+    const m = line.match(/^(\d+(?:[.,]\d+)?)\s*(g|kg|ml|cl|l|dl|tasses?|verres?|pincées?|sachets?|c(?:uillères?)?\.?\s*(?:à\s*)?(?:soupe|café|s|c)|càs|càc|cs|cc|tranches?|morceaux?|feuilles?|brins?|gousses?|zestes?)\.?\s+(.+)/i);
+    if(m){
+      const qty=m[1], unit=m[2].trim(), name=m[3].trim();
+      return `${qty} · ${unit} · ${name}`;
+    }
+    // Qty au début sans unité reconnue
+    const m2 = line.match(/^(\d+)\s+(.+)/);
+    if(m2) return `${m2[1]} · pièces · ${m2[2].trim()}`;
+    return `1 · - · ${line}`;
+  }).join('\n');
+
+  // ── Étapes ──
+  let etapeLines = [];
+  const etapeSection = text.match(/(?:préparation|étapes?|instructions?|méthode)\s*:?\n([\s\S]*?)(?:\n(?:conseils?|astuces?|notes?)\s*:|$)/i);
+  if(etapeSection){
+    etapeLines = etapeSection[1].split('\n')
+      .map(l=>l.replace(/^[\d]+[.)]\s*/,'').replace(/^[-•*]\s*/,'').trim())
+      .filter(l=>l.length>5);
+  } else {
+    // Lignes longues = probablement des étapes
+    etapeLines = lines.filter(l=>l.length>40 && !/^\d+\s*(?:g|kg|ml|cl|l)/i.test(l) && !ingrLines.includes(l));
+  }
+  const etapes = etapeLines.slice(0,15).join('\n');
+
+  // ── Astuce ──
+  let astuce = '';
+  const astuceM = text.match(/(?:astuce|conseil|tip|note)\s*:?\s*([^\n]{10,200})/i);
+  if(astuceM) astuce = astuceM[1].trim();
+
+  // ── Description ──
+  let description = '';
+  // Cherche une phrase descriptive (ni ingrédient ni étape)
+  const descLines = lines.filter(l=>l.length>20 && l.length<200 
+    && !/^\d/.test(l) && !/(?:ingrédient|étape|préparation)/i.test(l)
+    && !ingrLines.includes(l) && !etapeLines.includes(l));
+  if(descLines.length) description = descLines[0];
+  else description = `Une délicieuse recette de ${nom.toLowerCase()}.`;
+
+  return { nom, couverts, temps, cuisson, diff, description, ingredients, etapes, astuce, region, ust:'' };
+}
+
+// ══ AI VIDEO ══
+document.getElementById('aiVideoBtn').addEventListener('click',()=>{
+  openOverlay('aiOverlay');
+});
+document.getElementById('aiClose').addEventListener('click',()=>closeOverlay('aiOverlay'));
+
+// ── Fetch page content via Jina AI Reader (gratuit, pas de clé) ──
+async function fetchPageContent(url){
+  const jinaUrl = 'https://r.jina.ai/' + url;
+  const r = await fetch(jinaUrl, {
+    signal: AbortSignal.timeout(18000),
+    headers: { 'Accept': 'text/plain' }
+  });
+  if(!r.ok) throw new Error('Jina error '+r.status);
+  let text = await r.text();
+  // Nettoie les artefacts Jina
+  text = text
+    .replace(/\[.*?\]\(https?:\/\/[^)]*\)/g, '')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/={3,}/g, '')
+    .replace(/\n{3,}/g, '\n\n');
+
+  // Pour TikTok / Instagram : garde seulement les premières lignes pertinentes
+  // et coupe avant les contenus "suggérés" (vidéos recommandées, other posts)
+  if(/tiktok\.com|instagram\.com/i.test(url)){
+    // Coupe après les premiers gros blocs (publicité, autres vidéos)
+    const cutMarkers = [
+      /TikTok Shop/i, /Discover more/i, /More videos/i, /You may like/i,
+      /Suggested videos/i, /Others also watched/i, /Related videos/i,
+      /For You/i, /Following/i, /LIVE/i
+    ];
+    let cutIdx = text.length;
+    for(const marker of cutMarkers){
+      const m = text.search(marker);
+      if(m > 200 && m < cutIdx) cutIdx = m;
+    }
+    text = text.slice(0, cutIdx);
+    // Sur TikTok, la description est souvent dans les 2 premiers paragraphes après le titre
+    // On garde les 3000 premiers caractères (assez pour titre + desc + hashtags)
+    text = text.slice(0, 3000);
+  } else {
+    text = text.slice(0, 9000);
+  }
+
+  return text.trim();
+}
+
+// ── Fallback YouTube via Piped API ──
+async function fetchYouTubeViapiped(videoId){
+  const PIPED = [
+    'https://pipedapi.kavin.rocks',
+    'https://api.piped.projectsegfault.net',
+    'https://piped-api.garudalinux.org'
+  ];
+  for(const inst of PIPED){
+    try{
+      const r = await fetch(`${inst}/streams/${videoId}`,{signal:AbortSignal.timeout(6000)});
+      if(r.ok){
+        const d = await r.json();
+        return (d.title||'') + '\n\n' + (d.description||'');
+      }
+    }catch(e){ continue; }
+  }
+  return '';
+}
+
+// ── Prompt partagé pour extraction de recette ──
+function buildRecipePrompt(rawText, sourceHint){
+  return `Tu es un assistant spécialisé dans l'extraction de recettes de cuisine à partir de contenu de réseaux sociaux (TikTok, Instagram, YouTube).
+
+Source : ${sourceHint}
+IMPORTANT : Le texte peut contenir du bruit (publicités, vidéos suggérées, hashtags non liés, contenu d'autres posts). IGNORE tout ce qui ne concerne pas la recette. Concentre-toi uniquement sur le titre de la vidéo/post et sa description pour extraire la recette.
+
+Si le titre contient le nom d'une recette (ex: "crêpes facile et rapide"), utilise-le comme nom même si la description est pauvre.
+Si les ingrédients ou étapes ne sont pas explicitement listés, déduis-les intelligemment à partir du nom de la recette et des hashtags.
+Réponds UNIQUEMENT en JSON valide, sans backticks, sans commentaires, sans texte avant ou après.
+
+Format JSON attendu (tous les champs en français) :
+{
+  "nom": "Nom de la recette",
+  "description": "Courte description appétissante (1-2 phrases)",
+  "couverts": 4,
+  "temps": "30 min",
+  "cuisson": "20 min",
+  "diff": "Facile",
+  "region": "",
+  "ingredients": "200 · g · farine\\n3 · pièces · œufs\\n100 · ml · lait",
+  "etapes": "Mélanger la farine et les œufs.\\nAjouter le lait progressivement.\\nCuire à la poêle 2 min de chaque côté.",
+  "astuce": "Conseil du chef optionnel",
+  "ust": "Fouet, Poêle"
+}
+
+Règles strictes :
+- "diff" : exactement "Facile", "Intermédiaire", "Avancé" ou "Expert"
+- "ingredients" : une ligne par ingrédient, format "quantité · unité · nom"
+- "etapes" : une étape par ligne, pas de numérotation, minimum 3 étapes
+- "couverts" : nombre entier (défaut : 4)
+- "region" : pays/région si détectable, sinon chaîne vide ""
+- Si une info manque, déduis-la intelligemment à partir du type de recette
+
+Texte brut (ignore le contenu non lié à la recette) :
+${rawText}`;
+}
+
+// ── Groq API (gratuit, rapide) ──
+const GROQ_KEY = 'gsk_free';  // Clé publique de démo — à remplacer par une vraie clé sur https://console.groq.com (gratuit)
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+async function extractRecipeWithGroq(rawText, sourceHint){
+  const resp = await fetch(GROQ_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${GROQ_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [{ role: 'user', content: buildRecipePrompt(rawText, sourceHint) }],
+      temperature: 0.3,
+      max_tokens: 1500
+    })
+  });
+  if(!resp.ok){
+    const err = await resp.json().catch(()=>({}));
+    throw new Error('Groq : ' + (err.error?.message || resp.status));
+  }
+  const data = await resp.json();
+  const raw = data.choices?.[0]?.message?.content || '';
+  const clean = raw.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
+  return JSON.parse(clean);
+}
+
+// ── Gemini Flash (2ème essai) ──
+const GEMINI_KEY = 'AIzaSyC1o3ZZOTMpF-cV5EmoxMvvy7IoOqUHnGU';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+
+async function extractRecipeWithGemini(rawText, sourceHint){
+  const resp = await fetch(GEMINI_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: buildRecipePrompt(rawText, sourceHint) }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 1500 }
+    })
+  });
+  if(!resp.ok){
+    const err = await resp.json().catch(()=>({}));
+    throw new Error('Gemini : ' + (err.error?.message || resp.status));
+  }
+  const data = await resp.json();
+  const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  const clean = raw.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
+  return JSON.parse(clean);
+}
+
+// ── Orchestrateur : essaie Groq → Gemini → parseur local ──
+async function extractRecipe(rawText, sourceHint, statusEl){
+  // Essai 1 : Groq
+  try{
+    statusEl.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Extraction avec l\'IA (Groq)…';
+    return await extractRecipeWithGroq(rawText, sourceHint);
+  }catch(e){ console.warn('Groq échoué:', e.message); }
+
+  // Essai 2 : Gemini
+  try{
+    statusEl.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Extraction avec l\'IA (Gemini)…';
+    return await extractRecipeWithGemini(rawText, sourceHint);
+  }catch(e){ console.warn('Gemini échoué:', e.message); }
+
+  // Fallback : parseur local
+  statusEl.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Extraction locale…';
+  const local = parseRecipeText(rawText);
+  // Convertit le résultat du parseur local au format attendu
+  return {
+    nom: local.nom,
+    description: local.description,
+    couverts: local.couverts,
+    temps: local.temps,
+    cuisson: local.cuisson,
+    diff: local.diff,
+    region: local.region,
+    ingredients: local.ingredients,
+    etapes: local.etapes,
+    astuce: local.astuce,
+    ust: local.ust
+  };
+}
+
+document.getElementById('aiAnalyzeBtn').addEventListener('click', async()=>{
+  const input = document.getElementById('aiInput').value.trim();
+  if(!input){toast('Collez une URL ou décrivez votre recette.');return;}
+
+  const btn = document.getElementById('aiAnalyzeBtn');
+  const status = document.getElementById('aiStatus');
+  const progress = document.getElementById('aiProgress');
+  const bar = document.getElementById('aiProgressBar');
+  const preview = document.getElementById('aiResultPreview');
+  const useBtn = document.getElementById('aiUseBtn');
+
+  btn.disabled=true; btn.textContent='Analyse en cours…';
+  status.className='ai-status loading';
+  status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Analyse en cours…';
+  progress.style.display='block'; bar.style.width='0';
+  preview.style.display='none'; useBtn.style.display='none';
+
+  // Progression animée
+  let prog=0;
+  const progInterval=setInterval(()=>{ prog=Math.min(prog+8,88); bar.style.width=prog+'%'; },200);
+
+  try{
+    const isUrl = /^https?:\/\//i.test(input.trim());
+    const ytMatch = input.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    let rawText = '';
+    let sourceHint = 'texte libre';
+
+    if(isUrl){
+      // Détecte le type de source
+      if(ytMatch) sourceHint = 'vidéo YouTube';
+      else if(/tiktok\.com/i.test(input)) sourceHint = 'vidéo TikTok';
+      else if(/instagram\.com/i.test(input)) sourceHint = 'post Instagram';
+      else sourceHint = 'page web';
+
+      status.innerHTML=`<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Lecture de la page (${sourceHint})…`;
+
+      // Essai 1 : Jina Reader (universel)
+      try{
+        rawText = await fetchPageContent(input.trim());
+      }catch(e){}
+
+      // Essai 2 : fallback YouTube via Piped
+      if(!rawText && ytMatch){
+        status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Lecture via Piped…';
+        rawText = await fetchYouTubeViapiped(ytMatch[1]);
+      }
+
+      if(!rawText) throw new Error('Impossible de lire cette page. Copiez-collez directement le texte de la description.');
+
+      // Si le texte est trop court pour contenir une recette
+      if(rawText.length < 50){
+        throw new Error('Contenu trop court récupéré. Pour TikTok/Instagram, copiez-collez directement la description de la vidéo.');
+      }
+    } else {
+      // Texte libre
+      rawText = input;
+      sourceHint = 'description libre';
+    }
+
+    status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> L\'IA extrait la recette…';
+
+    // Extraction intelligente avec fallback automatique
+    aiExtractedData = await extractRecipe(rawText, sourceHint, status);
+
+    clearInterval(progInterval); bar.style.width='100%';
+
+    status.className='ai-status success';
+    status.innerHTML='✓ Recette extraite ! Vérifiez et complétez si besoin.';
+    preview.style.display='block';
+    preview.innerHTML=`
+      <strong style="font-size:1rem;font-family:'Cormorant Garamond',serif;">${aiExtractedData.nom||'?'}</strong><br>
+      <span style="color:var(--warm-gray);font-size:.8rem;">${aiExtractedData.description||''}</span><br><br>
+      ${aiExtractedData.ingredients
+        ? `<strong>Ingrédients :</strong><br><span style="font-size:.8rem;">${aiExtractedData.ingredients.replace(/\n/g,'<br>')}</span>`
+        : '<em style="color:var(--warm-gray)">Pas d\'ingrédients — à compléter.</em>'}
+      ${aiExtractedData.etapes ? `<br><br><strong>Étapes :</strong><br><span style="font-size:.8rem;">${aiExtractedData.etapes.replace(/\n/g,'<br>')}</span>` : ''}`;
+    useBtn.style.display='block';
+
+  }catch(e){
+    clearInterval(progInterval);
+    status.className='ai-status error';
+    const msg = e.message||'Erreur inconnue.';
+    status.innerHTML=`❌ ${msg}`;
+  }
+
+  setTimeout(()=>{ progress.style.display='none'; },600);
+  btn.disabled=false; btn.textContent='✨ Analyser';
+});
+
+document.getElementById('aiUseBtn').addEventListener('click',()=>{
+  if(!aiExtractedData) return;
+  const d = aiExtractedData;
+  document.getElementById('fNom').value = d.nom||'';
+  document.getElementById('fCouverts').value = d.couverts||4;
+  document.getElementById('fTemps').value = d.temps||'';
+  document.getElementById('fCuisson').value = d.cuisson||'';
+  document.getElementById('fDesc').value = d.description||'';
+  document.getElementById('fIngr').value = d.ingredients||'';
+  document.getElementById('fEtapes').value = d.etapes||'';
+  document.getElementById('fAstuce').value = d.astuce||'';
+  document.getElementById('fRegion').value = d.region||'';
+  document.getElementById('fUst').value = d.ust||'';
+  const diffSel = document.getElementById('fDiff');
+  const diffs = ['Facile','Intermédiaire','Avancé','Expert'];
+  if(diffs.includes(d.diff)) diffSel.value = d.diff;
+  closeOverlay('aiOverlay');
+  openOverlay('formOverlay');
+  toast('Recette importée ! Vérifiez et ajoutez une photo.');
+});
+
+// ══ DELETE ══
 async function delRec(id,idx){
   if(!confirm(`Supprimer "${recipes[idx].nom}" ?`))return;
   const {error}=await db.from('recettes').delete().eq('id',id);
@@ -777,36 +1455,24 @@ async function delRec(id,idx){
   await loadData(); renderAll();
 }
 
-// ══════════════════════════════════════
-// NEWSLETTER
-// ══════════════════════════════════════
+// ══ NEWSLETTER ══
 document.getElementById('nlSkip').addEventListener('click',()=>closeOverlay('nlOverlay'));
-
 document.getElementById('nlSubmit').addEventListener('click',async()=>{
   const nom=document.getElementById('nlNom').value.trim();
   const email=document.getElementById('nlEmail').value.trim();
   if(!nom||!email||!email.includes('@')){toast('Prénom et email requis.');return;}
-
-  let ip='inconnu';
-  try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();ip=d.ip;}catch(e){}
-
+  let ip=localStorage.getItem('ldp_uid')||'inconnu';
   const {data:existing}=await db.from('abonnes').select('id').eq('email',email).single();
   if(existing){toast('Vous êtes déjà abonné(e) !');closeOverlay('nlOverlay');return;}
-
-  const {error}=await db.from('abonnes').insert({
-    nom,email,ip,date_ajout:new Date().toLocaleDateString('fr-FR')
-  });
+  const {error}=await db.from('abonnes').insert({nom,email,ip,date_ajout:new Date().toLocaleDateString('fr-FR')});
   if(error){toast('Erreur inscription.');return;}
-
   await loadData();
   document.getElementById('heroStatNl').textContent=subscribers.length;
   toast(`Bienvenue ${nom} ! Abonnement confirmé.`);
   closeOverlay('nlOverlay');
 });
 
-// ══════════════════════════════════════
-// ADMIN LOGIN (3 clics sur "by Léonard")
-// ══════════════════════════════════════
+// ══ ADMIN LOGIN ══
 document.getElementById('adminTrigger').addEventListener('click',()=>{
   adminClickCount++;
   clearTimeout(adminClickTimer);
@@ -831,9 +1497,7 @@ document.getElementById('loginBtn').addEventListener('click',()=>{
 });
 document.getElementById('loginPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});
 
-// ══════════════════════════════════════
-// ADMIN BAR
-// ══════════════════════════════════════
+// ══ ADMIN BAR ══
 document.getElementById('adminPanelBtn').addEventListener('click',async()=>{
   await loadData(); refreshPanel(); openOverlay('adminOverlay');
 });
@@ -844,9 +1508,7 @@ document.getElementById('adminQuitBtn').addEventListener('click',()=>{
 });
 document.getElementById('adminClose').addEventListener('click',()=>closeOverlay('adminOverlay'));
 
-// ══════════════════════════════════════
-// ADMIN TABS
-// ══════════════════════════════════════
+// ══ ADMIN TABS ══
 document.querySelectorAll('.admin-tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
     document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
@@ -856,21 +1518,16 @@ document.querySelectorAll('.admin-tab').forEach(tab=>{
   });
 });
 
-// ══════════════════════════════════════
-// REFRESH PANEL
-// ══════════════════════════════════════
+// ══ REFRESH PANEL ══
 function refreshPanel(){
   document.getElementById('aStatR').textContent=recipes.length;
   document.getElementById('aStatV').textContent=visitors.length;
   document.getElementById('aStatN').textContent=subscribers.length;
   document.getElementById('aStatS').textContent=MAX_SLOTS-recipes.length;
-
   const recent=recipes.slice(0,5);
   document.getElementById('recentRecipes').innerHTML=recent.length
     ?recent.map(r=>`<div>• <strong>${r.nom}</strong> — ${r.region||'Communauté'} (${r.date_ajout||''})</div>`).join('')
     :'<div style="color:var(--warm-gray)">Aucune recette.</div>';
-
-  // Recettes table
   const rtb=document.getElementById('recipesTableBody'),noR=document.getElementById('noRecipes');
   if(!recipes.length){rtb.innerHTML='';noR.style.display='block';}
   else{
@@ -883,8 +1540,6 @@ function refreshPanel(){
       <td><button class="table-del" onclick="adminDelRec('${r.id}',${i})">Supprimer</button></td>
     </tr>`).join('');
   }
-
-  // Visiteurs table
   const vtb=document.getElementById('visitorsTableBody'),noV=document.getElementById('noVisitors');
   if(!visitors.length){vtb.innerHTML='';noV.style.display='block';}
   else{
@@ -901,8 +1556,6 @@ function refreshPanel(){
           :'<span style="color:var(--warm-gray);font-size:.75rem;">—</span>'}</td>
     </tr>`).join('');
   }
-
-  // Newsletter table
   const ntb=document.getElementById('nlTableBody'),noNl=document.getElementById('noNl');
   document.getElementById('nlTableCount').textContent=subscribers.length;
   if(!subscribers.length){ntb.innerHTML='';noNl.style.display='block';}
@@ -936,7 +1589,6 @@ document.getElementById('deleteAllBtn').addEventListener('click',async()=>{
   await loadData(); renderAll(); refreshPanel();
 });
 
-// Newsletter send (mailto)
 document.getElementById('sendNlBtn').addEventListener('click',()=>{
   if(!subscribers.length){toast('Aucun abonné.');return;}
   const subj=encodeURIComponent(document.getElementById('composeSubject').value||'Newsletter — Les Délices Partagées');
@@ -953,9 +1605,7 @@ document.getElementById('previewNlBtn').addEventListener('click',()=>{
   }else{p.style.display='none';}
 });
 
-// ══════════════════════════════════════
-// BOUTONS NAV
-// ══════════════════════════════════════
+// ══ NAV BUTTONS ══
 document.getElementById('navAddBtn').addEventListener('click',e=>{e.preventDefault();openForm();});
 document.getElementById('heroAddBtn').addEventListener('click',e=>{e.preventDefault();openForm();});
 document.getElementById('bannerAddBtn').addEventListener('click',()=>openForm());
@@ -963,9 +1613,7 @@ document.getElementById('aboutAddBtn').addEventListener('click',()=>openForm());
 document.getElementById('footAddBtn').addEventListener('click',e=>{e.preventDefault();openForm();});
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>30));
 
-// ══════════════════════════════════════
-// INIT
-// ══════════════════════════════════════
+// ══ INIT ══
 async function init(){
   await loadData();
   renderAll();
