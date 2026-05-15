@@ -7,340 +7,393 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style>
 <style>
 :root {
   --cream:#faf7f2; --beige:#f0ebe0; --sand:#e2d9c8;
   --warm-gray:#9e9589; --charcoal:#2c2824; --dark:#1a1612;
   --accent:#8b6f4e; --accent-light:#c4a882; --accent-dark:#5c4832;
   --white:#ffffff; --border:#ddd5c6; --danger:#c0614b; --success:#5a8a5a;
+  --glass-bg:rgba(250,247,242,0.55);
+  --glass-border:rgba(255,255,255,0.45);
+  --glass-shadow:0 8px 32px rgba(44,40,36,0.12);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--dark);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
-::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:#111;}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px;}
+body{background:var(--cream);color:var(--charcoal);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--beige);}::-webkit-scrollbar-thumb{background:var(--accent-light);border-radius:3px;}
 
-/* ══ NAV ══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:68px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;transition:background .4s,box-shadow .4s;}
-nav.scrolled{background:rgba(26,22,18,.95);backdrop-filter:blur(18px);box-shadow:0 1px 0 rgba(255,255,255,.06);}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;letter-spacing:.03em;}
-.nav-logo em{color:var(--accent-light);font-style:italic;}
-.logo-circle{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;font-weight:600;flex-shrink:0;}
-.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none;}
-.nav-links a{text-decoration:none;color:rgba(250,247,242,.55);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:color .2s;}
-.nav-links a:hover{color:var(--accent-light);}
-.nav-cta{background:var(--accent)!important;color:white!important;padding:.55rem 1.4rem;border-radius:2px;font-size:.7rem!important;letter-spacing:.14em!important;transition:background .2s!important;}
+/* LIQUID GLASS */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:blur(20px) saturate(1.8);
+  -webkit-backdrop-filter:blur(20px) saturate(1.8);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+  border-radius:50px;
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:72px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,242,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:box-shadow .3s;}
+nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--charcoal);font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;letter-spacing:.02em;}
+.nav-logo em{color:var(--accent);font-style:italic;}
+.logo-circle{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;font-weight:600;flex-shrink:0;}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--warm-gray);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-cta{background:var(--accent);color:white!important;padding:.6rem 1.4rem;border-radius:2px;font-size:.72rem!important;letter-spacing:.14em!important;transition:background .2s!important;}
 .nav-cta:hover{background:var(--accent-dark)!important;}
 
-/* ══ HERO STORY (scroll-driven, 300vh) ══ */
-.hero-story{position:relative;height:300vh;}
-.hero-sticky{position:sticky;top:0;height:100vh;overflow:hidden;}
-
-/* Images */
-.story-slide{
-  position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  opacity:0;
-  will-change:transform,opacity;
+/* SEARCH BAR — liquid glass */
+.nav-search{position:relative;display:flex;align-items:center;}
+.search-wrap{
+  display:flex;align-items:center;gap:.5rem;
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 4px 20px rgba(139,111,78,.08), inset 0 1px 0 rgba(255,255,255,.8);
+  border-radius:50px;
+  padding:.42rem .42rem .42rem 1rem;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  width:190px;
 }
-.story-slide::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(26,22,18,.2) 0%,rgba(26,22,18,.5) 50%,rgba(26,22,18,.9) 100%);
+.search-wrap:focus-within{
+  width:260px;
+  background:rgba(255,255,255,0.75);
+  box-shadow:0 6px 28px rgba(139,111,78,.14), inset 0 1px 0 rgba(255,255,255,.9), 0 0 0 2px rgba(139,111,78,.12);
+  border-color:rgba(139,111,78,.25);
 }
-
-/* Légende scène — bas de l'image, texte propre SANS superposition avec le titre */
-.story-label{
-  position:absolute;bottom:13%;left:0;right:0;
-  text-align:center;z-index:4;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .5s ease;
+.search-wrap input{
+  border:none;background:transparent;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:.78rem;
+  color:var(--charcoal);width:100%;letter-spacing:.02em;
 }
-.story-label-num{
-  font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
-  color:var(--accent-light);display:block;margin-bottom:.5rem;
-}
-.story-label-text{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.4rem,3vw,2.2rem);
-  font-weight:300;color:rgba(255,255,255,.88);
-  letter-spacing:.04em;display:block;
-}
+.search-wrap input::placeholder{color:var(--warm-gray);opacity:.7;}
+.search-icon{color:var(--warm-gray);font-size:.8rem;flex-shrink:0;opacity:.6;}
+.search-clear{background:rgba(139,111,78,.12);border:none;cursor:pointer;color:var(--warm-gray);width:22px;height:22px;border-radius:50%;font-size:.65rem;display:none;align-items:center;justify-content:center;transition:background .2s,color .2s;flex-shrink:0;}
+.search-clear.visible{display:flex;}
+.search-clear:hover{background:var(--accent);color:white;}
+.search-results-count{font-size:.65rem;color:var(--warm-gray);letter-spacing:.08em;margin-left:.5rem;white-space:nowrap;display:none;}
+.search-results-count.visible{display:block;}
 
-/* Titre principal — UNIQUEMENT slide 0 visible */
-.story-main{
-  position:absolute;inset:0;z-index:3;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:0 4vw;
-  pointer-events:none;
-  opacity:1;transition:opacity .6s ease;
-}
-.story-main .hero-actions{pointer-events:all;}
-
-/* Points de navigation */
-.story-dots{
-  position:absolute;right:2rem;top:50%;transform:translateY(-50%);
-  z-index:10;display:flex;flex-direction:column;gap:.8rem;
-}
-.story-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(255,255,255,.2);
-  transition:background .3s,transform .3s;
-}
-.story-dot.active{background:var(--accent-light);transform:scale(1.5);}
-
-/* Hint */
-.story-hint{
-  position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);
-  z-index:10;text-align:center;
-  opacity:1;transition:opacity .4s;
-}
-.story-hint span{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);}
-.hint-line{width:1px;height:34px;background:linear-gradient(var(--accent-light),transparent);margin:0 auto .5rem;animation:hintAnim 2s ease-in-out infinite;}
-@keyframes hintAnim{0%,100%{opacity:.3;transform:scaleY(.6);}50%{opacity:1;transform:scaleY(1);}}
-
-/* Barre progression */
-.story-bar{position:absolute;bottom:0;left:0;height:2px;background:var(--accent-light);z-index:10;width:0%;will-change:width;}
-
-/* Stats */
-.hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:5;display:flex;justify-content:center;}
-.hero-stat{padding:1.1rem 3rem;border-top:1px solid rgba(255,255,255,.08);text-align:center;background:rgba(26,22,18,.55);backdrop-filter:blur(10px);}
-.hero-stat:first-child{border-right:1px solid rgba(255,255,255,.07);}
-.stat-n{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:300;color:var(--accent-light);display:block;line-height:1;}
-.stat-l{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,247,242,.35);margin-top:.25rem;display:block;}
-
-/* ══ HERO TEXT ══ */
-.hero-eyebrow{display:inline-flex;align-items:center;gap:1.2rem;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent-light);margin-bottom:1.8rem;opacity:0;animation:fadeUp .9s .3s forwards;}
-.hero-eyebrow span{display:block;width:28px;height:1px;background:var(--accent-light);}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,7.5vw,7rem);font-weight:300;line-height:1.02;letter-spacing:-.02em;color:white;margin-bottom:1.4rem;opacity:0;animation:fadeUp .9s .5s forwards;}
-.hero-title em{font-style:italic;color:var(--accent-light);}
-.hero-desc{font-size:clamp(.85rem,1.1vw,.98rem);color:rgba(250,247,242,.55);line-height:1.85;max-width:480px;margin:0 auto 2.5rem;opacity:0;animation:fadeUp .9s .7s forwards;}
-.hero-actions{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .9s forwards;}
-
-/* ══ BUTTONS ══ */
+/* HERO */
+.hero{padding-top:72px;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:6vw 5vw 6vw 7vw;position:relative;z-index:2;}
+.hero-eyebrow{display:flex;align-items:center;gap:.9rem;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:2.2rem;}
+.hero-eyebrow::before{content:'';display:block;width:36px;height:1px;background:var(--accent);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,5.5vw,5.5rem);font-weight:300;line-height:1.06;letter-spacing:-.01em;color:var(--dark);margin-bottom:1.8rem;}
+.hero-title em{font-style:italic;color:var(--accent);}
+.hero-desc{font-size:.95rem;color:var(--warm-gray);line-height:1.85;max-width:400px;margin-bottom:2.8rem;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn{display:inline-block;text-decoration:none;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
-.btn-light{background:white;color:var(--dark);padding:.88rem 2.1rem;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;border-radius:2px;transition:background .25s,transform .2s;}
-.btn-light:hover{background:var(--accent-light);transform:translateY(-1px);}
-.btn-ghost{background:transparent;color:white;padding:.88rem 2.1rem;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(255,255,255,.22);border-radius:2px;transition:border-color .25s,color .25s;}
-.btn-ghost:hover{border-color:var(--accent-light);color:var(--accent-light);}
-.btn-accent{background:var(--accent);color:white;padding:.88rem 2.1rem;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;border-radius:2px;transition:background .25s;}
+.btn-dark{background:var(--charcoal);color:white;padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;transition:background .25s,transform .2s;}
+.btn-dark:hover{background:var(--accent);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--charcoal);padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);border-radius:2px;transition:border-color .25s,color .25s;}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.btn-accent{background:var(--accent);color:white;padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;transition:background .25s;}
 .btn-accent:hover{background:var(--accent-dark);}
-.btn-outline-dark{background:transparent;color:var(--charcoal);padding:.88rem 2.1rem;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--border);border-radius:2px;transition:border-color .25s,color .25s;}
-.btn-outline-dark:hover{border-color:var(--accent);color:var(--accent);}
+.hero-right{position:relative;overflow:hidden;}
+.hero-right img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 6s ease;}
+.hero-right:hover img{transform:scale(1.04);}
+.hero-right::before{content:'';position:absolute;inset:0;background:linear-gradient(to right,var(--cream) 0%,transparent 25%);z-index:1;}
+.hero-stats{position:absolute;bottom:3rem;left:0;z-index:2;display:flex;}
+.stat{padding:1.4rem 2.2rem;background:white;border:1px solid var(--border);text-align:center;}
+.stat:first-child{border-right:none;}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--accent);display:block;line-height:1;}
+.stat-l{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--warm-gray);margin-top:.3rem;display:block;}
 
-/* ══ ANIMATIONS ══ */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-
-/* ══ PROCESS ══ */
-.process-section{background:var(--cream);padding:9rem 6vw;color:var(--charcoal);}
-.process-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4rem;max-width:1100px;margin:5rem auto 0;}
-.process-step{text-align:center;position:relative;}
-.process-step::after{content:'→';position:absolute;top:2.4rem;right:-2.2rem;font-size:1.1rem;color:var(--sand);}
-.process-step:last-child::after{display:none;}
-.process-icon{width:70px;height:70px;border-radius:50%;background:var(--beige);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin:0 auto 1.3rem;}
-.process-num{font-family:'Cormorant Garamond',serif;font-size:.7rem;color:var(--accent-light);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
-.process-label{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--dark);margin-bottom:.5rem;}
-.process-text{font-size:.8rem;color:var(--warm-gray);line-height:1.7;}
-
-/* ══ SECTIONS ══ */
+/* SECTION */
 .section{padding:8rem 6vw;}
-.section-dark{background:var(--dark);}
-.section-cream{background:var(--cream);color:var(--charcoal);}
 .sec-header{text-align:center;margin-bottom:4rem;}
-.sec-tag{font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--accent-light);display:block;margin-bottom:.9rem;}
-.sec-tag-dark{color:var(--accent);}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.1rem);font-weight:300;line-height:1.1;}
-.sec-title em{font-style:italic;color:var(--accent-light);}
-.sec-title-d em{color:var(--accent);}
-.sec-sub{font-size:.85rem;line-height:1.85;max-width:480px;margin:.9rem auto 0;color:rgba(250,247,242,.45);}
-.sec-sub-d{color:var(--warm-gray);}
-.sec-line{width:40px;height:1px;background:var(--accent);margin:1.3rem auto 0;opacity:.4;}
+.sec-tag{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.9rem;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--dark);line-height:1.1;}
+.sec-title em{font-style:italic;color:var(--accent);}
+.sec-sub{font-size:.88rem;color:var(--warm-gray);line-height:1.8;max-width:480px;margin:.9rem auto 0;}
+.sec-line{width:48px;height:1px;background:var(--accent-light);margin:1.4rem auto 0;}
 
-/* ══ RECIPE GRID ══ */
-.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.6rem;max-width:1400px;margin:0 auto;}
-.recipe-card{background:#211d19;border:1px solid rgba(255,255,255,.07);border-radius:3px;overflow:hidden;cursor:pointer;position:relative;transition:transform .3s,box-shadow .3s,border-color .3s;}
-.recipe-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.4);border-color:rgba(196,168,130,.2);}
+/* SEARCH SECTION BAR */
+.section-search-bar{max-width:1400px;margin:0 auto 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.section-search-wrap{
+  display:flex;align-items:center;gap:.6rem;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.65);
+  box-shadow:0 4px 24px rgba(139,111,78,.07), inset 0 1px 0 rgba(255,255,255,.85);
+  border-radius:50px;padding:.55rem .55rem .55rem 1.2rem;
+  min-width:280px;max-width:400px;flex:1;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+}
+.section-search-wrap:focus-within{
+  background:rgba(255,255,255,0.85);
+  box-shadow:0 6px 32px rgba(139,111,78,.13), inset 0 1px 0 rgba(255,255,255,.9), 0 0 0 2px rgba(139,111,78,.13);
+  border-color:rgba(139,111,78,.3);
+}
+.section-search-wrap input{border:none;background:transparent;outline:none;font-family:'DM Sans',sans-serif;font-size:.84rem;color:var(--charcoal);width:100%;}
+.section-search-wrap input::placeholder{color:var(--warm-gray);opacity:.6;}
+
+/* RECIPE GRID */
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.8rem;max-width:1400px;margin:0 auto;}
+.recipe-card{background:var(--cream);border:1px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;position:relative;transition:transform .3s,box-shadow .3s;}
+.recipe-card:hover{transform:translateY(-5px);box-shadow:0 18px 48px rgba(44,40,36,.13);}
 .card-img-wrap{overflow:hidden;position:relative;height:220px;}
-.card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s;}
-.recipe-card:hover .card-img-wrap img{transform:scale(1.06);}
-.card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(26,22,18,.7));}
-.card-badge{position:absolute;top:.85rem;left:.85rem;background:var(--accent);color:white;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:.27rem .65rem;border-radius:1px;z-index:1;}
-.card-body{padding:1.3rem 1.5rem;}
-.card-meta{display:flex;gap:1.2rem;margin-bottom:.65rem;}
-.card-meta span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.35);}
-.card-title{font-family:'Cormorant Garamond',serif;font-size:1.28rem;font-weight:500;color:var(--cream);line-height:1.2;margin-bottom:.45rem;}
-.card-desc{font-size:.79rem;color:rgba(250,247,242,.44);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.card-footer{padding:.82rem 1.5rem;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
-.card-diff{font-size:.61rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.28);}
-.card-link{font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-light);display:flex;align-items:center;gap:.5rem;transition:gap .2s;}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.recipe-card:hover .card-img-wrap img{transform:scale(1.05);}
+.card-badge{position:absolute;top:.9rem;left:.9rem;background:var(--accent);color:white;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:.3rem .7rem;border-radius:1px;}
+.card-body{padding:1.4rem 1.5rem;}
+.card-meta{display:flex;gap:1.2rem;margin-bottom:.7rem;}
+.card-meta span{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;color:var(--dark);line-height:1.2;margin-bottom:.5rem;}
+.card-desc{font-size:.82rem;color:var(--warm-gray);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-footer{padding:.9rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-diff{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray);}
+.card-link{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;transition:gap .2s;}
 .recipe-card:hover .card-link{gap:.9rem;}
-.card-del-btn{display:none;position:absolute;top:.7rem;right:.7rem;background:var(--danger);color:white;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;align-items:center;justify-content:center;z-index:5;transition:transform .2s;}
+.card-del-btn{display:none;position:absolute;top:.7rem;right:.7rem;background:var(--danger);color:white;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9rem;align-items:center;justify-content:center;z-index:5;transition:transform .2s,background .2s;}
 .card-del-btn:hover{background:#a03828;transform:scale(1.1);}
 body.admin-mode .card-del-btn{display:flex;}
-body.admin-mode .recipe-card{outline:1px solid rgba(192,97,75,.18);}
-.slot-empty{border:1px dashed rgba(255,255,255,.09);border-radius:3px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;cursor:pointer;transition:border-color .25s,background .25s;}
-.slot-empty:hover{border-color:rgba(196,168,130,.3);background:rgba(139,111,78,.05);}
-.slot-empty-icon{font-size:1.25rem;color:rgba(255,255,255,.14);}
-.slot-empty-txt{font-size:.68rem;color:rgba(255,255,255,.18);text-align:center;line-height:1.5;}
+body.admin-mode .recipe-card{border-color:rgba(192,97,75,.25);}
 
-/* ══ ADD BANNER ══ */
-.add-banner{max-width:1400px;margin:0 auto 3rem;background:rgba(139,111,78,.09);border:1px solid rgba(196,168,130,.13);border-radius:3px;padding:1.8rem 2.3rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;}
-.add-banner h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--cream);}
-.add-banner p{font-size:.78rem;color:rgba(250,247,242,.38);margin-top:.25rem;}
+/* ADD BANNER */
+.add-banner{max-width:1400px;margin:0 auto 3rem;background:var(--beige);border:1px solid var(--border);border-radius:3px;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;}
+.add-banner h3{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:400;color:var(--dark);}
+.add-banner p{font-size:.83rem;color:var(--warm-gray);margin-top:.3rem;}
+.slot-empty{border:1px dashed var(--sand);border-radius:3px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;cursor:pointer;transition:border-color .2s;}
+.slot-empty:hover{border-color:var(--accent-light);}
+.slot-empty-icon{font-size:1.4rem;color:var(--sand);}
+.slot-empty-txt{font-size:.72rem;color:var(--sand);text-align:center;}
 
-/* ══ ABOUT ══ */
-.about-section{background:var(--charcoal);padding:9rem 6vw;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center;}
+/* NO RESULTS */
+.no-results{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--warm-gray);}
+.no-results-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.3;}
+.no-results p{font-size:.9rem;}
+
+/* LOADING */
+.loading-grid{display:flex;align-items:center;justify-content:center;padding:4rem;grid-column:1/-1;}
+.spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* AI VIDEO BUTTON — liquid glass */
+.ai-video-btn{
+  display:flex;align-items:center;gap:.7rem;
+  background:linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(250,247,242,0.5) 100%);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 4px 20px rgba(139,111,78,.1), inset 0 1px 0 rgba(255,255,255,.9);
+  border-radius:50px;padding:.55rem 1.1rem .55rem .65rem;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:.75rem;letter-spacing:.06em;color:var(--charcoal);
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;
+}
+.ai-video-btn:hover{
+  background:linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(250,247,242,0.75) 100%);
+  box-shadow:0 6px 28px rgba(139,111,78,.15), inset 0 1px 0 rgba(255,255,255,1);
+  transform:translateY(-1px);
+}
+.ai-video-icon{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-size:.75rem;flex-shrink:0;
+}
+
+/* ABOUT */
+.about-section{padding:8rem 6vw;background:var(--charcoal);display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;}
 .about-img-wrap{position:relative;}
-.about-img{width:100%;height:480px;object-fit:cover;border-radius:3px;display:block;}
-.about-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--accent);color:white;width:108px;height:108px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:'Cormorant Garamond',serif;}
-.about-badge span:first-child{font-size:1.65rem;line-height:1;}
-.about-badge span:last-child{font-size:.5rem;letter-spacing:.1em;margin-top:.22rem;text-transform:uppercase;}
-.about-text p{font-size:.85rem;color:rgba(250,247,242,.52);line-height:1.9;margin-top:1.1rem;}
+.about-img{width:100%;height:480px;object-fit:cover;border-radius:3px;}
+.about-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--accent);color:white;width:110px;height:110px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:'Cormorant Garamond',serif;}
+.about-badge span:first-child{font-size:1.8rem;line-height:1;}
+.about-badge span:last-child{font-size:.55rem;letter-spacing:.1em;margin-top:.2rem;}
+.about-text .sec-tag{color:var(--accent-light);}
+.about-text .sec-title{color:var(--cream);}
+.about-text p{font-size:.88rem;color:rgba(240,235,224,.65);line-height:1.9;margin-top:1.4rem;}
 
-/* ══ FOOTER ══ */
-footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
-.footer-grid{display:flex;justify-content:space-between;gap:3rem;flex-wrap:wrap;padding-bottom:2.3rem;border-bottom:1px solid rgba(255,255,255,.05);}
-.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:300;color:var(--cream);}
+/* FOOTER */
+footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;}
+.footer-grid{display:flex;justify-content:space-between;gap:3rem;flex-wrap:wrap;padding-bottom:2.5rem;border-bottom:1px solid rgba(255,255,255,.07);}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--cream);}
 .footer-logo em{color:var(--accent-light);font-style:italic;}
-.footer-tagline{font-size:.74rem;color:rgba(250,247,242,.22);margin-top:.4rem;max-width:240px;line-height:1.65;}
-.footer-col h4{font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-light);margin-bottom:.9rem;}
+.footer-tagline{font-size:.78rem;color:rgba(240,235,224,.35);margin-top:.4rem;max-width:240px;line-height:1.6;}
+.footer-col h4{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-light);margin-bottom:1rem;}
 .footer-col ul{list-style:none;}
-.footer-col li+li{margin-top:.55rem;}
-.footer-col a{text-decoration:none;color:rgba(250,247,242,.32);font-size:.78rem;transition:color .2s;}
+.footer-col li+li{margin-top:.6rem;}
+.footer-col a{text-decoration:none;color:rgba(240,235,224,.45);font-size:.82rem;transition:color .2s;}
 .footer-col a:hover{color:var(--accent-light);}
-.footer-bottom{padding-top:1.6rem;display:flex;justify-content:space-between;align-items:center;font-size:.68rem;flex-wrap:wrap;gap:.8rem;}
-.footer-by{font-family:'Cormorant Garamond',serif;font-size:.88rem;color:var(--accent-light);font-style:italic;cursor:pointer;user-select:none;}
+.footer-bottom{padding-top:1.8rem;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;flex-wrap:wrap;gap:.8rem;}
+.footer-by{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--accent-light);font-style:italic;letter-spacing:.05em;cursor:pointer;user-select:none;}
 
-/* ══ OVERLAY ══ */
-.overlay{position:fixed;inset:0;z-index:600;background:rgba(10,8,6,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1.5rem;}
+/* OVERLAY */
+.overlay{position:fixed;inset:0;z-index:300;background:rgba(26,22,18,.72);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:1.5rem;}
 .overlay.open{display:flex;}
-.modal{background:var(--cream);color:var(--charcoal);border-radius:4px;max-width:850px;width:100%;max-height:92vh;overflow-y:auto;animation:fadeUp .35s cubic-bezier(.16,1,.3,1);position:relative;}
-.modal-topbar{position:sticky;top:0;background:var(--cream);z-index:1;padding:1rem 1.5rem .4rem;display:flex;justify-content:flex-end;}
-.close-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--warm-gray);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:background .2s,color .2s;}
+.modal{background:var(--cream);border-radius:4px;max-width:850px;width:100%;max-height:92vh;overflow-y:auto;animation:fadeUp .35s cubic-bezier(.16,1,.3,1);position:relative;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-lg{max-width:980px;}
+.modal-topbar{position:sticky;top:0;background:var(--cream);z-index:1;padding:1.2rem 1.5rem .5rem;display:flex;justify-content:flex-end;}
+.close-btn{background:none;border:1px solid var(--border);cursor:pointer;color:var(--warm-gray);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:background .2s,color .2s;}
 .close-btn:hover{background:var(--charcoal);color:white;border-color:var(--charcoal);}
-.modal-hero-img{width:100%;height:250px;object-fit:cover;display:block;}
-.modal-body{padding:1.9rem 2.4rem 2.4rem;}
-.modal-tag{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem;}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:400;color:var(--dark);margin-bottom:.45rem;}
-.modal-desc{font-size:.84rem;color:var(--warm-gray);line-height:1.8;margin-bottom:1.7rem;}
-.servings-row{display:flex;align-items:center;gap:1.1rem;background:var(--beige);padding:.8rem 1.2rem;border-radius:3px;width:fit-content;margin-bottom:1.8rem;}
-.srv-label{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);}
-.srv-btn{background:white;border:1px solid var(--border);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--charcoal);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-hero{width:100%;height:260px;object-fit:cover;display:block;}
+.modal-body{padding:2rem 2.5rem 2.5rem;}
+.modal-tag{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--dark);margin-bottom:.5rem;}
+.modal-desc{font-size:.88rem;color:var(--warm-gray);line-height:1.8;margin-bottom:1.8rem;}
+.servings-row{display:flex;align-items:center;gap:1.2rem;background:var(--beige);padding:.9rem 1.4rem;border-radius:3px;width:fit-content;margin-bottom:2rem;}
+.srv-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);}
+.srv-btn{background:white;border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;color:var(--charcoal);display:flex;align-items:center;justify-content:center;line-height:1;transition:all .2s;}
 .srv-btn:hover{background:var(--accent);color:white;border-color:var(--accent);}
-.srv-count{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--accent);min-width:24px;text-align:center;}
-.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:2.3rem;margin-bottom:1.7rem;}
-.col-title{font-size:.62rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);padding-bottom:.5rem;border-bottom:1px solid var(--border);margin-bottom:.9rem;}
+.srv-count{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--accent);min-width:28px;text-align:center;}
+.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:1.8rem;}
+.col-title{font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);padding-bottom:.6rem;border-bottom:1px solid var(--border);margin-bottom:1.1rem;}
 .ingr-list{list-style:none;}
-.ingr-list li{display:flex;gap:.8rem;padding:.45rem 0;border-bottom:1px solid rgba(226,217,200,.38);font-size:.82rem;color:var(--charcoal);}
+.ingr-list li{display:flex;gap:.8rem;padding:.5rem 0;border-bottom:1px solid rgba(226,217,200,.4);font-size:.86rem;color:var(--charcoal);}
 .ingr-list li:last-child{border-bottom:none;}
-.ingr-qty{font-family:'Cormorant Garamond',serif;font-size:.98rem;color:var(--accent);min-width:52px;flex-shrink:0;}
+.ingr-qty{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--accent);min-width:58px;flex-shrink:0;}
 .steps-list{list-style:none;counter-reset:steps;}
-.steps-list li{counter-increment:steps;padding:.82rem 0;border-bottom:1px solid rgba(226,217,200,.38);font-size:.82rem;line-height:1.7;color:var(--charcoal);display:flex;gap:.85rem;}
-.steps-list li::before{content:counter(steps,decimal-leading-zero);font-family:'Cormorant Garamond',serif;font-size:.92rem;color:var(--accent-light);flex-shrink:0;}
+.steps-list li{counter-increment:steps;padding:.9rem 0;border-bottom:1px solid rgba(226,217,200,.4);font-size:.86rem;line-height:1.7;color:var(--charcoal);display:flex;gap:.9rem;}
+.steps-list li::before{content:counter(steps,decimal-leading-zero);font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--accent-light);flex-shrink:0;}
 .steps-list li:last-child{border-bottom:none;}
-.tip-box{background:var(--beige);border-left:3px solid var(--accent-light);padding:.95rem 1.25rem;border-radius:0 3px 3px 0;margin-top:1.2rem;font-size:.8rem;color:var(--charcoal);line-height:1.7;}
-.tip-box strong{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.3rem;}
-.tags-row{display:flex;flex-wrap:wrap;gap:.42rem;margin-top:.75rem;}
-.tag-pill{background:white;border:1px solid var(--border);padding:.26rem .72rem;border-radius:50px;font-size:.66rem;color:var(--charcoal);}
+.tip-box{background:var(--beige);border-left:3px solid var(--accent-light);padding:1.1rem 1.4rem;border-radius:0 3px 3px 0;margin-top:1.4rem;font-size:.84rem;color:var(--charcoal);line-height:1.7;}
+.tip-box strong{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.4rem;}
+.tags-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem;}
+.tag-pill{background:white;border:1px solid var(--border);padding:.3rem .8rem;border-radius:50px;font-size:.7rem;color:var(--charcoal);}
 
-/* ══ FORM ══ */
+/* FORM */
 .form-modal{background:white;max-width:700px;}
-.form-head{padding:1.7rem 2.4rem 1.3rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
-.form-head h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--dark);}
-.form-head p{font-size:.76rem;color:var(--warm-gray);margin-top:.12rem;}
-.form-body{padding:1.7rem 2.4rem;}
-.f-group{margin-bottom:1.45rem;}
-.f-label{display:block;font-size:.62rem;letter-spacing:.17em;text-transform:uppercase;color:var(--charcoal);margin-bottom:.5rem;}
-.f-label em{color:var(--accent);font-style:normal;}
-.f-input,.f-textarea,.f-select{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.78rem .98rem;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:300;color:var(--charcoal);outline:none;transition:border-color .2s,box-shadow .2s;}
-.f-input:focus,.f-textarea:focus,.f-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,111,78,.07);}
-.f-textarea{resize:vertical;min-height:82px;line-height:1.65;}
-.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.f-hint{font-size:.66rem;color:var(--warm-gray);margin-top:.33rem;line-height:1.5;}
-.form-foot{padding:1.2rem 2.4rem 1.7rem;border-top:1px solid var(--border);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;}
+.form-head{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
+.form-head h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--dark);}
+.form-head p{font-size:.8rem;color:var(--warm-gray);margin-top:.2rem;}
+.form-body{padding:2rem 2.5rem;}
+.f-group{margin-bottom:1.6rem;}
+.f-label{display:block;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--charcoal);margin-bottom:.6rem;}
+.f-label em{color:var(--accent);font-style:italic;text-transform:none;letter-spacing:0;font-size:.78rem;}
+.f-input,.f-textarea,.f-select{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.85rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:300;color:var(--charcoal);outline:none;transition:border-color .2s,box-shadow .2s;}
+.f-input:focus,.f-textarea:focus,.f-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,111,78,.08);}
+.f-textarea{resize:vertical;min-height:90px;line-height:1.65;}
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.f-hint{font-size:.7rem;color:var(--warm-gray);margin-top:.4rem;line-height:1.5;}
+.form-foot{padding:1.4rem 2.5rem 2rem;border-top:1px solid var(--border);display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;}
 
-/* ══ NEWSLETTER ══ */
-.nl-modal{background:var(--dark);border:1px solid rgba(196,168,130,.14);max-width:450px;border-radius:6px;overflow:hidden;animation:fadeUp .4s cubic-bezier(.16,1,.3,1);text-align:center;}
-.nl-modal-img{width:100%;height:185px;object-fit:cover;display:block;}
-.nl-modal-body{padding:1.9rem 2.4rem 2.3rem;}
-.nl-modal-body h3{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--cream);margin-bottom:.38rem;}
-.nl-modal-body p{font-size:.8rem;color:rgba(250,247,242,.47);line-height:1.75;margin-bottom:1.6rem;}
-.nl-modal .f-input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:var(--cream);}
-.nl-modal .f-input::placeholder{color:rgba(250,247,242,.28);}
-.nl-modal .f-input:focus{border-color:var(--accent-light);}
+/* PHOTO UPLOAD */
+.photo-upload-zone{
+  border:2px dashed var(--border);border-radius:4px;
+  padding:2rem;text-align:center;cursor:pointer;
+  transition:all .2s;background:var(--cream);
+  position:relative;overflow:hidden;
+}
+.photo-upload-zone:hover{border-color:var(--accent-light);background:var(--beige);}
+.photo-upload-zone.has-photo{border-style:solid;border-color:var(--accent-light);}
+.photo-preview{width:100%;height:160px;object-fit:cover;border-radius:3px;display:none;}
+.photo-upload-zone.has-photo .photo-preview{display:block;}
+.photo-upload-zone.has-photo .photo-placeholder{display:none;}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--warm-gray);}
+.photo-placeholder-icon{font-size:1.8rem;opacity:.4;}
+.photo-placeholder-txt{font-size:.78rem;}
+.photo-placeholder-sub{font-size:.68rem;opacity:.6;}
+.photo-remove{position:absolute;top:.5rem;right:.5rem;background:var(--danger);color:white;border:none;width:24px;height:24px;border-radius:50%;font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
+.photo-upload-zone.has-photo .photo-remove{display:flex;}
 
-/* ══ LOGIN ══ */
-.login-box{background:var(--dark);border:1px solid rgba(196,168,130,.14);max-width:360px;border-radius:5px;padding:2.3rem;text-align:center;animation:fadeUp .3s cubic-bezier(.16,1,.3,1);}
-.login-box h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--cream);margin-bottom:.3rem;}
-.login-box p{font-size:.78rem;color:rgba(250,247,242,.38);margin-bottom:1.4rem;}
-.login-icon{font-size:1.75rem;margin-bottom:.85rem;}
-.err-msg{color:var(--danger);font-size:.73rem;margin-top:.55rem;display:none;}
-.login-box .f-input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:var(--cream);}
-.login-box .f-input:focus{border-color:var(--accent-light);}
+/* AI VIDEO MODAL */
+.ai-modal{background:white;max-width:600px;border-radius:8px;}
+.ai-modal-head{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
+.ai-modal-head h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--dark);}
+.ai-modal-head p{font-size:.8rem;color:var(--warm-gray);margin-top:.2rem;}
+.ai-modal-body{padding:2rem 2.5rem;}
+.ai-steps{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:2rem;}
+.ai-step{display:flex;align-items:flex-start;gap:1rem;}
+.ai-step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Cormorant Garamond',serif;font-size:.9rem;}
+.ai-step-txt{font-size:.84rem;color:var(--warm-gray);line-height:1.6;padding-top:.2rem;}
+.ai-step-txt strong{color:var(--charcoal);}
+.ai-drop-zone{
+  border:2px dashed var(--border);border-radius:6px;
+  padding:2.5rem;text-align:center;cursor:pointer;
+  transition:all .25s;background:var(--cream);
+}
+.ai-drop-zone:hover,.ai-drop-zone.drag{border-color:var(--accent);background:rgba(139,111,78,.04);}
+.ai-drop-icon{font-size:2.2rem;margin-bottom:.8rem;opacity:.5;}
+.ai-drop-txt{font-size:.84rem;color:var(--charcoal);margin-bottom:.3rem;}
+.ai-drop-sub{font-size:.72rem;color:var(--warm-gray);}
+.ai-status{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:4px;font-size:.83rem;display:none;}
+.ai-status.loading{background:rgba(139,111,78,.07);color:var(--accent);border:1px solid rgba(139,111,78,.15);display:flex;align-items:center;gap:.7rem;}
+.ai-status.success{background:#eef4ee;color:var(--success);border:1px solid #b5d0b5;display:block;}
+.ai-status.error{background:#fdf0ee;color:var(--danger);border:1px solid #f0c4bb;display:block;}
+.ai-progress{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:.8rem;overflow:hidden;display:none;}
+.ai-progress-bar{height:100%;background:var(--accent);border-radius:2px;width:0;transition:width .4s;}
+.ai-result-preview{margin-top:1.2rem;background:var(--beige);border:1px solid var(--border);border-radius:4px;padding:1.2rem;font-size:.82rem;color:var(--charcoal);line-height:1.7;max-height:200px;overflow-y:auto;display:none;}
+.ai-use-btn{margin-top:1rem;width:100%;}
 
-/* ══ ADMIN PANEL ══ */
+/* NL MODAL */
+.nl-modal{background:white;max-width:480px;border-radius:6px;overflow:hidden;animation:fadeUp .4s cubic-bezier(.16,1,.3,1);text-align:center;}
+.nl-modal-img{width:100%;height:200px;object-fit:cover;}
+.nl-modal-body{padding:2.2rem 2.5rem 2.5rem;}
+.nl-modal-body h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dark);margin-bottom:.5rem;}
+.nl-modal-body p{font-size:.85rem;color:var(--warm-gray);line-height:1.75;margin-bottom:1.8rem;}
+
+/* LOGIN */
+.login-box{background:white;max-width:380px;border-radius:5px;padding:2.5rem;text-align:center;animation:fadeUp .3s cubic-bezier(.16,1,.3,1);}
+.login-box h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--dark);margin-bottom:.4rem;}
+.login-box p{font-size:.82rem;color:var(--warm-gray);margin-bottom:1.6rem;}
+.err-msg{color:var(--danger);font-size:.78rem;margin-top:.7rem;display:none;}
+
+/* ADMIN PANEL */
 .admin-panel{background:white;max-width:980px;width:100%;max-height:94vh;overflow-y:auto;border-radius:5px;animation:fadeUp .35s cubic-bezier(.16,1,.3,1);}
-.admin-panel-head{background:var(--dark);border-bottom:1px solid rgba(196,168,130,.13);padding:1.5rem 2.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:1;}
-.admin-panel-head h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--cream);}
-.admin-panel-head p{font-size:.73rem;color:rgba(250,247,242,.38);margin-top:.15rem;}
+.admin-panel-head{background:var(--dark);padding:1.8rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:1;}
+.admin-panel-head h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--cream);}
+.admin-panel-head p{font-size:.78rem;color:rgba(240,235,224,.5);margin-top:.2rem;}
 .admin-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--beige);}
-.admin-tab{padding:.95rem 1.6rem;font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--warm-gray);border-bottom:2px solid transparent;transition:color .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;}
+.admin-tab{padding:1rem 1.8rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--warm-gray);border-bottom:2px solid transparent;transition:color .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;}
 .admin-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
-.admin-pane{padding:1.9rem 2.4rem;display:none;}
+.admin-pane{padding:2rem 2.5rem;display:none;}
 .admin-pane.active{display:block;}
-.admin-stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.88rem;margin-bottom:1.9rem;}
-.admin-stat-box{background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.05rem 1.3rem;text-align:center;}
-.admin-stat-box .n{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--accent);line-height:1;}
-.admin-stat-box .l{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);margin-top:.22rem;}
-.admin-table{width:100%;border-collapse:collapse;font-size:.79rem;}
-.admin-table th{font-size:.59rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:.62rem .88rem;text-align:left;border-bottom:1px solid var(--border);background:var(--cream);}
-.admin-table td{padding:.78rem .88rem;border-bottom:1px solid rgba(226,217,200,.48);vertical-align:middle;}
+.admin-stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:2rem;}
+.admin-stat-box{background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.2rem 1.5rem;text-align:center;}
+.admin-stat-box .n{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--accent);line-height:1;}
+.admin-stat-box .l{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);margin-top:.3rem;}
+.admin-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.admin-table th{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);padding:.7rem 1rem;text-align:left;border-bottom:1px solid var(--border);background:var(--cream);}
+.admin-table td{padding:.85rem 1rem;border-bottom:1px solid rgba(226,217,200,.5);vertical-align:middle;}
 .admin-table tr:last-child td{border-bottom:none;}
 .admin-table tr:hover td{background:var(--beige);}
-.table-del{background:none;border:1px solid var(--border);color:var(--danger);padding:.28rem .72rem;font-size:.64rem;cursor:pointer;border-radius:2px;transition:background .2s,color .2s;font-family:'DM Sans',sans-serif;}
+.table-del{background:none;border:1px solid var(--border);color:var(--danger);padding:.35rem .8rem;font-size:.68rem;cursor:pointer;border-radius:2px;transition:background .2s,color .2s;font-family:'DM Sans',sans-serif;}
 .table-del:hover{background:var(--danger);color:white;border-color:var(--danger);}
-.compose-subject{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.78rem .98rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--charcoal);outline:none;margin-bottom:.88rem;transition:border-color .2s;}
-.compose-subject:focus{border-color:var(--accent);}
-.compose-body{width:100%;min-height:125px;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.88rem;font-family:'DM Sans',sans-serif;font-size:.82rem;line-height:1.65;resize:vertical;color:var(--charcoal);outline:none;transition:border-color .2s;}
-.compose-body:focus{border-color:var(--accent);}
+.compose-subject{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.85rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--charcoal);outline:none;margin-bottom:1rem;transition:border-color .2s;}
+.compose-body{width:100%;min-height:140px;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;line-height:1.65;resize:vertical;color:var(--charcoal);outline:none;transition:border-color .2s;}
 
-/* ══ ADMIN BAR ══ */
-.admin-bar{position:fixed;bottom:0;left:0;right:0;z-index:700;background:var(--dark);border-top:2px solid var(--accent);padding:.68rem 4vw;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+/* ADMIN BAR */
+.admin-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--dark);border-top:2px solid var(--accent);padding:.75rem 4vw;display:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .admin-bar.on{display:flex;}
-.admin-bar-info{font-size:.66rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent-light);display:flex;align-items:center;gap:.75rem;}
-.admin-bar-info::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);display:block;animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
-.admin-bar-btns{display:flex;gap:.6rem;}
-.btn-admin{background:transparent;border:1px solid rgba(255,255,255,.11);color:rgba(250,247,242,.52);padding:.38rem .95rem;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:color .2s,border-color .2s;font-family:'DM Sans',sans-serif;}
-.btn-admin:hover{color:white;border-color:rgba(255,255,255,.33);}
-.btn-admin.red{border-color:rgba(192,97,75,.33);color:rgba(192,97,75,.68);}
+.admin-bar-info{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-light);display:flex;align-items:center;gap:.8rem;}
+.admin-bar-info::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);display:block;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.admin-bar-btns{display:flex;gap:.7rem;}
+.btn-admin{background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(240,235,224,.6);padding:.45rem 1.1rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:color .2s,border-color .2s;font-family:'DM Sans',sans-serif;}
+.btn-admin:hover{color:white;border-color:rgba(255,255,255,.4);}
+.btn-admin.red{border-color:rgba(192,97,75,.4);color:rgba(192,97,75,.8);}
 .btn-admin.red:hover{color:var(--danger);border-color:var(--danger);}
 
-/* ══ TOAST ══ */
-.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--charcoal);color:var(--cream);padding:.82rem 1.45rem;border-radius:3px;font-size:.78rem;border-left:3px solid var(--accent-light);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1);pointer-events:none;max-width:300px;}
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--charcoal);color:var(--cream);padding:.9rem 1.6rem;border-radius:3px;font-size:.83rem;border-left:3px solid var(--accent);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1);pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
 
-/* ══ RESPONSIVE ══ */
+/* RESPONSIVE */
 @media(max-width:768px){
-  .hero-title{font-size:clamp(2.6rem,8.5vw,3.8rem);}
-  .nav-links{display:none;}
-  .process-grid{grid-template-columns:1fr;gap:2.3rem;}
-  .process-step::after{display:none;}
-  .recipe-grid{grid-template-columns:1fr;}
-  .two-cols{grid-template-columns:1fr;}
-  .about-section{grid-template-columns:1fr;}
-  .f-grid{grid-template-columns:1fr;}
-  .modal-body{padding:1.4rem 1.4rem 1.9rem;}
-  .form-head,.form-body,.form-foot{padding-left:1.4rem;padding-right:1.4rem;}
-  .admin-pane{padding:1.4rem;}
-  .story-dots{display:none;}
-  .hero-stat{flex:1;padding:.9rem .8rem;}
+  .hero{grid-template-columns:1fr;}.hero-right{display:none;}.hero-left{padding:4rem 6vw 5rem;}
+  .nav-links{display:none;}.two-cols{grid-template-columns:1fr;}.about-section{grid-template-columns:1fr;}
+  .f-grid{grid-template-columns:1fr;}.modal-body{padding:1.5rem 1.5rem 2rem;}
+  .form-head,.form-body,.form-foot{padding-left:1.5rem;padding-right:1.5rem;}.admin-pane{padding:1.5rem;}
+  .section-search-bar{flex-direction:column;align-items:stretch;}
+  .section-search-wrap{max-width:100%;}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ NAV ══ -->
+<!-- NAV -->
 <nav id="nav">
   <a href="#" class="nav-logo">
     <div class="logo-circle">LD</div>
@@ -348,132 +401,91 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
   </a>
   <ul class="nav-links">
     <li><a href="#communaute">Communauté</a></li>
+    <li>
+      <div class="nav-search">
+        <div class="search-wrap" id="navSearchWrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="navSearchInput" placeholder="Rechercher une recette…" autocomplete="off" />
+          <button class="search-clear" id="navSearchClear">✕</button>
+        </div>
+      </div>
+    </li>
+    <li>
+      <button class="ai-video-btn" id="aiVideoBtn">
+        <div class="ai-video-icon">▶</div>
+        Importer via vidéo
+      </button>
+    </li>
     <li><a href="#a-propos">À propos</a></li>
     <li><a href="#" class="nav-cta" id="navAddBtn">+ Ajouter</a></li>
   </ul>
 </nav>
 
-<!-- ══ HERO STORY (300vh sticky scroll) ══ -->
-<div class="hero-story" id="heroStory">
-  <div class="hero-sticky" id="heroSticky">
-
-    <!-- 3 images plein écran -->
-    <div class="story-slide" id="ss0"
-      style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1800&q=90');"></div>
-    <div class="story-slide" id="ss1"
-      style="background-image:url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1800&q=90');"></div>
-    <div class="story-slide" id="ss2"
-      style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=90');"></div>
-
-    <!-- Légendes (affichées selon la scène, JAMAIS en même temps que le titre) -->
-    <div class="story-label" id="slabel1">
-      <span class="story-label-num">02 · La recette</span>
-      <span class="story-label-text">Elle note chaque geste, chaque ingrédient</span>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">La table de tous · Depuis 2024</div>
+    <h1 class="hero-title">La cuisine,<br>un art qui <em>se partage</em></h1>
+    <p class="hero-desc">Un espace vivant où chaque recette raconte une histoire. Partagez vos créations, découvrez celles des autres, et faites vivre la tradition culinaire française.</p>
+    <div class="hero-actions">
+      <a href="#communaute" class="btn btn-dark">Explorer les recettes</a>
+      <a href="#" class="btn btn-outline" id="heroAddBtn">Partager la mienne</a>
     </div>
-    <div class="story-label" id="slabel2">
-      <span class="story-label-num">03 · Le partage</span>
-      <span class="story-label-text">Elle offre sa création à la communauté</span>
-    </div>
-
-    <!-- Contenu principal (scène 1 seulement) -->
-    <div class="story-main" id="storyMain">
-      <div class="hero-eyebrow"><span></span>La table de tous · Depuis 2024<span></span></div>
-      <h1 class="hero-title">La cuisine,<br>un art qui <em>se partage</em></h1>
-      <p class="hero-desc">Cuisinez, notez, partagez — faites vivre la tradition culinaire.</p>
-      <div class="hero-actions" style="margin-top:2rem;">
-        <a href="#communaute" class="btn btn-light">Explorer les recettes</a>
-        <a href="#" class="btn btn-ghost" id="heroAddBtn">Partager la mienne</a>
-      </div>
-    </div>
-
-    <!-- Points navigation -->
-    <div class="story-dots" id="storyDots">
-      <div class="story-dot active" data-s="0"></div>
-      <div class="story-dot" data-s="1"></div>
-      <div class="story-dot" data-s="2"></div>
-    </div>
-
-    <!-- Hint scroll -->
-    <div class="story-hint" id="storyHint">
-      <div class="hint-line"></div>
-      <span>Faites défiler</span>
-    </div>
-
-    <!-- Barre progression -->
-    <div class="story-bar" id="storyBar"></div>
-
-    <!-- Stats -->
     <div class="hero-stats">
-      <div class="hero-stat"><span class="stat-n" id="heroStatCount">0</span><span class="stat-l">Recettes partagées</span></div>
-      <div class="hero-stat"><span class="stat-n" id="heroStatNl">0</span><span class="stat-l">Abonnés newsletter</span></div>
+      <div class="stat"><span class="stat-n" id="heroStatCount">0</span><span class="stat-l">Recettes partagées</span></div>
+      <div class="stat"><span class="stat-n" id="heroStatNl">0</span><span class="stat-l">Abonnés newsletter</span></div>
     </div>
-
   </div>
-</div>
-
-<!-- ══ PROCESS ══ -->
-<section class="process-section">
-  <div class="sec-header">
-    <span class="sec-tag sec-tag-dark">Comment ça marche</span>
-    <h2 class="sec-title" style="color:var(--dark);">De la cuisine à la <em style="color:var(--accent)">communauté</em></h2>
-    <div class="sec-line" style="background:var(--accent-light);"></div>
-  </div>
-  <div class="process-grid">
-    <div class="process-step">
-      <div class="process-icon">🍳</div>
-      <span class="process-num">01</span>
-      <div class="process-label">Vous cuisinez</div>
-      <p class="process-text">Préparez votre recette — qu'elle soit familiale, inventée ou transmise depuis des générations.</p>
-    </div>
-    <div class="process-step">
-      <div class="process-icon">📝</div>
-      <span class="process-num">02</span>
-      <div class="process-label">Vous la notez</div>
-      <p class="process-text">Ingrédients, étapes, astuces du chef — tout est guidé pour capturer l'essentiel de votre création.</p>
-    </div>
-    <div class="process-step">
-      <div class="process-icon">🌐</div>
-      <span class="process-num">03</span>
-      <div class="process-label">Vous la partagez</div>
-      <p class="process-text">Votre recette rejoint la communauté et inspire des cuisiniers partout en France et au-delà.</p>
-    </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=85" alt="Cuisine française" />
   </div>
 </section>
 
-<!-- ══ COMMUNAUTÉ ══ -->
-<section class="section section-dark" id="communaute">
+<!-- COMMUNAUTÉ -->
+<section class="section" id="communaute">
   <div class="sec-header">
     <span class="sec-tag">Contributions · <span id="countTag">0</span> / 100</span>
     <h2 class="sec-title">Les recettes de la <em>communauté</em></h2>
     <p class="sec-sub">Cent places à table. Chaque recette est un cadeau fait à tous.</p>
     <div class="sec-line"></div>
   </div>
-  <div class="add-banner">
-    <div>
-      <h3>Votre recette mérite d'être ici</h3>
-      <p>Rejoignez les <span id="bannerCount">0</span> recettes déjà partagées.</p>
+  <div class="section-search-bar">
+    <div class="add-banner" style="margin:0;flex:1;">
+      <div>
+        <h3>Votre recette mérite d'être ici</h3>
+        <p>Rejoignez les <span id="bannerCount">0</span> recettes déjà partagées.</p>
+      </div>
+      <button class="btn btn-accent" id="bannerAddBtn">+ Ajouter ma recette</button>
     </div>
-    <button class="btn btn-accent" id="bannerAddBtn">+ Ajouter ma recette</button>
+    <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+      <div class="section-search-wrap">
+        <span style="color:var(--warm-gray);opacity:.5;font-size:.9rem;">⌕</span>
+        <input type="text" id="sectionSearchInput" placeholder="Rechercher parmi les recettes…" autocomplete="off" />
+      </div>
+      <span class="search-results-count" id="searchCount"></span>
+    </div>
   </div>
-  <div class="recipe-grid" id="recipeGrid"></div>
+  <div class="recipe-grid" id="recipeGrid">
+    <div class="loading-grid"><div><div class="spinner"></div><p style="font-size:.82rem;color:var(--warm-gray);">Chargement des recettes…</p></div></div>
+  </div>
 </section>
 
-<!-- ══ À PROPOS ══ -->
+<!-- À PROPOS -->
 <section class="about-section" id="a-propos">
   <div class="about-img-wrap">
     <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80" alt="Marché" class="about-img" />
-    <div class="about-badge"><span>100</span><span>Recettes partagées</span></div>
+    <div class="about-badge"><span>100</span><span>Recettes communauté</span></div>
   </div>
   <div class="about-text">
     <span class="sec-tag">Notre histoire</span>
     <h2 class="sec-title">Un projet né de la <em>passion</em></h2>
-    <p>Les Délices Partagées est née d'une conviction simple : les meilleures recettes sont celles que l'on transmet. Qu'il s'agisse d'un héritage familial ou d'une découverte récente, chaque plat raconte une histoire unique.</p>
-    <p>Ici, pas de recettes imposées. Seulement les vôtres — authentiques, généreuses, personnelles. La table est toujours ouverte.</p>
+    <p>Les Délices Partagées est née d'une conviction simple : les meilleures recettes sont celles que l'on transmet.</p>
+    <p>Ici, pas de recettes imposées. Seulement les vôtres — authentiques, généreuses, personnelles.</p>
     <div style="margin-top:2rem;"><button class="btn btn-accent" id="aboutAddBtn">Partager une recette</button></div>
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div>
@@ -490,16 +502,16 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Les Délices Partagées</span>
+    <span>© 2024 Les Délices Partagées — Tous droits réservés</span>
     <span class="footer-by" id="adminTrigger">by Léonard</span>
   </div>
 </footer>
 
-<!-- ══ MODAL RECETTE ══ -->
+<!-- MODAL RECETTE -->
 <div class="overlay" id="recipeOverlay">
   <div class="modal">
     <div class="modal-topbar"><button class="close-btn" id="recipeClose">✕</button></div>
-    <img src="" alt="" class="modal-hero-img" id="mImg" style="display:none" />
+    <img src="" alt="" class="modal-hero" id="mImg" style="display:none" />
     <div class="modal-body">
       <div class="modal-tag" id="mTag"></div>
       <h2 class="modal-title" id="mTitle"></h2>
@@ -514,100 +526,136 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
         <div><div class="col-title">Ingrédients</div><ul class="ingr-list" id="mIngr"></ul></div>
         <div><div class="col-title">Préparation</div><ol class="steps-list" id="mSteps"></ol></div>
       </div>
-      <div id="mUstBlock" style="display:none"><div class="col-title" style="margin-top:1.3rem;">Ustensiles</div><div class="tags-row" id="mUst"></div></div>
+      <div id="mUstBlock"><div class="col-title">Ustensiles</div><div class="tags-row" id="mUst"></div></div>
       <div class="tip-box" id="mTip" style="display:none"><strong>Astuce</strong><span id="mTipTxt"></span></div>
-      <div id="mGestBlock" style="display:none;margin-top:1.3rem;">
+      <div id="mGestBlock" style="display:none;margin-top:1.4rem;">
         <div class="col-title">Geste important</div>
-        <p style="font-size:.82rem;line-height:1.7;color:var(--charcoal);margin-top:.45rem;" id="mGestTxt"></p>
+        <p style="font-size:.86rem;line-height:1.7;color:var(--charcoal);" id="mGestTxt"></p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ MODAL FORMULAIRE ══ -->
+<!-- MODAL FORMULAIRE -->
 <div class="overlay" id="formOverlay">
   <div class="modal form-modal">
     <div class="form-head">
       <div><h2>Partager ma recette</h2><p>Les champs <em style="color:var(--accent)">*</em> sont obligatoires.</p></div>
       <button class="close-btn" id="formClose">✕</button>
     </div>
-    <div id="formSuccess" style="display:none;background:#eef4ee;border:1px solid #b5d0b5;color:var(--success);padding:.85rem 2.4rem;font-size:.8rem;">✓ Recette ajoutée avec succès !</div>
+    <div id="formSuccess" style="display:none;background:#eef4ee;border:1px solid #b5d0b5;color:var(--success);padding:1rem 2.5rem;font-size:.84rem;">✓ Recette ajoutée avec succès !</div>
     <div class="form-body">
-      <div class="f-group"><label class="f-label" for="fNom">Nom de la recette <em>*</em></label><input type="text" class="f-input" id="fNom" placeholder="ex. Tarte fine aux pommes de mamie" /></div>
-      <div class="f-grid">
-        <div class="f-group"><label class="f-label" for="fCouverts">Couverts <em>*</em></label><input type="number" class="f-input" id="fCouverts" placeholder="4" min="1" max="50" /></div>
-        <div class="f-group"><label class="f-label" for="fTemps">Temps de prép. <em>*</em></label><input type="text" class="f-input" id="fTemps" placeholder="ex. 45 min" /></div>
-      </div>
-      <div class="f-grid">
-        <div class="f-group"><label class="f-label" for="fCuisson">Temps de cuisson</label><input type="text" class="f-input" id="fCuisson" placeholder="ex. 30 min" /></div>
-        <div class="f-group"><label class="f-label" for="fDiff">Difficulté</label>
-          <select class="f-select" id="fDiff">
-            <option value="Facile">Facile</option>
-            <option value="Intermédiaire" selected>Intermédiaire</option>
-            <option value="Avancé">Avancé</option>
-            <option value="Expert">Expert</option>
-          </select>
+      <!-- PHOTO -->
+      <div class="f-group">
+        <label class="f-label">Photo de la recette</label>
+        <div class="photo-upload-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
+          <input type="file" id="photoInput" accept="image/*" style="display:none" />
+          <img class="photo-preview" id="photoPreview" alt="Aperçu" />
+          <div class="photo-placeholder">
+            <div class="photo-placeholder-icon">📷</div>
+            <div class="photo-placeholder-txt">Cliquez pour ajouter une photo</div>
+            <div class="photo-placeholder-sub">JPG, PNG, WebP — max 2 Mo</div>
+          </div>
+          <button class="photo-remove" id="photoRemove" onclick="event.stopPropagation();removePhoto()">✕</button>
         </div>
       </div>
-      <div class="f-group"><label class="f-label" for="fDesc">Description <em>*</em></label><textarea class="f-textarea" id="fDesc" rows="2" placeholder="Quelques mots pour présenter votre recette…"></textarea></div>
-      <div class="f-group">
-        <label class="f-label" for="fIngr">Ingrédients <em>*</em> <span style="font-size:.58rem;text-transform:none;letter-spacing:0;font-weight:300;">— quantité · unité · nom, une ligne par ingrédient</span></label>
-        <textarea class="f-textarea" id="fIngr" rows="5" placeholder="200 · g · farine&#10;3 · pièces · œufs&#10;100 · ml · lait entier"></textarea>
-        <p class="f-hint">Le séparateur · permet l'ajustement automatique selon les couverts.</p>
+      <div class="f-group"><label class="f-label">Nom de la recette <em>*</em></label><input type="text" class="f-input" id="fNom" placeholder="ex. Tarte fine aux pommes de mamie" /></div>
+      <div class="f-grid">
+        <div class="f-group"><label class="f-label">Couverts <em>*</em></label><input type="number" class="f-input" id="fCouverts" placeholder="4" min="1" max="50" /></div>
+        <div class="f-group"><label class="f-label">Temps de prép. <em>*</em></label><input type="text" class="f-input" id="fTemps" placeholder="ex. 45 min" /></div>
       </div>
-      <div class="f-group"><label class="f-label" for="fEtapes">Étapes <em>*</em> <span style="font-size:.58rem;text-transform:none;letter-spacing:0;font-weight:300;">— une étape par ligne</span></label><textarea class="f-textarea" id="fEtapes" rows="5" placeholder="Préchauffer le four à 180°C.&#10;Mélanger la farine et les œufs.&#10;Cuire 30 min."></textarea></div>
-      <div class="f-group"><label class="f-label" for="fUst">Ustensiles <span style="font-size:.58rem;text-transform:none;letter-spacing:0;font-weight:300;">— séparés par des virgules</span></label><input type="text" class="f-input" id="fUst" placeholder="Fouet, Moule 28cm…" /></div>
-      <div class="f-group"><label class="f-label" for="fAstuce">Astuce du chef</label><textarea class="f-textarea" id="fAstuce" rows="2" placeholder="Votre conseil secret…"></textarea></div>
-      <div class="f-group"><label class="f-label" for="fGeste">Geste important</label><textarea class="f-textarea" id="fGeste" rows="2" placeholder="Le geste technique clé…"></textarea></div>
-      <div class="f-group"><label class="f-label" for="fRegion">Région / Origine</label><input type="text" class="f-input" id="fRegion" placeholder="ex. Bretagne, Provence…" /></div>
+      <div class="f-grid">
+        <div class="f-group"><label class="f-label">Temps de cuisson</label><input type="text" class="f-input" id="fCuisson" placeholder="ex. 30 min" /></div>
+        <div class="f-group"><label class="f-label">Difficulté</label><select class="f-select" id="fDiff"><option value="Facile">Facile</option><option value="Intermédiaire" selected>Intermédiaire</option><option value="Avancé">Avancé</option><option value="Expert">Expert</option></select></div>
+      </div>
+      <div class="f-group"><label class="f-label">Description <em>*</em></label><textarea class="f-textarea" id="fDesc" rows="2" placeholder="Quelques mots pour présenter votre recette…"></textarea></div>
+      <div class="f-group">
+        <label class="f-label">Ingrédients <em>* — format : quantité · unité · nom</em></label>
+        <textarea class="f-textarea" id="fIngr" rows="6" placeholder="200 · g · farine&#10;3 · pièces · œufs&#10;100 · ml · lait entier"></textarea>
+        <p class="f-hint">Une ligne par ingrédient. Le séparateur · permet l'ajustement automatique des quantités.</p>
+      </div>
+      <div class="f-group"><label class="f-label">Étapes <em>* — une étape par ligne</em></label><textarea class="f-textarea" id="fEtapes" rows="6" placeholder="Préchauffer le four à 180°C.&#10;Mélanger la farine et les œufs.&#10;Cuire 30 min."></textarea></div>
+      <div class="f-group"><label class="f-label">Ustensiles <em>— séparés par des virgules</em></label><input type="text" class="f-input" id="fUst" placeholder="Fouet, Moule 28cm, Casserole…" /></div>
+      <div class="f-group"><label class="f-label">Astuce du chef</label><textarea class="f-textarea" id="fAstuce" rows="2" placeholder="Votre conseil secret…"></textarea></div>
+      <div class="f-group"><label class="f-label">Geste important</label><textarea class="f-textarea" id="fGeste" rows="2" placeholder="Le geste technique clé…"></textarea></div>
+      <div class="f-group"><label class="f-label">Région / Origine</label><input type="text" class="f-input" id="fRegion" placeholder="ex. Bretagne, Provence, Italie…" /></div>
     </div>
     <div class="form-foot">
       <button class="btn btn-accent" id="submitBtn">Publier ma recette</button>
-      <button class="btn btn-outline-dark" id="formCancel">Annuler</button>
+      <button class="btn btn-outline" id="formCancel">Annuler</button>
     </div>
   </div>
 </div>
 
-<!-- ══ NEWSLETTER ══ -->
+<!-- MODAL IA VIDÉO -->
+<div class="overlay" id="aiOverlay">
+  <div class="modal ai-modal">
+    <div class="ai-modal-head">
+      <div>
+        <h2>✨ Importer via vidéo</h2>
+        <p>L'IA extrait automatiquement la recette depuis votre vidéo ou description.</p>
+      </div>
+      <button class="close-btn" id="aiClose">✕</button>
+    </div>
+    <div class="ai-modal-body">
+      <div class="ai-steps">
+        <div class="ai-step"><div class="ai-step-num">1</div><div class="ai-step-txt"><strong>Collez une URL de vidéo</strong> (Instagram, YouTube, TikTok) ou <strong>décrivez votre recette</strong> en texte libre ci-dessous.</div></div>
+        <div class="ai-step"><div class="ai-step-num">2</div><div class="ai-step-txt"><strong>L'IA analyse</strong> le contenu et extrait les ingrédients, étapes et informations.</div></div>
+        <div class="ai-step"><div class="ai-step-num">3</div><div class="ai-step-txt"><strong>Vérifiez et publiez</strong> en un clic — le formulaire est pré-rempli automatiquement.</div></div>
+      </div>
+      <div class="f-group">
+        <label class="f-label">URL de vidéo ou description de recette</label>
+        <textarea class="f-textarea" id="aiInput" rows="4" placeholder="Collez une URL Instagram/YouTube/TikTok…&#10;&#10;Ou décrivez votre recette en texte libre :&#10;ex. « Ma grand-mère faisait une tarte aux pommes avec 500g de farine, du beurre... »"></textarea>
+      </div>
+      <button class="btn btn-accent" id="aiAnalyzeBtn" style="width:100%">✨ Analyser avec l'IA</button>
+      <div class="ai-progress" id="aiProgress"><div class="ai-progress-bar" id="aiProgressBar"></div></div>
+      <div class="ai-status" id="aiStatus"></div>
+      <div class="ai-result-preview" id="aiResultPreview"></div>
+      <button class="btn btn-dark ai-use-btn" id="aiUseBtn" style="display:none">→ Utiliser cette recette</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER MODAL -->
 <div class="overlay" id="nlOverlay">
   <div class="nl-modal">
     <img src="https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=600&q=80" alt="Newsletter" class="nl-modal-img" />
     <div class="nl-modal-body">
-      <div style="font-size:.56rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-light);margin-bottom:.45rem;">On vous a remarqué !</div>
+      <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;">On vous a remarqué !</div>
       <h3>Rejoignez la communauté</h3>
-      <p>Vous revenez régulièrement. Abonnez-vous pour recevoir les nouvelles recettes et nos actualités.</p>
-      <input type="text" class="f-input" id="nlNom" placeholder="Votre prénom" style="margin-bottom:.65rem;" />
-      <input type="email" class="f-input" id="nlEmail" placeholder="Votre adresse email" style="margin-bottom:1.1rem;" />
-      <div style="display:flex;gap:.75rem;justify-content:center;">
+      <p>Vous revenez régulièrement — abonnez-vous à la newsletter pour recevoir les nouvelles recettes.</p>
+      <input type="text" class="f-input" id="nlNom" placeholder="Votre prénom" style="margin-bottom:.8rem;" />
+      <input type="email" class="f-input" id="nlEmail" placeholder="Votre adresse email" style="margin-bottom:1.2rem;" />
+      <div style="display:flex;gap:.8rem;justify-content:center;">
         <button class="btn btn-accent" id="nlSubmit">M'abonner</button>
-        <button class="btn btn-ghost" id="nlSkip" style="font-size:.7rem;padding:.72rem 1.3rem;">Plus tard</button>
+        <button class="btn btn-outline" id="nlSkip">Plus tard</button>
       </div>
-      <p style="font-size:.65rem;color:rgba(250,247,242,.22);margin-top:.9rem;">Aucun spam. Désabonnement libre.</p>
+      <p style="font-size:.7rem;color:var(--warm-gray);margin-top:1rem;">Aucun spam. Désabonnement libre.</p>
     </div>
   </div>
 </div>
 
-<!-- ══ LOGIN ══ -->
+<!-- LOGIN ADMIN -->
 <div class="overlay" id="loginOverlay">
   <div class="login-box">
-    <div class="login-icon">🔑</div>
+    <div style="font-size:2rem;margin-bottom:1rem;">🔑</div>
     <h3>Espace Léonard</h3>
     <p>Accès réservé à l'administrateur.</p>
     <input type="password" class="f-input" id="loginPwd" placeholder="Mot de passe" style="text-align:center;letter-spacing:.3em;" />
     <div class="err-msg" id="loginErr">Mot de passe incorrect.</div>
-    <div style="display:flex;gap:.75rem;margin-top:1.25rem;justify-content:center;">
-      <button class="btn btn-accent" id="loginBtn">Entrer</button>
-      <button class="btn btn-ghost" id="loginCancel" style="font-size:.7rem;padding:.72rem 1.3rem;">Annuler</button>
+    <div style="display:flex;gap:.8rem;margin-top:1.4rem;justify-content:center;">
+      <button class="btn btn-dark" id="loginBtn">Entrer</button>
+      <button class="btn btn-outline" id="loginCancel">Annuler</button>
     </div>
   </div>
 </div>
 
-<!-- ══ ADMIN PANEL ══ -->
+<!-- ADMIN PANEL -->
 <div class="overlay" id="adminOverlay">
-  <div class="admin-panel">
+  <div class="admin-panel modal-lg">
     <div class="admin-panel-head">
       <div><h2>🍽 Espace Léonard</h2><p>Tableau de bord — Les Délices Partagées</p></div>
-      <button class="close-btn" id="adminClose" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:rgba(255,255,255,.55);">✕</button>
+      <button class="close-btn" id="adminClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);">✕</button>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab active" data-tab="stats">Vue d'ensemble</button>
@@ -619,68 +667,51 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
       <div class="admin-stat-row">
         <div class="admin-stat-box"><div class="n" id="aStatR">0</div><div class="l">Recettes</div></div>
         <div class="admin-stat-box"><div class="n" id="aStatV">0</div><div class="l">Visiteurs</div></div>
-        <div class="admin-stat-box"><div class="n" id="aStatN">0</div><div class="l">Abonnés NL</div></div>
+        <div class="admin-stat-box"><div class="n" id="aStatN">0</div><div class="l">Abonnés</div></div>
         <div class="admin-stat-box"><div class="n" id="aStatS">0</div><div class="l">Places libres</div></div>
       </div>
-      <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.3rem;">
-        <div style="font-size:.6rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem;">Dernières recettes</div>
-        <div id="recentRecipes" style="font-size:.8rem;color:var(--warm-gray);line-height:2.1;"></div>
+      <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.5rem;">
+        <div style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Dernières recettes</div>
+        <div id="recentRecipes" style="font-size:.84rem;color:var(--warm-gray);line-height:2;"></div>
       </div>
     </div>
     <div class="admin-pane" id="tab-recipes">
-      <div style="margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);">Gérer les recettes</span>
+      <div style="margin-bottom:1.2rem;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);">Gérer les recettes</span>
         <button class="table-del" id="deleteAllBtn">Tout supprimer</button>
       </div>
-      <div style="overflow-x:auto;">
-        <table class="admin-table">
-          <thead><tr><th>Recette</th><th>Région</th><th>Difficulté</th><th>Date</th><th>Action</th></tr></thead>
-          <tbody id="recipesTableBody"></tbody>
-        </table>
-      </div>
-      <div id="noRecipes" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.82rem;display:none;">Aucune recette.</div>
+      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Recette</th><th>Région</th><th>Difficulté</th><th>Date</th><th>Action</th></tr></thead><tbody id="recipesTableBody"></tbody></table></div>
+      <div id="noRecipes" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucune recette.</div>
     </div>
     <div class="admin-pane" id="tab-visitors">
-      <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1rem 1.3rem;margin-bottom:1.3rem;font-size:.78rem;color:var(--warm-gray);line-height:1.7;">
-        Chaque visiteur est détecté par son adresse IP. Après <strong style="color:var(--charcoal)">3 visites</strong>, la newsletter lui est proposée.
+      <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;font-size:.82rem;color:var(--warm-gray);line-height:1.7;">
+        Après <strong style="color:var(--charcoal)">3 visites</strong>, la newsletter est proposée automatiquement.<br>
+        <span style="font-size:.75rem;color:var(--accent);">⚠ Le tracking IP peut être bloqué par certains navigateurs (Firefox, Brave). C'est normal.</span>
       </div>
-      <div style="overflow-x:auto;">
-        <table class="admin-table">
-          <thead><tr><th>Adresse IP</th><th>Visites</th><th>Première visite</th><th>Dernière visite</th><th>Newsletter</th></tr></thead>
-          <tbody id="visitorsTableBody"></tbody>
-        </table>
-      </div>
-      <div id="noVisitors" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.82rem;display:none;">Aucun visiteur.</div>
+      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>IP</th><th>Visites</th><th>1ère visite</th><th>Dernière visite</th><th>Newsletter</th></tr></thead><tbody id="visitorsTableBody"></tbody></table></div>
+      <div id="noVisitors" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucun visiteur enregistré.</div>
     </div>
     <div class="admin-pane" id="tab-newsletter">
-      <div style="margin-bottom:1.3rem;">
-        <div style="font-size:.6rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem;">Abonnés — <span id="nlTableCount">0</span> contact(s)</div>
-        <div style="overflow-x:auto;">
-          <table class="admin-table">
-            <thead><tr><th>Prénom</th><th>Email</th><th>Date</th><th>Action</th></tr></thead>
-            <tbody id="nlTableBody"></tbody>
-          </table>
-        </div>
-        <div id="noNl" style="text-align:center;color:var(--warm-gray);padding:2rem;font-size:.82rem;display:none;">Aucun abonné.</div>
+      <div style="margin-bottom:1.5rem;">
+        <div style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Abonnés — <span id="nlTableCount">0</span> contact(s)</div>
+        <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Prénom</th><th>Email</th><th>Date</th><th>Action</th></tr></thead><tbody id="nlTableBody"></tbody></table></div>
+        <div id="noNl" style="text-align:center;color:var(--warm-gray);padding:2rem;font-size:.86rem;display:none;">Aucun abonné.</div>
       </div>
-      <div style="border-top:1px solid var(--border);padding-top:1.3rem;">
-        <div style="font-size:.6rem;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem;">Envoyer une newsletter</div>
-        <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1rem 1.3rem;margin-bottom:1rem;font-size:.76rem;color:var(--warm-gray);line-height:1.7;">
-          Le bouton "Envoyer" ouvre votre client mail avec tous les abonnés en copie cachée (CCI).
+      <div style="border-top:1px solid var(--border);padding-top:1.5rem;">
+        <div style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Envoyer une newsletter</div>
+        <input type="text" class="compose-subject" id="composeSubject" placeholder="Objet…" />
+        <textarea class="compose-body" id="composeBody" placeholder="Rédigez votre message…"></textarea>
+        <div style="display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap;">
+          <button class="btn btn-accent" id="sendNlBtn">📨 Envoyer à tous</button>
+          <button class="btn btn-outline" id="previewNlBtn">Voir la liste</button>
         </div>
-        <input type="text" class="compose-subject" id="composeSubject" placeholder="Objet de la newsletter…" />
-        <textarea class="compose-body" id="composeBody" placeholder="Bonjour,&#10;&#10;Voici les nouveautés des Délices Partagées…"></textarea>
-        <div style="display:flex;gap:.75rem;margin-top:.85rem;flex-wrap:wrap;">
-          <button class="btn btn-accent" id="sendNlBtn">📨 Envoyer à tous les abonnés</button>
-          <button class="btn btn-outline-dark" id="previewNlBtn">Voir la liste</button>
-        </div>
-        <div id="nlPreview" style="display:none;margin-top:.85rem;background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:.85rem;font-size:.74rem;color:var(--warm-gray);word-break:break-all;line-height:1.8;"></div>
+        <div id="nlPreview" style="display:none;margin-top:1rem;background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1rem;font-size:.78rem;color:var(--warm-gray);word-break:break-all;line-height:1.8;"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ ADMIN BAR ══ -->
+<!-- ADMIN BAR -->
 <div class="admin-bar" id="adminBar">
   <div class="admin-bar-info">Mode administrateur actif</div>
   <div class="admin-bar-btns">
@@ -692,154 +723,161 @@ footer{background:#111;color:rgba(250,247,242,.32);padding:4rem 6vw 2rem;}
 <div class="toast" id="toast"></div>
 
 <script>
-// ══ CONFIG ══
-const ADMIN_EMAIL = 'leodantou695@gmail.com';
+// ══ CONFIG SUPABASE ══
+const SUPABASE_URL = 'https://poccnuekyqchzdymywfk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvY2NudWVreXFjaHpkeW15d2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2Njg5ODYsImV4cCI6MjA5NDI0NDk4Nn0.L3lQroBKP9KhgHoMR76an2Dkc8TqZD_OoysztbYGukw';
 const ADMIN_PWD   = 'leonard@admin2024';
-const MAX_SLOTS   = 100;
+const MAX_SLOTS   = 1000;
+const ADMIN_EMAIL = 'leodantou695@gmail.com';
 
-// ══ STATE ══
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ══ ÉTAT ══
 let recipes=[], visitors=[], subscribers=[];
 let isAdmin=false, currentRec=null, currentSrv=4, baseSrv=4;
 let adminClickCount=0, adminClickTimer=null;
-
-// ══ STORAGE ══
-function load(){
-  try{
-    recipes     = JSON.parse(localStorage.getItem('ldp_r3'))||[];
-    visitors    = JSON.parse(localStorage.getItem('ldp_v3'))||[];
-    subscribers = JSON.parse(localStorage.getItem('ldp_s3'))||[];
-  }catch(e){recipes=[];visitors=[];subscribers=[];}
-}
-function save(){
-  localStorage.setItem('ldp_r3',JSON.stringify(recipes));
-  localStorage.setItem('ldp_v3',JSON.stringify(visitors));
-  localStorage.setItem('ldp_s3',JSON.stringify(subscribers));
-}
-
-// ══ HERO STORY SCROLL ══
-// L'utilisateur scrolle dans les 300vh → ça avance entre 3 scènes avec zoom
-// Scène 0 (0–33%) : cuisine, titre visible, image zoomée depuis scale(1)→(1.15)
-// Scène 1 (33–66%) : note sa recette, légende visible, zoom
-// Scène 2 (66–100%) : partage, légende visible, zoom
-
-function updateStory(){
-  const story    = document.getElementById('heroStory');
-  const storyTop = story.getBoundingClientRect().top + window.scrollY;
-  const scrollY  = window.scrollY - storyTop;
-  const storyH   = story.offsetHeight - window.innerHeight; // scrollable distance
-  const progress = Math.max(0, Math.min(1, scrollY / storyH)); // 0 → 1
-
-  // Barre de progression
-  document.getElementById('storyBar').style.width = (progress * 100) + '%';
-
-  // Quel slide ? 0, 1 ou 2
-  const slideIdx = progress < 0.333 ? 0 : progress < 0.666 ? 1 : 2;
-  // Progression DANS le slide courant (0→1)
-  const localP = progress < 0.333 ? progress / 0.333
-               : progress < 0.666 ? (progress - 0.333) / 0.333
-               :                    (progress - 0.666) / 0.334;
-
-  // Zoom : scale 1 → 1.18 dans chaque slide
-  const scale = 1 + localP * 0.18;
-
-  // Mettre à jour les slides
-  for(let i=0; i<3; i++){
-    const el = document.getElementById('ss'+i);
-    if(i === slideIdx){
-      el.style.opacity = '1';
-      el.style.transform = `scale(${scale})`;
-    } else {
-      el.style.opacity = '0';
-      el.style.transform = 'scale(1)';
-    }
-  }
-
-  // Titre principal : visible slide 0, disparaît ensuite
-  const mainEl = document.getElementById('storyMain');
-  if(slideIdx === 0){
-    mainEl.style.opacity = String(1 - localP * 2.5); // fade out vers la fin du slide 0
-    mainEl.style.pointerEvents = localP > 0.4 ? 'none' : 'auto';
-  } else {
-    mainEl.style.opacity = '0';
-    mainEl.style.pointerEvents = 'none';
-  }
-
-  // Légendes slides 1 et 2
-  const l1 = document.getElementById('slabel1');
-  const l2 = document.getElementById('slabel2');
-  l1.style.opacity = slideIdx === 1 ? String(Math.min(1, localP * 3)) : '0';
-  l2.style.opacity = slideIdx === 2 ? String(Math.min(1, localP * 3)) : '0';
-
-  // Points de navigation
-  document.querySelectorAll('.story-dot').forEach((d,i)=>{
-    d.classList.toggle('active', i === slideIdx);
-  });
-
-  // Hint : disparaît dès qu'on scroll
-  const hint = document.getElementById('storyHint');
-  hint.style.opacity = String(Math.max(0, 1 - progress * 8));
-
-  // Nav bar
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-}
-
-window.addEventListener('scroll', updateStory, {passive:true});
-updateStory(); // init
+let searchQuery='', photoBase64='', aiExtractedData=null;
 
 // ══ TOAST ══
+let toastTimer;
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
 // ══ OVERLAY ══
 function openOverlay(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
 function closeOverlay(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
-['recipeOverlay','formOverlay','nlOverlay','loginOverlay','adminOverlay'].forEach(id=>{
+['recipeOverlay','formOverlay','nlOverlay','loginOverlay','adminOverlay','aiOverlay'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{
-    if(e.target===document.getElementById(id)) closeOverlay(id);
+    if(e.target===document.getElementById(id))closeOverlay(id);
   });
 });
 
-// ══ TRACKING IP ══
-async function trackVisit(){
+// ══ LOAD DATA ══
+async function loadData(){
   try{
-    const res = await fetch('https://api.ipify.org?format=json');
-    const {ip} = await res.json();
-    const now = new Date().toLocaleString('fr-FR');
-    let v = visitors.find(x=>x.ip===ip);
-    if(!v){v={ip,visits:0,first:now,last:now,nlShown:false};visitors.push(v);}
-    v.visits++; v.last=now; save();
-    if(v.visits>=3 && !v.nlShown && !subscribers.find(s=>s.ip===ip)){
-      v.nlShown=true; save();
-      setTimeout(()=>openOverlay('nlOverlay'),3500);
-    }
-  }catch(e){}
+    const [rRes, vRes, sRes] = await Promise.all([
+      db.from('recettes').select('*').order('created_at',{ascending:false}),
+      db.from('visiteurs').select('*').order('visits',{ascending:false}),
+      db.from('abonnes').select('*').order('created_at',{ascending:false})
+    ]);
+    recipes     = rRes.data || [];
+    visitors    = vRes.data || [];
+    subscribers = sRes.data || [];
+  }catch(e){ console.error('Erreur chargement:',e); }
 }
 
-// ══ RENDER ══
+// ══ TRACKING VISITEUR ══
+async function trackVisit(){
+  try{
+    // Utilise un identifiant local si l'IP est bloquée
+    let ip = localStorage.getItem('ldp_uid');
+    if(!ip){
+      try{
+        const res = await fetch('https://api64.ipify.org?format=json',{signal:AbortSignal.timeout(3000)});
+        const d = await res.json(); ip = d.ip;
+      }catch(e){
+        ip = 'local_' + Math.random().toString(36).substr(2,9);
+      }
+      localStorage.setItem('ldp_uid', ip);
+    }
+    const now = new Date().toLocaleString('fr-FR');
+    const {data:existing} = await db.from('visiteurs').select('*').eq('ip',ip).single();
+    if(existing){
+      const newVisits = existing.visits + 1;
+      await db.from('visiteurs').update({visits:newVisits, last_visit:now}).eq('ip',ip);
+      if(newVisits >= 3 && !existing.nl_shown){
+        const {data:alreadySub} = await db.from('abonnes').select('id').eq('ip',ip).single();
+        if(!alreadySub){
+          await db.from('visiteurs').update({nl_shown:true}).eq('ip',ip);
+          setTimeout(()=>openOverlay('nlOverlay'), 3500);
+        }
+      }
+    } else {
+      await db.from('visiteurs').insert({ip, visits:1, first_visit:now, last_visit:now, nl_shown:false});
+    }
+  }catch(e){ console.log('IP tracking:', e); }
+}
+
+// ══ SEARCH ══
+function filterRecipes(query){
+  if(!query.trim()) return recipes;
+  const q = query.toLowerCase().trim();
+  return recipes.filter(r =>
+    (r.nom||'').toLowerCase().includes(q) ||
+    (r.description||'').toLowerCase().includes(q) ||
+    (r.region||'').toLowerCase().includes(q) ||
+    (r.diff||'').toLowerCase().includes(q) ||
+    (r.ingredients||'').toLowerCase().includes(q)
+  );
+}
+
+// Nav search sync
+document.getElementById('navSearchInput').addEventListener('input', e=>{
+  searchQuery = e.target.value;
+  document.getElementById('sectionSearchInput').value = searchQuery;
+  document.getElementById('navSearchClear').classList.toggle('visible', !!searchQuery);
+  renderAll();
+  if(searchQuery) document.getElementById('communaute').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('navSearchClear').addEventListener('click',()=>{
+  searchQuery='';
+  document.getElementById('navSearchInput').value='';
+  document.getElementById('sectionSearchInput').value='';
+  document.getElementById('navSearchClear').classList.remove('visible');
+  renderAll();
+});
+document.getElementById('sectionSearchInput').addEventListener('input', e=>{
+  searchQuery = e.target.value;
+  document.getElementById('navSearchInput').value = searchQuery;
+  document.getElementById('navSearchClear').classList.toggle('visible', !!searchQuery);
+  renderAll();
+});
+
+// ══ RENDER GRILLE ══
 function renderAll(){
-  const c = recipes.length;
-  document.getElementById('countTag').textContent = c;
-  document.getElementById('bannerCount').textContent = c;
-  document.getElementById('heroStatCount').textContent = c;
-  document.getElementById('heroStatNl').textContent = subscribers.length;
-  const grid = document.getElementById('recipeGrid');
-  let h = '';
-  recipes.forEach((r,i)=>{
-    h += `<article class="recipe-card" onclick="openRec(${i})">
-      ${isAdmin?`<button class="card-del-btn" onclick="event.stopPropagation();delRec(${i})">✕</button>`:''}
+  const count = recipes.length;
+  document.getElementById('countTag').textContent=count;
+  document.getElementById('bannerCount').textContent=count;
+  document.getElementById('heroStatCount').textContent=count;
+  document.getElementById('heroStatNl').textContent=subscribers.length;
+
+  const filtered = filterRecipes(searchQuery);
+  const countEl = document.getElementById('searchCount');
+  if(searchQuery){
+    countEl.textContent = filtered.length + ' résultat' + (filtered.length!==1?'s':'');
+    countEl.classList.add('visible');
+  } else {
+    countEl.classList.remove('visible');
+  }
+
+  const grid=document.getElementById('recipeGrid');
+  let h='';
+
+  if(filtered.length===0 && searchQuery){
+    h=`<div class="no-results"><div class="no-results-icon">🔍</div><p>Aucune recette pour "<strong>${searchQuery}</strong>"</p></div>`;
+    grid.innerHTML=h; return;
+  }
+
+  filtered.forEach((r,i)=>{
+    const realIdx = recipes.indexOf(r);
+    const parsedIngr = safeParseJSON(r.ingredients);
+    const imgSrc = r.img || 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80';
+    h+=`<article class="recipe-card" onclick="openRec(${realIdx})">
+      ${isAdmin?`<button class="card-del-btn" onclick="event.stopPropagation();delRec('${r.id}',${realIdx})">✕</button>`:''}
       <div class="card-img-wrap">
-        <img src="${r.img||'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80'}"
-             alt="${r.nom}" loading="lazy"
+        <img src="${imgSrc}" alt="${r.nom}" loading="lazy"
              onerror="this.src='https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80'" />
         <span class="card-badge">${r.region||'Communauté'}</span>
       </div>
       <div class="card-body">
         <div class="card-meta"><span>⏱ ${r.temps}</span><span>👥 ${r.couverts} pers.</span></div>
         <h3 class="card-title">${r.nom}</h3>
-        <p class="card-desc">${r.desc}</p>
+        <p class="card-desc">${r.description||''}</p>
       </div>
       <div class="card-footer">
         <span class="card-diff">${r.diff}</span>
@@ -847,27 +885,34 @@ function renderAll(){
       </div>
     </article>`;
   });
-  const empties = Math.min(MAX_SLOTS-c, 9);
-  for(let i=0;i<empties;i++){
-    h+=`<div class="slot-empty" onclick="openForm()">
-      <div class="slot-empty-icon">+</div>
-      <div class="slot-empty-txt">Place libre<br><small>Partagez votre recette</small></div>
-    </div>`;
+
+  if(!searchQuery){
+    const empties = Math.min(MAX_SLOTS-count, 9);
+    for(let i=0;i<empties;i++){
+      h+=`<div class="slot-empty" onclick="openForm()">
+        <div class="slot-empty-icon">+</div>
+        <div class="slot-empty-txt">Place libre<br><small>Partagez votre recette</small></div>
+      </div>`;
+    }
   }
-  grid.innerHTML = h;
+  grid.innerHTML=h;
 }
 
-// ══ OPEN RECIPE ══
+// ══ OPEN RECETTE MODAL ══
 function openRec(idx){
   const r=recipes[idx]; if(!r)return;
-  currentRec={data:r,idx}; baseSrv=parseInt(r.couverts)||4; currentSrv=baseSrv;
+  currentRec={data:r,idx};
+  baseSrv=parseInt(r.couverts)||4;
+  currentSrv=baseSrv;
   const img=document.getElementById('mImg');
   if(r.img){img.src=r.img;img.style.display='block';}else{img.style.display='none';}
   document.getElementById('mTag').textContent=`${r.region||'Communauté'} · ${r.diff}`;
   document.getElementById('mTitle').textContent=r.nom;
-  document.getElementById('mDesc').textContent=r.desc;
+  document.getElementById('mDesc').textContent=r.description||'';
   document.getElementById('srvCount').textContent=currentSrv;
-  renderIngr(); renderSteps(r.etapes);
+  renderIngr();
+  const etapes = safeParseJSON(r.etapes);
+  renderSteps(Array.isArray(etapes)?etapes:[]);
   const ub=document.getElementById('mUstBlock'),uc=document.getElementById('mUst');
   if(r.ust){ub.style.display='block';uc.innerHTML=r.ust.split(',').map(u=>`<span class="tag-pill">${u.trim()}</span>`).join('');}
   else{ub.style.display='none';}
@@ -878,21 +923,39 @@ function openRec(idx){
   else{gb.style.display='none';}
   openOverlay('recipeOverlay');
 }
+
 function renderIngr(){
-  const r=currentRec.data; const ratio=currentSrv/baseSrv;
-  document.getElementById('mIngr').innerHTML=r.parsedIngr.map(ing=>{
-    if(ing.qty!==null){const s=Math.round(ing.qty*ratio*100)/100;return`<li><span class="ingr-qty">${s} ${ing.unit}</span>${ing.name}</li>`;}
-    return`<li><span class="ingr-qty">—</span>${ing.raw}</li>`;
+  const r=currentRec.data;
+  const ratio=currentSrv/baseSrv;
+  const ingrs=safeParseJSON(r.ingredients);
+  if(!Array.isArray(ingrs)){document.getElementById('mIngr').innerHTML='';return;}
+  document.getElementById('mIngr').innerHTML=ingrs.map(ing=>{
+    if(ing.qty!==null&&ing.qty!==undefined){
+      const s=Math.round(ing.qty*ratio*100)/100;
+      return`<li><span class="ingr-qty">${s} ${ing.unit||''}</span>${ing.name}</li>`;
+    }
+    return`<li><span class="ingr-qty">—</span>${ing.raw||ing.name}</li>`;
   }).join('');
 }
+
 function renderSteps(steps){
   document.getElementById('mSteps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('');
 }
-document.getElementById('srvDown').addEventListener('click',()=>{if(currentSrv>1){currentSrv--;document.getElementById('srvCount').textContent=currentSrv;renderIngr();}});
-document.getElementById('srvUp').addEventListener('click',()=>{if(currentSrv<50){currentSrv++;document.getElementById('srvCount').textContent=currentSrv;renderIngr();}});
+
+function safeParseJSON(str){
+  try{return JSON.parse(str);}catch(e){return null;}
+}
+
+// ══ SERVINGS ══
+document.getElementById('srvDown').addEventListener('click',()=>{
+  if(currentSrv>1){currentSrv--;document.getElementById('srvCount').textContent=currentSrv;renderIngr();}
+});
+document.getElementById('srvUp').addEventListener('click',()=>{
+  if(currentSrv<50){currentSrv++;document.getElementById('srvCount').textContent=currentSrv;renderIngr();}
+});
 document.getElementById('recipeClose').addEventListener('click',()=>closeOverlay('recipeOverlay'));
 
-// ══ PARSE INGR ══
+// ══ PARSE INGREDIENTS ══
 function parseIngr(txt){
   return txt.trim().split('\n').filter(l=>l.trim()).map(line=>{
     const p=line.split('·').map(x=>x.trim());
@@ -901,15 +964,37 @@ function parseIngr(txt){
   });
 }
 
-// ══ FORM ══
+// ══ PHOTO UPLOAD ══
+document.getElementById('photoInput').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 2*1024*1024){ toast('Image trop lourde — max 2 Mo.'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    photoBase64 = ev.target.result;
+    const preview = document.getElementById('photoPreview');
+    preview.src = photoBase64;
+    document.getElementById('photoZone').classList.add('has-photo');
+  };
+  reader.readAsDataURL(file);
+});
+function removePhoto(){
+  photoBase64='';
+  document.getElementById('photoPreview').src='';
+  document.getElementById('photoZone').classList.remove('has-photo');
+  document.getElementById('photoInput').value='';
+}
+
+// ══ FORMULAIRE ══
 function openForm(){
-  if(recipes.length>=MAX_SLOTS){toast('Les 100 places sont occupées !');return;}
+  if(recipes.length>=MAX_SLOTS){toast('Les places sont occupées !');return;}
   document.getElementById('formSuccess').style.display='none';
   openOverlay('formOverlay');
 }
 document.getElementById('formClose').addEventListener('click',()=>closeOverlay('formOverlay'));
 document.getElementById('formCancel').addEventListener('click',()=>closeOverlay('formOverlay'));
-document.getElementById('submitBtn').addEventListener('click',()=>{
+
+document.getElementById('submitBtn').addEventListener('click',async()=>{
   const nom=document.getElementById('fNom').value.trim();
   const couv=document.getElementById('fCouverts').value;
   const temps=document.getElementById('fTemps').value.trim();
@@ -917,27 +1002,157 @@ document.getElementById('submitBtn').addEventListener('click',()=>{
   const ingrRaw=document.getElementById('fIngr').value.trim();
   const etRaw=document.getElementById('fEtapes').value.trim();
   if(!nom||!couv||!temps||!desc||!ingrRaw||!etRaw){toast('Champs obligatoires manquants.');return;}
-  const r={
-    nom,couverts:parseInt(couv),temps,
-    diff:document.getElementById('fDiff').value,
+
+  const btn=document.getElementById('submitBtn');
+  btn.textContent='Publication…'; btn.disabled=true;
+
+  const {error} = await db.from('recettes').insert({
+    nom,
+    couverts:parseInt(couv),
+    temps,
     cuisson:document.getElementById('fCuisson').value.trim(),
-    desc,parsedIngr:parseIngr(ingrRaw),
-    etapes:etRaw.split('\n').filter(l=>l.trim()),
+    diff:document.getElementById('fDiff').value,
+    description:desc,
+    ingredients:JSON.stringify(parseIngr(ingrRaw)),
+    etapes:JSON.stringify(etRaw.split('\n').filter(l=>l.trim())),
     ust:document.getElementById('fUst').value.trim(),
     astuce:document.getElementById('fAstuce').value.trim(),
     geste:document.getElementById('fGeste').value.trim(),
     region:document.getElementById('fRegion').value.trim(),
-    date:new Date().toLocaleDateString('fr-FR'),img:''
-  };
-  recipes.push(r); save(); renderAll();
-  ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'].forEach(id=>document.getElementById(id).value='');
+    img: photoBase64 || '',
+    date_ajout:new Date().toLocaleDateString('fr-FR')
+  });
+
+  btn.textContent='Publier ma recette'; btn.disabled=false;
+
+  if(error){toast('Erreur lors de la publication. Réessayez.');console.error(error);return;}
+
+  ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion']
+    .forEach(id=>document.getElementById(id).value='');
+  removePhoto();
   document.getElementById('formSuccess').style.display='block';
   toast('Recette publiée !');
+  await loadData(); renderAll();
   setTimeout(()=>closeOverlay('formOverlay'),2200);
 });
-function delRec(idx){
+
+// ══ AI VIDEO ══
+document.getElementById('aiVideoBtn').addEventListener('click',()=>openOverlay('aiOverlay'));
+document.getElementById('aiClose').addEventListener('click',()=>closeOverlay('aiOverlay'));
+
+document.getElementById('aiAnalyzeBtn').addEventListener('click', async()=>{
+  const input = document.getElementById('aiInput').value.trim();
+  if(!input){toast('Collez une URL ou décrivez votre recette.');return;}
+
+  const btn = document.getElementById('aiAnalyzeBtn');
+  const status = document.getElementById('aiStatus');
+  const progress = document.getElementById('aiProgress');
+  const bar = document.getElementById('aiProgressBar');
+  const preview = document.getElementById('aiResultPreview');
+  const useBtn = document.getElementById('aiUseBtn');
+
+  btn.disabled=true; btn.textContent='Analyse en cours…';
+  status.className='ai-status loading';
+  status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> L\'IA analyse votre recette…';
+  progress.style.display='block'; bar.style.width='0';
+  preview.style.display='none'; useBtn.style.display='none';
+
+  let prog=0;
+  const progInterval=setInterval(()=>{
+    prog=Math.min(prog+Math.random()*12,85);
+    bar.style.width=prog+'%';
+  },300);
+
+  try{
+    const prompt = `Tu es un expert culinaire. Analyse ce texte et extrait une recette structurée.
+
+INPUT: ${input}
+
+Réponds UNIQUEMENT en JSON valide avec exactement cette structure:
+{
+  "nom": "Nom de la recette",
+  "couverts": 4,
+  "temps": "30 min",
+  "cuisson": "20 min",
+  "diff": "Facile",
+  "description": "Description courte et appétissante",
+  "ingredients": "200 · g · farine\n3 · pièces · oeufs\n100 · ml · lait",
+  "etapes": "Étape 1.\nÉtape 2.\nÉtape 3.",
+  "astuce": "Conseil du chef",
+  "region": "Région ou pays d'origine",
+  "ust": "Fouet, Saladier"
+}
+
+Si c'est une URL de vidéo, analyse le contenu probable basé sur le titre/plateforme et crée une recette cohérente. Diff doit être: Facile, Intermédiaire, Avancé ou Expert.`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    clearInterval(progInterval); bar.style.width='100%';
+
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if(!jsonMatch) throw new Error('Format invalide');
+
+    aiExtractedData = JSON.parse(jsonMatch[0]);
+
+    status.className='ai-status success';
+    status.innerHTML='✓ Recette extraite avec succès ! Vérifiez les détails ci-dessous.';
+    preview.style.display='block';
+    preview.innerHTML=`<strong>${aiExtractedData.nom}</strong><br>
+      ${aiExtractedData.description}<br><br>
+      <strong>Ingrédients :</strong><br>${(aiExtractedData.ingredients||'').replace(/\n/g,'<br>')}<br><br>
+      <strong>Étapes :</strong><br>${(aiExtractedData.etapes||'').replace(/\n/g,'<br>')}`;
+    useBtn.style.display='block';
+
+  }catch(e){
+    clearInterval(progInterval);
+    status.className='ai-status error';
+    status.innerHTML='Erreur lors de l\'analyse. Vérifiez votre saisie et réessayez.';
+    console.error(e);
+  }
+
+  bar.style.width='100%';
+  setTimeout(()=>{progress.style.display='none';},500);
+  btn.disabled=false; btn.textContent='✨ Analyser avec l\'IA';
+});
+
+document.getElementById('aiUseBtn').addEventListener('click',()=>{
+  if(!aiExtractedData) return;
+  const d = aiExtractedData;
+  document.getElementById('fNom').value = d.nom||'';
+  document.getElementById('fCouverts').value = d.couverts||4;
+  document.getElementById('fTemps').value = d.temps||'';
+  document.getElementById('fCuisson').value = d.cuisson||'';
+  document.getElementById('fDesc').value = d.description||'';
+  document.getElementById('fIngr').value = d.ingredients||'';
+  document.getElementById('fEtapes').value = d.etapes||'';
+  document.getElementById('fAstuce').value = d.astuce||'';
+  document.getElementById('fRegion').value = d.region||'';
+  document.getElementById('fUst').value = d.ust||'';
+  const diffSel = document.getElementById('fDiff');
+  const diffs = ['Facile','Intermédiaire','Avancé','Expert'];
+  if(diffs.includes(d.diff)) diffSel.value = d.diff;
+  closeOverlay('aiOverlay');
+  openOverlay('formOverlay');
+  toast('Recette importée ! Vérifiez et ajoutez une photo.');
+});
+
+// ══ DELETE ══
+async function delRec(id,idx){
   if(!confirm(`Supprimer "${recipes[idx].nom}" ?`))return;
-  recipes.splice(idx,1); save(); renderAll(); toast('Recette supprimée.');
+  const {error}=await db.from('recettes').delete().eq('id',id);
+  if(error){toast('Erreur suppression.');return;}
+  toast('Recette supprimée.');
+  await loadData(); renderAll();
 }
 
 // ══ NEWSLETTER ══
@@ -945,29 +1160,26 @@ document.getElementById('nlSkip').addEventListener('click',()=>closeOverlay('nlO
 document.getElementById('nlSubmit').addEventListener('click',async()=>{
   const nom=document.getElementById('nlNom').value.trim();
   const email=document.getElementById('nlEmail').value.trim();
-  if(!nom||!email||!email.includes('@')){toast('Prénom et email valide requis.');return;}
-  if(subscribers.find(s=>s.email===email)){toast('Déjà abonné(e) !');closeOverlay('nlOverlay');return;}
-  let ip='inconnu';
-  try{const r=await fetch('https://api.ipify.org?format=json');const d=await r.json();ip=d.ip;}catch(e){}
-  subscribers.push({nom,email,ip,date:new Date().toLocaleDateString('fr-FR')});
-  save();
+  if(!nom||!email||!email.includes('@')){toast('Prénom et email requis.');return;}
+  let ip=localStorage.getItem('ldp_uid')||'inconnu';
+  const {data:existing}=await db.from('abonnes').select('id').eq('email',email).single();
+  if(existing){toast('Vous êtes déjà abonné(e) !');closeOverlay('nlOverlay');return;}
+  const {error}=await db.from('abonnes').insert({nom,email,ip,date_ajout:new Date().toLocaleDateString('fr-FR')});
+  if(error){toast('Erreur inscription.');return;}
+  await loadData();
   document.getElementById('heroStatNl').textContent=subscribers.length;
-  toast(`Bienvenue ${nom} !`);
+  toast(`Bienvenue ${nom} ! Abonnement confirmé.`);
   closeOverlay('nlOverlay');
 });
 
-// ══ ADMIN ══
+// ══ ADMIN LOGIN ══
 document.getElementById('adminTrigger').addEventListener('click',()=>{
   adminClickCount++;
   clearTimeout(adminClickTimer);
   adminClickTimer=setTimeout(()=>adminClickCount=0,3000);
   if(adminClickCount>=3){adminClickCount=0;clearTimeout(adminClickTimer);openOverlay('loginOverlay');}
 });
-document.getElementById('loginCancel').addEventListener('click',()=>{
-  document.getElementById('loginPwd').value='';
-  document.getElementById('loginErr').style.display='none';
-  closeOverlay('loginOverlay');
-});
+document.getElementById('loginCancel').addEventListener('click',()=>closeOverlay('loginOverlay'));
 document.getElementById('loginBtn').addEventListener('click',()=>{
   if(document.getElementById('loginPwd').value===ADMIN_PWD){
     isAdmin=true;
@@ -976,20 +1188,27 @@ document.getElementById('loginBtn').addEventListener('click',()=>{
     closeOverlay('loginOverlay');
     document.getElementById('loginPwd').value='';
     document.getElementById('loginErr').style.display='none';
-    toast('Bienvenue Léonard 👋'); renderAll();
+    toast('Bienvenue Léonard 👋');
+    renderAll();
   }else{
     document.getElementById('loginErr').style.display='block';
     document.getElementById('loginPwd').value='';
   }
 });
 document.getElementById('loginPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});
-document.getElementById('adminPanelBtn').addEventListener('click',()=>{refreshPanel();openOverlay('adminOverlay');});
+
+// ══ ADMIN BAR ══
+document.getElementById('adminPanelBtn').addEventListener('click',async()=>{
+  await loadData(); refreshPanel(); openOverlay('adminOverlay');
+});
 document.getElementById('adminQuitBtn').addEventListener('click',()=>{
   isAdmin=false;document.body.classList.remove('admin-mode');
   document.getElementById('adminBar').classList.remove('on');
   renderAll(); toast('Mode admin désactivé.');
 });
 document.getElementById('adminClose').addEventListener('click',()=>closeOverlay('adminOverlay'));
+
+// ══ ADMIN TABS ══
 document.querySelectorAll('.admin-tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
     document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
@@ -998,44 +1217,78 @@ document.querySelectorAll('.admin-tab').forEach(tab=>{
     document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
   });
 });
+
+// ══ REFRESH PANEL ══
 function refreshPanel(){
   document.getElementById('aStatR').textContent=recipes.length;
   document.getElementById('aStatV').textContent=visitors.length;
   document.getElementById('aStatN').textContent=subscribers.length;
   document.getElementById('aStatS').textContent=MAX_SLOTS-recipes.length;
-  const recent=recipes.slice(-5).reverse();
+  const recent=recipes.slice(0,5);
   document.getElementById('recentRecipes').innerHTML=recent.length
-    ?recent.map(r=>`<div>• <strong>${r.nom}</strong> — ${r.region||'Communauté'} (${r.date})</div>`).join('')
-    :'<div>Aucune recette.</div>';
+    ?recent.map(r=>`<div>• <strong>${r.nom}</strong> — ${r.region||'Communauté'} (${r.date_ajout||''})</div>`).join('')
+    :'<div style="color:var(--warm-gray)">Aucune recette.</div>';
   const rtb=document.getElementById('recipesTableBody'),noR=document.getElementById('noRecipes');
   if(!recipes.length){rtb.innerHTML='';noR.style.display='block';}
-  else{noR.style.display='none';rtb.innerHTML=recipes.map((r,i)=>`<tr><td><strong>${r.nom}</strong></td><td>${r.region||'—'}</td><td>${r.diff}</td><td>${r.date}</td><td><button class="table-del" onclick="adminDelRec(${i})">Supprimer</button></td></tr>`).join('');}
+  else{
+    noR.style.display='none';
+    rtb.innerHTML=recipes.map((r,i)=>`<tr>
+      <td><strong>${r.nom}</strong></td>
+      <td>${r.region||'—'}</td>
+      <td>${r.diff}</td>
+      <td style="font-size:.78rem;">${r.date_ajout||''}</td>
+      <td><button class="table-del" onclick="adminDelRec('${r.id}',${i})">Supprimer</button></td>
+    </tr>`).join('');
+  }
   const vtb=document.getElementById('visitorsTableBody'),noV=document.getElementById('noVisitors');
   if(!visitors.length){vtb.innerHTML='';noV.style.display='block';}
-  else{noV.style.display='none';vtb.innerHTML=visitors.map(v=>`<tr>
-    <td><code style="font-size:.73rem;background:var(--cream);padding:2px 5px;border-radius:2px;">${v.ip}</code></td>
-    <td><strong style="color:${v.visits>=3?'var(--accent)':'inherit'}">${v.visits}</strong></td>
-    <td style="font-size:.74rem;">${v.first}</td>
-    <td style="font-size:.74rem;">${v.last}</td>
-    <td>${subscribers.find(s=>s.ip===v.ip)?'<span style="color:var(--success);font-size:.71rem;">✓ Abonné</span>':v.visits>=3?'<span style="color:var(--accent);font-size:.71rem;">Proposé</span>':'<span style="color:var(--warm-gray);font-size:.71rem;">—</span>'}</td>
-  </tr>`).join('');}
+  else{
+    noV.style.display='none';
+    vtb.innerHTML=visitors.map(v=>`<tr>
+      <td><code style="font-size:.75rem;background:var(--cream);padding:2px 6px;border-radius:2px;">${v.ip}</code></td>
+      <td><strong style="color:${v.visits>=3?'var(--accent)':'inherit'}">${v.visits}</strong></td>
+      <td style="font-size:.78rem;">${v.first_visit||''}</td>
+      <td style="font-size:.78rem;">${v.last_visit||''}</td>
+      <td>${subscribers.find(s=>s.ip===v.ip)
+        ?'<span style="color:var(--success);font-size:.75rem;">✓ Abonné</span>'
+        :v.visits>=3
+          ?'<span style="color:var(--accent-light);font-size:.75rem;">Proposé</span>'
+          :'<span style="color:var(--warm-gray);font-size:.75rem;">—</span>'}</td>
+    </tr>`).join('');
+  }
   const ntb=document.getElementById('nlTableBody'),noNl=document.getElementById('noNl');
   document.getElementById('nlTableCount').textContent=subscribers.length;
   if(!subscribers.length){ntb.innerHTML='';noNl.style.display='block';}
-  else{noNl.style.display='none';ntb.innerHTML=subscribers.map((s,i)=>`<tr><td>${s.nom}</td><td>${s.email}</td><td style="font-size:.74rem;">${s.date}</td><td><button class="table-del" onclick="removeSub(${i})">Retirer</button></td></tr>`).join('');}
+  else{
+    noNl.style.display='none';
+    ntb.innerHTML=subscribers.map((s,i)=>`<tr>
+      <td>${s.nom}</td>
+      <td>${s.email}</td>
+      <td style="font-size:.78rem;">${s.date_ajout||''}</td>
+      <td><button class="table-del" onclick="removeSub('${s.id}',${i})">Retirer</button></td>
+    </tr>`).join('');
+  }
 }
-function adminDelRec(idx){
+
+async function adminDelRec(id,idx){
   if(!confirm(`Supprimer "${recipes[idx].nom}" ?`))return;
-  recipes.splice(idx,1); save(); renderAll(); refreshPanel(); toast('Recette supprimée.');
+  await db.from('recettes').delete().eq('id',id);
+  toast('Recette supprimée.');
+  await loadData(); renderAll(); refreshPanel();
 }
-function removeSub(idx){
+async function removeSub(id,idx){
   if(!confirm(`Retirer ${subscribers[idx].email} ?`))return;
-  subscribers.splice(idx,1); save(); refreshPanel(); toast('Abonné retiré.');
+  await db.from('abonnes').delete().eq('id',id);
+  toast('Abonné retiré.');
+  await loadData(); refreshPanel();
 }
-document.getElementById('deleteAllBtn').addEventListener('click',()=>{
+document.getElementById('deleteAllBtn').addEventListener('click',async()=>{
   if(!confirm('Supprimer TOUTES les recettes ?'))return;
-  recipes=[]; save(); renderAll(); refreshPanel(); toast('Toutes les recettes supprimées.');
+  await db.from('recettes').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  toast('Toutes les recettes supprimées.');
+  await loadData(); renderAll(); refreshPanel();
 });
+
 document.getElementById('sendNlBtn').addEventListener('click',()=>{
   if(!subscribers.length){toast('Aucun abonné.');return;}
   const subj=encodeURIComponent(document.getElementById('composeSubject').value||'Newsletter — Les Délices Partagées');
@@ -1046,7 +1299,7 @@ document.getElementById('sendNlBtn').addEventListener('click',()=>{
 });
 document.getElementById('previewNlBtn').addEventListener('click',()=>{
   const p=document.getElementById('nlPreview');
-  if(p.style.display==='none'||!p.style.display){
+  if(p.style.display==='none'){
     p.innerHTML=subscribers.length?'<strong>Destinataires :</strong><br>'+subscribers.map(s=>`${s.nom} &lt;${s.email}&gt;`).join('<br>'):'Aucun abonné.';
     p.style.display='block';
   }else{p.style.display='none';}
@@ -1058,9 +1311,15 @@ document.getElementById('heroAddBtn').addEventListener('click',e=>{e.preventDefa
 document.getElementById('bannerAddBtn').addEventListener('click',()=>openForm());
 document.getElementById('aboutAddBtn').addEventListener('click',()=>openForm());
 document.getElementById('footAddBtn').addEventListener('click',e=>{e.preventDefault();openForm();});
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>30));
 
 // ══ INIT ══
-load(); renderAll(); trackVisit();
+async function init(){
+  await loadData();
+  renderAll();
+  trackVisit();
+}
+init();
 </script>
 </body>
 </html>
