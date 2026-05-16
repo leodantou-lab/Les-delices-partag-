@@ -41,11 +41,36 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--charcoal);font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;letter-spacing:.02em;}
 .nav-logo em{color:var(--accent);font-style:italic;}
 .logo-circle{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;font-weight:600;flex-shrink:0;}
-.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
-.nav-links a{text-decoration:none;color:var(--warm-gray);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;}
-.nav-links a:hover{color:var(--accent);}
-.nav-cta{background:var(--accent);color:white!important;padding:.6rem 1.4rem;border-radius:2px;font-size:.72rem!important;letter-spacing:.14em!important;transition:background .2s!important;}
-.nav-cta:hover{background:var(--accent-dark)!important;}
+.nav-right{display:flex;align-items:center;gap:.6rem;}
+.nav-pill{
+  display:flex;align-items:center;height:36px;
+  background:rgba(255,255,255,0.52);
+  backdrop-filter:blur(24px) saturate(2);
+  -webkit-backdrop-filter:blur(24px) saturate(2);
+  border:1px solid rgba(255,255,255,0.65);
+  box-shadow:0 3px 16px rgba(139,111,78,.06),inset 0 1px 0 rgba(255,255,255,.85);
+  border-radius:50px;padding:0 1.1rem;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--charcoal);text-decoration:none;
+  transition:all .25s cubic-bezier(.16,1,.3,1);white-space:nowrap;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+.nav-pill:hover{
+  background:rgba(255,255,255,0.82);
+  box-shadow:0 4px 22px rgba(139,111,78,.13),inset 0 1px 0 rgba(255,255,255,1);
+  color:var(--accent);
+}
+.nav-pill-accent{
+  background:rgba(139,111,78,0.9);
+  border-color:rgba(196,168,130,0.35);
+  box-shadow:0 3px 16px rgba(139,111,78,.2),inset 0 1px 0 rgba(255,255,255,.15);
+  color:white;
+}
+.nav-pill-accent:hover{
+  background:rgba(92,72,50,0.95);
+  box-shadow:0 5px 24px rgba(139,111,78,.3);
+  color:white;
+}
 
 /* SEARCH BAR — liquid glass */
 .nav-search{position:relative;display:flex;align-items:center;}
@@ -298,12 +323,12 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .photo-upload-zone.has-photo .photo-remove{display:flex;}
 
 /* AI VIDEO MODAL */
-.ai-modal{background:white;max-width:600px;border-radius:8px;width:100%;}
-.ai-modal-head{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
-.ai-modal-head h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--dark);}
+.ai-modal{background:white;max-width:480px;border-radius:4px;width:100%;}
+.ai-modal-head{padding:1.8rem 2rem 1.4rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
+.ai-modal-head h2{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:var(--dark);letter-spacing:-.01em;}
 .ai-modal-head p{font-size:.8rem;color:var(--warm-gray);margin-top:.2rem;}
-.ai-modal-body{padding:2rem 2.5rem;}
-.ai-steps{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:2rem;}
+.ai-modal-body{padding:1.6rem 2rem 2rem;}
+.ai-steps{display:none;}
 .ai-step{display:flex;align-items:flex-start;gap:1rem;}
 .ai-step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:white;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Cormorant Garamond',serif;font-size:.9rem;}
 .ai-step-txt{font-size:.84rem;color:var(--warm-gray);line-height:1.6;padding-top:.2rem;}
@@ -398,26 +423,17 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     <div class="logo-circle">LD</div>
     Les <em>Délices</em> Partagées
   </a>
-  <ul class="nav-links">
-    <li><a href="#communaute">Communauté</a></li>
-    <li>
-      <div class="nav-search">
-        <div class="search-wrap" id="navSearchWrap">
-          <span class="search-icon">⌕</span>
-          <input type="text" id="navSearchInput" placeholder="Rechercher une recette…" autocomplete="off" />
-          <button class="search-clear" id="navSearchClear">✕</button>
-        </div>
-      </div>
-    </li>
-    <li>
-      <button class="ai-video-btn" id="aiVideoBtn">
-        <div class="ai-video-icon">▶</div>
-        Importer une recette
-      </button>
-    </li>
-    <li><a href="#a-propos">À propos</a></li>
-    <li><a href="#" class="nav-cta" id="navAddBtn">+ Ajouter</a></li>
-  </ul>
+  <div class="nav-right">
+    <a href="#communaute" class="nav-pill">Communauté</a>
+    <div class="search-wrap" id="navSearchWrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="navSearchInput" placeholder="Rechercher…" autocomplete="off" />
+      <button class="search-clear" id="navSearchClear">✕</button>
+    </div>
+    <button class="nav-pill" id="aiVideoBtn">IA vidéo</button>
+    <a href="#a-propos" class="nav-pill">À propos</a>
+    <a href="#" class="nav-pill nav-pill-accent" id="navAddBtn">+ Ajouter</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -427,7 +443,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     <h1 class="hero-title">La cuisine,<br>un art qui <em>se partage</em></h1>
     <p class="hero-desc">Un espace vivant où chaque recette raconte une histoire. Partagez vos créations, découvrez celles des autres, et faites vivre la tradition culinaire française.</p>
     <div class="hero-actions">
-      <a href="#communaute" class="btn btn-dark">Explorer les recettes</a>
       <a href="#" class="btn btn-outline" id="heroAddBtn">Partager la mienne</a>
     </div>
     <div class="hero-stats">
@@ -591,27 +606,24 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   <div class="modal ai-modal">
     <div class="ai-modal-head">
       <div>
-        <h2>✨ Importer une recette</h2>
-        <p>Collez une URL (YouTube, TikTok, Instagram, blog…) ou du texte — Claude extrait tous les champs automatiquement.</p>
+        <h2>Importer une recette</h2>
+        <p>URL ou description — le formulaire se remplit automatiquement.</p>
       </div>
       <button class="close-btn" id="aiClose">✕</button>
     </div>
     <div class="ai-modal-body">
-
-      <div class="ai-steps">
-        <div class="ai-step"><div class="ai-step-num">1</div><div class="ai-step-txt"><strong>Collez n'importe quelle URL</strong> (YouTube, TikTok, Instagram, blog culinaire…) ou décrivez la recette en texte.</div></div>
-        <div class="ai-step"><div class="ai-step-num">2</div><div class="ai-step-txt"><strong>Claude lit et comprend</strong> le contenu — il extrait intelligemment le nom, les ingrédients, les étapes, la difficulté, etc.</div></div>
-        <div class="ai-step"><div class="ai-step-num">3</div><div class="ai-step-txt"><strong>Vérifiez et publiez</strong> en un clic — le formulaire est pré-rempli automatiquement.</div></div>
-      </div>
       <div class="f-group">
-        <label class="f-label">URL de vidéo ou description de recette</label>
-        <textarea class="f-textarea" id="aiInput" rows="4" placeholder="Collez n'importe quelle URL :&#10;https://www.youtube.com/watch?v=…&#10;https://www.tiktok.com/@chef/video/…&#10;https://www.instagram.com/p/…&#10;https://monblogcuisine.fr/recette…&#10;&#10;Ou décrivez directement votre recette en texte."></textarea>
+        <label class="f-label">URL ou texte libre</label>
+        <input type="text" class="f-input" id="aiInput"
+          placeholder="YouTube, TikTok, Instagram, blog… ou décrivez votre recette"
+          style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;padding:1rem 1.1rem;" />
+        <p class="f-hint" style="margin-top:.5rem;">Collez un lien ou écrivez quelques mots — l'IA s'occupe du reste.</p>
       </div>
-      <button class="btn btn-accent" id="aiAnalyzeBtn" style="width:100%">✨ Analyser avec l'IA</button>
-      <div class="ai-progress" id="aiProgress"><div class="ai-progress-bar" id="aiProgressBar"></div></div>
+      <button class="btn btn-accent" id="aiAnalyzeBtn" style="width:100%;margin-top:.2rem">Analyser</button>
+      <div class="ai-progress" id="aiProgress" style="margin-top:1rem;"><div class="ai-progress-bar" id="aiProgressBar"></div></div>
       <div class="ai-status" id="aiStatus"></div>
       <div class="ai-result-preview" id="aiResultPreview"></div>
-      <button class="btn btn-dark ai-use-btn" id="aiUseBtn" style="display:none">→ Utiliser cette recette</button>
+      <button class="btn btn-dark ai-use-btn" id="aiUseBtn" style="display:none;width:100%;margin-top:.8rem">Utiliser cette recette</button>
     </div>
   </div>
 </div>
@@ -726,7 +738,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 // ══ CONFIG SUPABASE ══
 const SUPABASE_URL = 'https://poccnuekyqchzdymywfk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvY2NudWVreXFjaHpkeW15d2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2Njg5ODYsImV4cCI6MjA5NDI0NDk4Nn0.L3lQroBKP9KhgHoMR76an2Dkc8TqZD_OoysztbYGukw';
-const ADMIN_PWD   = 'leonard@admin2024';
+const ADMIN_PWD   = '@Leonard280611';
 const MAX_SLOTS   = 1000;
 const ADMIN_EMAIL = 'leodantou695@gmail.com';
 
@@ -927,14 +939,36 @@ function openRec(idx){
 function renderIngr(){
   const r=currentRec.data;
   const ratio=currentSrv/baseSrv;
-  const ingrs=safeParseJSON(r.ingredients);
-  if(!Array.isArray(ingrs)){document.getElementById('mIngr').innerHTML='';return;}
+  let ingrs=safeParseJSON(r.ingredients);
+  // Si le JSON contient des objets avec qty/unit/name (format ·)
+  // ou si c'est un ancien format avec . comme séparateur, on re-parse
+  if(!Array.isArray(ingrs)){
+    // Essayer de parser comme texte brut avec . ou ·
+    const raw=r.ingredients||'';
+    ingrs=raw.split('\n').filter(l=>l.trim()).map(line=>{
+      const sep=line.includes('·')?'·':'.';
+      const p=line.split(sep).map(x=>x.trim());
+      if(p.length>=3)return{qty:parseFloat(p[0])||null,unit:p[1],name:p[2],raw:line};
+      return{qty:null,unit:'',name:line,raw:line};
+    });
+  }
   document.getElementById('mIngr').innerHTML=ingrs.map(ing=>{
-    if(ing.qty!==null&&ing.qty!==undefined){
-      const s=Math.round(ing.qty*ratio*100)/100;
-      return`<li><span class="ingr-qty">${s} ${ing.unit||''}</span>${ing.name}</li>`;
+    // Gérer les anciens ingrédients au format "200.grammes.farine"
+    // où qty=null mais raw="200.grammes.farine"
+    let qty=parseFloat(ing.qty);
+    let unit=ing.unit||'';
+    let name=ing.name||ing.raw||'';
+    // Si qty est NaN et raw contient des points, re-parser
+    if(isNaN(qty)&&name.includes('.')){
+      const p=name.split('.');
+      if(p.length>=3){qty=parseFloat(p[0]);unit=p[1];name=p.slice(2).join(' ');}
     }
-    return`<li><span class="ingr-qty">—</span>${ing.raw||ing.name}</li>`;
+    if(!isNaN(qty)&&qty>0){
+      const s=qty*ratio;
+      const display=Number.isInteger(s)?s:parseFloat(s.toFixed(1));
+      return`<li><span class="ingr-qty">${display} ${unit.trim()}</span>${name.trim()}</li>`;
+    }
+    return`<li><span class="ingr-qty">—</span>${name.trim()}</li>`;
   }).join('');
 }
 
@@ -1154,188 +1188,6 @@ document.getElementById('aiVideoBtn').addEventListener('click',()=>{
 });
 document.getElementById('aiClose').addEventListener('click',()=>closeOverlay('aiOverlay'));
 
-// ── Fetch page content via Jina AI Reader (gratuit, pas de clé) ──
-async function fetchPageContent(url){
-  const jinaUrl = 'https://r.jina.ai/' + url;
-  const r = await fetch(jinaUrl, {
-    signal: AbortSignal.timeout(18000),
-    headers: { 'Accept': 'text/plain' }
-  });
-  if(!r.ok) throw new Error('Jina error '+r.status);
-  let text = await r.text();
-  // Nettoie les artefacts Jina
-  text = text
-    .replace(/\[.*?\]\(https?:\/\/[^)]*\)/g, '')
-    .replace(/https?:\/\/\S+/g, '')
-    .replace(/={3,}/g, '')
-    .replace(/\n{3,}/g, '\n\n');
-
-  // Pour TikTok / Instagram : garde seulement les premières lignes pertinentes
-  // et coupe avant les contenus "suggérés" (vidéos recommandées, other posts)
-  if(/tiktok\.com|instagram\.com/i.test(url)){
-    // Coupe après les premiers gros blocs (publicité, autres vidéos)
-    const cutMarkers = [
-      /TikTok Shop/i, /Discover more/i, /More videos/i, /You may like/i,
-      /Suggested videos/i, /Others also watched/i, /Related videos/i,
-      /For You/i, /Following/i, /LIVE/i
-    ];
-    let cutIdx = text.length;
-    for(const marker of cutMarkers){
-      const m = text.search(marker);
-      if(m > 200 && m < cutIdx) cutIdx = m;
-    }
-    text = text.slice(0, cutIdx);
-    // Sur TikTok, la description est souvent dans les 2 premiers paragraphes après le titre
-    // On garde les 3000 premiers caractères (assez pour titre + desc + hashtags)
-    text = text.slice(0, 3000);
-  } else {
-    text = text.slice(0, 9000);
-  }
-
-  return text.trim();
-}
-
-// ── Fallback YouTube via Piped API ──
-async function fetchYouTubeViapiped(videoId){
-  const PIPED = [
-    'https://pipedapi.kavin.rocks',
-    'https://api.piped.projectsegfault.net',
-    'https://piped-api.garudalinux.org'
-  ];
-  for(const inst of PIPED){
-    try{
-      const r = await fetch(`${inst}/streams/${videoId}`,{signal:AbortSignal.timeout(6000)});
-      if(r.ok){
-        const d = await r.json();
-        return (d.title||'') + '\n\n' + (d.description||'');
-      }
-    }catch(e){ continue; }
-  }
-  return '';
-}
-
-// ── Prompt partagé pour extraction de recette ──
-function buildRecipePrompt(rawText, sourceHint){
-  return `Tu es un assistant spécialisé dans l'extraction de recettes de cuisine à partir de contenu de réseaux sociaux (TikTok, Instagram, YouTube).
-
-Source : ${sourceHint}
-IMPORTANT : Le texte peut contenir du bruit (publicités, vidéos suggérées, hashtags non liés, contenu d'autres posts). IGNORE tout ce qui ne concerne pas la recette. Concentre-toi uniquement sur le titre de la vidéo/post et sa description pour extraire la recette.
-
-Si le titre contient le nom d'une recette (ex: "crêpes facile et rapide"), utilise-le comme nom même si la description est pauvre.
-Si les ingrédients ou étapes ne sont pas explicitement listés, déduis-les intelligemment à partir du nom de la recette et des hashtags.
-Réponds UNIQUEMENT en JSON valide, sans backticks, sans commentaires, sans texte avant ou après.
-
-Format JSON attendu (tous les champs en français) :
-{
-  "nom": "Nom de la recette",
-  "description": "Courte description appétissante (1-2 phrases)",
-  "couverts": 4,
-  "temps": "30 min",
-  "cuisson": "20 min",
-  "diff": "Facile",
-  "region": "",
-  "ingredients": "200 · g · farine\\n3 · pièces · œufs\\n100 · ml · lait",
-  "etapes": "Mélanger la farine et les œufs.\\nAjouter le lait progressivement.\\nCuire à la poêle 2 min de chaque côté.",
-  "astuce": "Conseil du chef optionnel",
-  "ust": "Fouet, Poêle"
-}
-
-Règles strictes :
-- "diff" : exactement "Facile", "Intermédiaire", "Avancé" ou "Expert"
-- "ingredients" : une ligne par ingrédient, format "quantité · unité · nom"
-- "etapes" : une étape par ligne, pas de numérotation, minimum 3 étapes
-- "couverts" : nombre entier (défaut : 4)
-- "region" : pays/région si détectable, sinon chaîne vide ""
-- Si une info manque, déduis-la intelligemment à partir du type de recette
-
-Texte brut (ignore le contenu non lié à la recette) :
-${rawText}`;
-}
-
-// ── Groq API (gratuit, rapide) ──
-const GROQ_KEY = 'gsk_free';  // Clé publique de démo — à remplacer par une vraie clé sur https://console.groq.com (gratuit)
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-
-async function extractRecipeWithGroq(rawText, sourceHint){
-  const resp = await fetch(GROQ_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GROQ_KEY}`
-    },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      messages: [{ role: 'user', content: buildRecipePrompt(rawText, sourceHint) }],
-      temperature: 0.3,
-      max_tokens: 1500
-    })
-  });
-  if(!resp.ok){
-    const err = await resp.json().catch(()=>({}));
-    throw new Error('Groq : ' + (err.error?.message || resp.status));
-  }
-  const data = await resp.json();
-  const raw = data.choices?.[0]?.message?.content || '';
-  const clean = raw.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
-  return JSON.parse(clean);
-}
-
-// ── Gemini Flash (2ème essai) ──
-const GEMINI_KEY = 'AIzaSyC1o3ZZOTMpF-cV5EmoxMvvy7IoOqUHnGU';
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
-
-async function extractRecipeWithGemini(rawText, sourceHint){
-  const resp = await fetch(GEMINI_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: buildRecipePrompt(rawText, sourceHint) }] }],
-      generationConfig: { temperature: 0.3, maxOutputTokens: 1500 }
-    })
-  });
-  if(!resp.ok){
-    const err = await resp.json().catch(()=>({}));
-    throw new Error('Gemini : ' + (err.error?.message || resp.status));
-  }
-  const data = await resp.json();
-  const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-  const clean = raw.replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'').trim();
-  return JSON.parse(clean);
-}
-
-// ── Orchestrateur : essaie Groq → Gemini → parseur local ──
-async function extractRecipe(rawText, sourceHint, statusEl){
-  // Essai 1 : Groq
-  try{
-    statusEl.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Extraction avec l\'IA (Groq)…';
-    return await extractRecipeWithGroq(rawText, sourceHint);
-  }catch(e){ console.warn('Groq échoué:', e.message); }
-
-  // Essai 2 : Gemini
-  try{
-    statusEl.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Extraction avec l\'IA (Gemini)…';
-    return await extractRecipeWithGemini(rawText, sourceHint);
-  }catch(e){ console.warn('Gemini échoué:', e.message); }
-
-  // Fallback : parseur local
-  statusEl.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Extraction locale…';
-  const local = parseRecipeText(rawText);
-  // Convertit le résultat du parseur local au format attendu
-  return {
-    nom: local.nom,
-    description: local.description,
-    couverts: local.couverts,
-    temps: local.temps,
-    cuisson: local.cuisson,
-    diff: local.diff,
-    region: local.region,
-    ingredients: local.ingredients,
-    etapes: local.etapes,
-    astuce: local.astuce,
-    ust: local.ust
-  };
-}
-
 document.getElementById('aiAnalyzeBtn').addEventListener('click', async()=>{
   const input = document.getElementById('aiInput').value.trim();
   if(!input){toast('Collez une URL ou décrivez votre recette.');return;}
@@ -1349,79 +1201,102 @@ document.getElementById('aiAnalyzeBtn').addEventListener('click', async()=>{
 
   btn.disabled=true; btn.textContent='Analyse en cours…';
   status.className='ai-status loading';
-  status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Analyse en cours…';
+  status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Gemini analyse la vidéo…';
   progress.style.display='block'; bar.style.width='0';
   preview.style.display='none'; useBtn.style.display='none';
 
-  // Progression animée
+  // Animation de progression
   let prog=0;
-  const progInterval=setInterval(()=>{ prog=Math.min(prog+8,88); bar.style.width=prog+'%'; },200);
+  const progInterval=setInterval(()=>{
+    prog=Math.min(prog+4,88); bar.style.width=prog+'%';
+  },400);
+
+  const isUrl = /^https?:\/\//i.test(input.trim());
 
   try{
-    const isUrl = /^https?:\/\//i.test(input.trim());
-    const ytMatch = input.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-    let rawText = '';
-    let sourceHint = 'texte libre';
-
     if(isUrl){
-      // Détecte le type de source
-      if(ytMatch) sourceHint = 'vidéo YouTube';
-      else if(/tiktok\.com/i.test(input)) sourceHint = 'vidéo TikTok';
-      else if(/instagram\.com/i.test(input)) sourceHint = 'post Instagram';
-      else sourceHint = 'page web';
+      // ── URL vidéo : appel à la Edge Function Supabase + Gemini ──
+      status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Téléchargement et analyse par Gemini… (20-40 sec)';
 
-      status.innerHTML=`<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Lecture de la page (${sourceHint})…`;
+      const res = await fetch(
+        `${SUPABASE_URL}/functions/v1/analyze-recipe`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({ url: input.trim() }),
+          signal: AbortSignal.timeout(60000)
+        }
+      );
 
-      // Essai 1 : Jina Reader (universel)
-      try{
-        rawText = await fetchPageContent(input.trim());
-      }catch(e){}
-
-      // Essai 2 : fallback YouTube via Piped
-      if(!rawText && ytMatch){
-        status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> Lecture via Piped…';
-        rawText = await fetchYouTubeViapiped(ytMatch[1]);
+      if(!res.ok){
+        const errText = await res.text();
+        throw new Error('Erreur serveur : ' + errText);
       }
 
-      if(!rawText) throw new Error('Impossible de lire cette page. Copiez-collez directement le texte de la description.');
+      const r = await res.json();
+      if(r.error) throw new Error(r.error);
 
-      // Si le texte est trop court pour contenir une recette
-      if(rawText.length < 50){
-        throw new Error('Contenu trop court récupéré. Pour TikTok/Instagram, copiez-collez directement la description de la vidéo.');
+      aiExtractedData = {
+        nom:         r.nom         || '',
+        couverts:    r.couverts    || 4,
+        temps:       r.temps_prep  || '',
+        cuisson:     r.temps_cuisson || '',
+        diff:        r.difficulte  || 'Facile',
+        description: r.description || '',
+        ingredients: r.ingredients || '',
+        etapes:      r.etapes      || '',
+        astuce:      r.astuce      || '',
+        geste:       r.geste       || '',
+        region:      r.region      || '',
+        ust:         r.ustensiles  || '',
+        image_url:   r.image_url   || ''
+      };
+
+      // Appliquer l'image si disponible
+      if(aiExtractedData.image_url){
+        photoBase64 = aiExtractedData.image_url;
+        const pz = document.getElementById('photoZone');
+        const pp = document.getElementById('photoPreview');
+        if(pp){ pp.src = aiExtractedData.image_url; }
+        if(pz){ pz.classList.add('has-photo'); }
       }
+
     } else {
-      // Texte libre
-      rawText = input;
-      sourceHint = 'description libre';
+      // ── Texte libre : parseur local ──
+      await new Promise(r=>setTimeout(r,300));
+      aiExtractedData = parseRecipeText(input);
     }
-
-    status.innerHTML='<div class="spinner" style="width:18px;height:18px;margin:0;flex-shrink:0;"></div> L\'IA extrait la recette…';
-
-    // Extraction intelligente avec fallback automatique
-    aiExtractedData = await extractRecipe(rawText, sourceHint, status);
 
     clearInterval(progInterval); bar.style.width='100%';
 
+    if(!aiExtractedData.nom && !aiExtractedData.ingredients){
+      throw new Error('Aucune recette détectée. Essayez de coller le texte directement.');
+    }
+
     status.className='ai-status success';
-    status.innerHTML='✓ Recette extraite ! Vérifiez et complétez si besoin.';
+    status.innerHTML='✓ Recette analysée par Gemini ! Vérifiez et complétez si besoin.';
     preview.style.display='block';
     preview.innerHTML=`
-      <strong style="font-size:1rem;font-family:'Cormorant Garamond',serif;">${aiExtractedData.nom||'?'}</strong><br>
-      <span style="color:var(--warm-gray);font-size:.8rem;">${aiExtractedData.description||''}</span><br><br>
+      ${aiExtractedData.image_url ? `<img src="${aiExtractedData.image_url}" style="width:100%;max-height:160px;object-fit:cover;border-radius:4px;margin-bottom:.8rem;" onerror="this.style.display='none'">` : ''}
+      <strong>${aiExtractedData.nom||'?'}</strong><br>
+      ${aiExtractedData.description||''}<br><br>
       ${aiExtractedData.ingredients
-        ? `<strong>Ingrédients :</strong><br><span style="font-size:.8rem;">${aiExtractedData.ingredients.replace(/\n/g,'<br>')}</span>`
-        : '<em style="color:var(--warm-gray)">Pas d\'ingrédients — à compléter.</em>'}
-      ${aiExtractedData.etapes ? `<br><br><strong>Étapes :</strong><br><span style="font-size:.8rem;">${aiExtractedData.etapes.replace(/\n/g,'<br>')}</span>` : ''}`;
+        ? `<strong>Ingrédients :</strong><br>${aiExtractedData.ingredients.replace(/\n/g,'<br>')}`
+        : '<em style="color:var(--warm-gray)">Pas d\'ingrédients détectés — à compléter manuellement.</em>'}
+      ${aiExtractedData.etapes ? `<br><br><strong>Étapes :</strong><br>${aiExtractedData.etapes.replace(/\n/g,'<br>')}` : ''}`;
     useBtn.style.display='block';
 
   }catch(e){
     clearInterval(progInterval);
     status.className='ai-status error';
-    const msg = e.message||'Erreur inconnue.';
-    status.innerHTML=`❌ ${msg}`;
+    status.innerHTML='❌ ' + (e.message||'Erreur. Vérifiez que la Edge Function est déployée ou collez le texte directement.');
+    console.error('Erreur analyse:', e);
   }
 
-  setTimeout(()=>{ progress.style.display='none'; },600);
+  setTimeout(()=>{progress.style.display='none';},500);
   btn.disabled=false; btn.textContent='✨ Analyser';
 });
 
@@ -1436,14 +1311,23 @@ document.getElementById('aiUseBtn').addEventListener('click',()=>{
   document.getElementById('fIngr').value = d.ingredients||'';
   document.getElementById('fEtapes').value = d.etapes||'';
   document.getElementById('fAstuce').value = d.astuce||'';
+  document.getElementById('fGeste').value = d.geste||'';
   document.getElementById('fRegion').value = d.region||'';
   document.getElementById('fUst').value = d.ust||'';
   const diffSel = document.getElementById('fDiff');
   const diffs = ['Facile','Intermédiaire','Avancé','Expert'];
   if(diffs.includes(d.diff)) diffSel.value = d.diff;
+  // Image de la vidéo
+  if(d.image_url){
+    photoBase64 = d.image_url;
+    const pp = document.getElementById('photoPreview');
+    const pz = document.getElementById('photoZone');
+    if(pp) pp.src = d.image_url;
+    if(pz) pz.classList.add('has-photo');
+  }
   closeOverlay('aiOverlay');
   openOverlay('formOverlay');
-  toast('Recette importée ! Vérifiez et ajoutez une photo.');
+  toast('✨ Recette importée par Gemini ! Vérifiez et publiez.');
 });
 
 // ══ DELETE ══
