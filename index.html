@@ -10,18 +10,34 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <!--
-  ╔══════════════════════════════════════════════════════════╗
-  ║  CONFIGURATION SUPABASE GOOGLE OAUTH                     ║
-  ║  Avant de tester la connexion Google, assurez-vous que : ║
-  ║  1. Dans Supabase > Authentication > Providers,          ║
-  ║     activez "Google" et renseignez Client ID + Secret.   ║
-  ║  2. Dans Google Cloud Console, ajoutez l'URL de          ║
-  ║     redirection : https://[ref].supabase.co/auth/v1/callback ║
-  ║  3. Ajoutez la colonne user_id à la table recettes :     ║
-  ║     ALTER TABLE recettes                                  ║
-  ║       ADD COLUMN IF NOT EXISTS user_id UUID              ║
-  ║       REFERENCES auth.users(id);                         ║
-  ╚══════════════════════════════════════════════════════════╝
+  ══════════════════════════════════════════════════
+  SUPABASE SQL à exécuter AVANT de tester :
+
+  1. Ajouter la colonne views aux recettes :
+  ALTER TABLE recettes ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;
+
+  2. Ajouter la colonne user_id si pas déjà fait :
+  ALTER TABLE recettes ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id);
+
+  3. Créer la table profils :
+  CREATE TABLE IF NOT EXISTS profils (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    nom TEXT,
+    age INTEGER,
+    avatar TEXT,
+    email TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
+
+  4. Activer RLS sur profils :
+  ALTER TABLE profils ENABLE ROW LEVEL SECURITY;
+  CREATE POLICY "Lecture publique profils" ON profils FOR SELECT USING (true);
+  CREATE POLICY "Insertion propre profil" ON profils FOR INSERT WITH CHECK (auth.uid() = id);
+  CREATE POLICY "Modification propre profil" ON profils FOR UPDATE USING (auth.uid() = id);
+
+  5. Ajouter la colonne email si la table existe déjà :
+  ALTER TABLE profils ADD COLUMN IF NOT EXISTS email TEXT;
+  ══════════════════════════════════════════════════
 -->
 
 <style>
@@ -31,7 +47,6 @@
   --accent:#8b6f4e;--accent-light:#c4a882;--accent-dark:#5c4832;
   --white:#ffffff;--border:#ddd5c6;--danger:#c0614b;--success:#5a8a5a;
   --glass-bg:rgba(250,247,242,0.55);--glass-border:rgba(255,255,255,0.45);
-  --glass-shadow:0 8px 32px rgba(44,40,36,0.12);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -45,7 +60,7 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .nav-logo em{color:var(--accent);font-style:italic;}
 .logo-circle{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.85rem;font-weight:600;flex-shrink:0;}
 .nav-right{display:flex;align-items:center;gap:.6rem;}
-.nav-pill{display:flex;align-items:center;height:36px;background:rgba(255,255,255,0.52);backdrop-filter:blur(24px) saturate(2);border:1px solid rgba(255,255,255,0.65);box-shadow:0 3px 16px rgba(139,111,78,.06),inset 0 1px 0 rgba(255,255,255,.85);border-radius:50px;padding:0 1.1rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;transition:all .25s;white-space:nowrap;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.nav-pill{display:flex;align-items:center;height:36px;background:rgba(255,255,255,0.52);backdrop-filter:blur(24px) saturate(2);border:1px solid rgba(255,255,255,0.65);box-shadow:0 3px 16px rgba(139,111,78,.06),inset 0 1px 0 rgba(255,255,255,.85);border-radius:50px;padding:0 1.1rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;transition:all .25s;white-space:nowrap;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid rgba(255,255,255,0.65);}
 .nav-pill:hover{background:rgba(255,255,255,0.82);color:var(--accent);}
 .nav-pill-accent{background:rgba(139,111,78,0.9);border-color:rgba(196,168,130,0.35);box-shadow:0 3px 16px rgba(139,111,78,.2),inset 0 1px 0 rgba(255,255,255,.15);color:white;}
 .nav-pill-accent:hover{background:rgba(92,72,50,0.95);color:white;}
@@ -58,9 +73,9 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .search-clear.visible{display:flex;}
 .search-clear:hover{background:var(--accent);color:white;}
 
-/* Nav user area */
+/* Nav user */
 .nav-user-area{display:none;align-items:center;gap:.6rem;}
-.nav-user-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid var(--accent-light);display:none;}
+.nav-user-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid var(--accent-light);}
 .nav-user-name{font-size:.72rem;color:var(--charcoal);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.04em;}
 .nav-user-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0;}
 
@@ -76,9 +91,9 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .btn{display:inline-block;text-decoration:none;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
 .btn-dark{background:var(--charcoal);color:white;padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;transition:background .25s,transform .2s;}
 .btn-dark:hover{background:var(--accent);transform:translateY(-1px);}
-.btn-outline{background:transparent;color:var(--charcoal);padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);border-radius:2px;transition:border-color .25s,color .25s;}
+.btn-outline{background:transparent;color:var(--charcoal);padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);border-radius:2px;transition:border-color .25s,color .25s;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
-.btn-accent{background:var(--accent);color:white;padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;transition:background .25s;}
+.btn-accent{background:var(--accent);color:white;padding:.95rem 2.2rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;transition:background .25s;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;}
 .btn-accent:hover{background:var(--accent-dark);}
 .hero-right{position:relative;overflow:hidden;}
 .hero-right img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 6s ease;}
@@ -114,6 +129,7 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
 .recipe-card:hover .card-img-wrap img{transform:scale(1.05);}
 .card-badge{position:absolute;top:.9rem;left:.9rem;background:var(--accent);color:white;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:.3rem .7rem;border-radius:1px;}
+.card-views{position:absolute;top:.9rem;right:.9rem;background:rgba(26,22,18,.55);color:rgba(255,255,255,.85);font-size:.6rem;letter-spacing:.1em;padding:.28rem .6rem;border-radius:50px;backdrop-filter:blur(6px);}
 .card-body{padding:1.4rem 1.5rem;}
 .card-meta{display:flex;gap:1.2rem;margin-bottom:.7rem;}
 .card-meta span{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray);}
@@ -123,25 +139,16 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .card-diff{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray);}
 .card-link{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;transition:gap .2s;}
 .recipe-card:hover .card-link{gap:.9rem;}
-
-/* Boutons d'action sur les cartes */
 .card-del-btn{position:absolute;top:.7rem;right:.7rem;background:var(--danger);color:white;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:none;align-items:center;justify-content:center;z-index:5;transition:transform .2s,background .2s;}
 .card-del-btn:hover{background:#a03828;transform:scale(1.1);}
 .card-edit-btn{position:absolute;top:.7rem;right:3.4rem;background:var(--accent);color:white;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.8rem;display:none;align-items:center;justify-content:center;z-index:5;transition:transform .2s,background .2s;}
 .card-edit-btn:hover{background:var(--accent-dark);transform:scale(1.1);}
-
-/* Card owner badge */
-.card-owner-badge{position:absolute;bottom:.7rem;right:.7rem;background:rgba(139,111,78,.12);border:1px solid rgba(139,111,78,.25);color:var(--accent);font-size:.6rem;letter-spacing:.08em;padding:.25rem .6rem;border-radius:50px;display:none;}
-
 body.admin-mode .card-del-btn{display:flex;}
 body.admin-mode .card-edit-btn{display:flex;}
-
 .no-results{grid-column:1/-1;text-align:center;padding:5rem 2rem;color:var(--warm-gray);}
-.no-results-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.3;}
 .loading-grid{display:flex;align-items:center;justify-content:center;padding:4rem;grid-column:1/-1;}
 .spinner{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .add-banner{max-width:1400px;margin:0 auto 3rem;background:var(--beige);border:1px solid var(--border);border-radius:3px;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;}
 .add-banner h3{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:400;color:var(--dark);}
 .add-banner p{font-size:.83rem;color:var(--warm-gray);margin-top:.3rem;}
@@ -175,7 +182,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .footer-bottom{padding-top:1.8rem;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;flex-wrap:wrap;gap:.8rem;}
 .footer-by{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--accent-light);font-style:italic;letter-spacing:.05em;cursor:pointer;user-select:none;}
 
-/* ── OVERLAYS & MODALES ── */
+/* ── OVERLAYS ── */
 .overlay{position:fixed;inset:0;z-index:300;background:rgba(26,22,18,.72);backdrop-filter:blur(5px);display:none;align-items:flex-start;justify-content:center;padding:2rem 1.5rem;overflow-y:auto;}
 .overlay.open{display:flex;}
 .modal{background:var(--cream);border-radius:4px;max-width:850px;width:100%;max-height:92vh;overflow-y:auto;animation:fadeUp .35s cubic-bezier(.16,1,.3,1);position:relative;}
@@ -191,7 +198,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .modal-desc{font-size:.88rem;color:var(--warm-gray);line-height:1.8;margin-bottom:1.8rem;}
 .servings-row{display:flex;align-items:center;gap:1.2rem;background:var(--beige);padding:.9rem 1.4rem;border-radius:3px;width:fit-content;margin-bottom:2rem;}
 .srv-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--charcoal);}
-.srv-btn{background:white;border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;color:var(--charcoal);display:flex;align-items:center;justify-content:center;line-height:1;transition:all .2s;}
+.srv-btn{background:white;border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;color:var(--charcoal);display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .srv-btn:hover{background:var(--accent);color:white;border-color:var(--accent);}
 .srv-count{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--accent);min-width:28px;text-align:center;}
 .two-cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:1.8rem;}
@@ -209,7 +216,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .tags-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem;}
 .tag-pill{background:white;border:1px solid var(--border);padding:.3rem .8rem;border-radius:50px;font-size:.7rem;color:var(--charcoal);}
 
-/* ── FORMULAIRE ── */
+/* ── FORMULAIRE RECETTE ── */
 .form-modal{background:white;max-width:700px;}
 .form-head{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;}
 .form-head h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--dark);}
@@ -237,37 +244,51 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .photo-remove{position:absolute;top:.5rem;right:.5rem;background:var(--danger);color:white;border:none;width:24px;height:24px;border-radius:50%;font-size:.75rem;cursor:pointer;display:none;align-items:center;justify-content:center;}
 .photo-upload-zone.has-photo .photo-remove{display:flex;}
 
-/* ── MODALE AUTH GOOGLE ── */
-.auth-modal{background:white;max-width:420px;border-radius:8px;overflow:hidden;text-align:center;}
-.auth-modal-top{background:var(--dark);padding:3rem 2.5rem 2.5rem;position:relative;}
-.auth-modal-top::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=60') center/cover;opacity:.15;}
-.auth-modal-icon{font-size:2.8rem;position:relative;z-index:1;margin-bottom:1rem;}
-.auth-modal-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--cream);position:relative;z-index:1;letter-spacing:-.01em;}
-.auth-modal-sub{font-size:.78rem;color:rgba(240,235,224,.55);position:relative;z-index:1;margin-top:.4rem;line-height:1.6;}
-.auth-modal-body{padding:2rem 2.5rem 2.5rem;}
-.google-btn{display:flex;align-items:center;justify-content:center;gap:.9rem;background:white;border:1.5px solid #e0e0e0;border-radius:4px;padding:1rem 1.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:400;color:#3c4043;transition:background .2s,box-shadow .2s;width:100%;}
-.google-btn:hover{background:#f8f9fa;box-shadow:0 2px 12px rgba(0,0,0,.1);}
-.google-logo{width:18px;height:18px;flex-shrink:0;}
-.auth-divider{display:flex;align-items:center;gap:1rem;margin:1.4rem 0;}
-.auth-divider span{font-size:.7rem;color:var(--warm-gray);letter-spacing:.08em;white-space:nowrap;}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.auth-note{font-size:.7rem;color:var(--warm-gray);line-height:1.6;margin-top:1.4rem;}
+/* ── AUTH MODAL ── */
+.auth-modal{background:white;max-width:460px;border-radius:8px;overflow:hidden;}
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);}
+.auth-tab{flex:1;padding:1rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--warm-gray);border:none;background:none;border-bottom:2px solid transparent;transition:color .2s;font-family:'DM Sans',sans-serif;}
+.auth-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.auth-pane{padding:2rem 2.5rem 2.5rem;display:none;}
+.auth-pane.active{display:block;}
+.auth-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--dark);margin-bottom:.4rem;}
+.auth-sub{font-size:.8rem;color:var(--warm-gray);margin-bottom:1.8rem;line-height:1.6;}
+.auth-err{color:var(--danger);font-size:.78rem;margin-top:.6rem;display:none;padding:.6rem .9rem;background:rgba(192,97,75,.07);border-radius:3px;}
+.auth-err.show{display:block;}
+.auth-ok{color:var(--success);font-size:.78rem;margin-top:.6rem;display:none;padding:.6rem .9rem;background:rgba(90,138,90,.07);border-radius:3px;}
+.auth-ok.show{display:block;}
 
-/* ── NEWSLETTER ── */
-.nl-modal{background:white;max-width:480px;border-radius:6px;overflow:hidden;text-align:center;}
-.nl-modal-img{width:100%;height:200px;object-fit:cover;}
-.nl-modal-body{padding:2.2rem 2.5rem 2.5rem;}
-.nl-modal-body h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dark);margin-bottom:.5rem;}
-.nl-modal-body p{font-size:.85rem;color:var(--warm-gray);line-height:1.75;margin-bottom:1.8rem;}
+/* Magic link sent screen */
+.magic-sent{text-align:center;padding:2rem 2.5rem 2.5rem;}
+.magic-sent-icon{font-size:3.5rem;margin-bottom:1rem;}
+.magic-sent-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--dark);margin-bottom:.6rem;}
+.magic-sent-sub{font-size:.84rem;color:var(--warm-gray);line-height:1.7;margin-bottom:1.5rem;}
+.magic-sent-email{font-weight:500;color:var(--accent);}
+.magic-back{font-size:.72rem;color:var(--warm-gray);cursor:pointer;text-decoration:underline;margin-top:1rem;display:inline-block;}
+.magic-back:hover{color:var(--accent);}
 
-/* ── LOGIN ADMIN ── */
+/* ── ONBOARDING ── */
+.onboard-modal{background:white;max-width:480px;border-radius:8px;overflow:hidden;}
+.onboard-head{background:var(--dark);padding:2.5rem 2.5rem 2rem;position:relative;}
+.onboard-head::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=60') center/cover;opacity:.12;}
+.onboard-step{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-light);position:relative;z-index:1;margin-bottom:.5rem;}
+.onboard-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--cream);position:relative;z-index:1;}
+.onboard-body{padding:2rem 2.5rem 2.5rem;}
+.avatar-upload-zone{width:100px;height:100px;border-radius:50%;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;margin:0 auto 1.5rem;position:relative;overflow:hidden;transition:border-color .2s;background:var(--cream);}
+.avatar-upload-zone:hover{border-color:var(--accent-light);}
+.avatar-upload-zone img{width:100%;height:100%;object-fit:cover;display:none;border-radius:50%;}
+.avatar-upload-zone.has-img img{display:block;}
+.avatar-upload-zone.has-img .avatar-placeholder{display:none;}
+.avatar-placeholder{display:flex;flex-direction:column;align-items:center;gap:.3rem;color:var(--warm-gray);}
+.avatar-placeholder span:first-child{font-size:1.4rem;opacity:.4;}
+.avatar-placeholder span:last-child{font-size:.62rem;}
+
+/* ── ADMIN ── */
 .login-box{background:white;max-width:380px;border-radius:5px;padding:2.5rem;text-align:center;}
 .login-box h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--dark);margin-bottom:.4rem;}
 .login-box p{font-size:.82rem;color:var(--warm-gray);margin-bottom:1.6rem;}
 .err-msg{color:var(--danger);font-size:.78rem;margin-top:.7rem;display:none;}
-
-/* ── PANEL ADMIN ── */
-.admin-panel{background:white;max-width:980px;width:100%;max-height:94vh;overflow-y:auto;border-radius:5px;}
+.admin-panel{background:white;max-width:1080px;width:100%;max-height:94vh;overflow-y:auto;border-radius:5px;}
 .admin-panel-head{background:var(--dark);padding:1.8rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:1;}
 .admin-panel-head h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--cream);}
 .admin-panel-head p{font-size:.78rem;color:rgba(240,235,224,.5);margin-top:.2rem;}
@@ -289,6 +310,8 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .table-del:hover{background:var(--danger);color:white;border-color:var(--danger);}
 .table-edit{background:none;border:1px solid var(--border);color:var(--accent);padding:.35rem .8rem;font-size:.68rem;cursor:pointer;border-radius:2px;transition:background .2s,color .2s;font-family:'DM Sans',sans-serif;margin-right:.4rem;}
 .table-edit:hover{background:var(--accent);color:white;border-color:var(--accent);}
+.user-mini-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid var(--accent-light);vertical-align:middle;margin-right:.5rem;}
+.email-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(139,111,78,.08);border:1px solid rgba(139,111,78,.2);border-radius:50px;padding:.2rem .7rem;font-size:.72rem;color:var(--accent);font-family:'DM Sans',sans-serif;}
 .compose-subject{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:.85rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--charcoal);outline:none;margin-bottom:1rem;}
 .compose-body{width:100%;min-height:140px;background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;line-height:1.65;resize:vertical;color:var(--charcoal);outline:none;}
 
@@ -308,9 +331,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--charcoal);color:var(--cream);padding:.9rem 1.6rem;border-radius:3px;font-size:.83rem;border-left:3px solid var(--accent);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1);pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
 
-/* ── ANIMATION WARN ── */
-@keyframes fadeWarn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
-
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .hero{grid-template-columns:1fr;}.hero-right{display:none;}.hero-left{padding:4rem 6vw 5rem;}
@@ -319,7 +339,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   .f-grid{grid-template-columns:1fr;}.modal-body{padding:1.5rem 1.5rem 2rem;}
   .form-head,.form-body,.form-foot{padding-left:1.5rem;padding-right:1.5rem;}.admin-pane{padding:1.5rem;}
   .section-search-bar{flex-direction:column;align-items:stretch;}.section-search-wrap{max-width:100%;}
-  .nav-user-name,.nav-user-dot{display:none;}
 }
 </style>
 </head>
@@ -336,18 +355,13 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <button class="search-clear" id="navSearchClear">✕</button>
     </div>
     <a href="#a-propos" class="nav-pill">À propos</a>
-
-    <!-- Zone utilisateur connecté -->
     <div class="nav-user-area" id="navUserArea">
       <div class="nav-user-dot"></div>
       <img class="nav-user-avatar" id="navUserAvatar" src="" alt="" />
       <span class="nav-user-name" id="navUserName"></span>
       <button class="nav-pill" id="navLogoutBtn">Déconnexion</button>
     </div>
-
-    <!-- Bouton connexion (non connecté) -->
     <button class="nav-pill" id="navLoginBtn" style="display:none">Se connecter</button>
-
     <a href="#" class="nav-pill nav-pill-accent" id="navAddBtn">+ Ajouter</a>
   </div>
 </nav>
@@ -363,11 +377,10 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     </div>
     <div class="hero-stats">
       <div class="stat"><span class="stat-n" id="heroStatCount">0</span><span class="stat-l">Recettes partagées</span></div>
-      <div class="stat"><span class="stat-n" id="heroStatNl">0</span><span class="stat-l">Abonnés newsletter</span></div>
+      <div class="stat"><span class="stat-n" id="heroStatMembers">0</span><span class="stat-l">Membres inscrits</span></div>
     </div>
   </div>
   <div class="hero-right">
-    <!-- Photo naturelle : marché provençal, lumière chaude, vraie vie -->
     <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=85" alt="Cuisine française authentique" />
   </div>
 </section>
@@ -375,9 +388,9 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 <!-- ════ COMMUNAUTÉ ════ -->
 <section class="section" id="communaute">
   <div class="sec-header">
-    <span class="sec-tag">Contributions · <span id="countTag">0</span> / 100</span>
+    <span class="sec-tag">Contributions · <span id="countTag">0</span> / 1000</span>
     <h2 class="sec-title">Les recettes de la <em>communauté</em></h2>
-    <p class="sec-sub">Cent places à table. Chaque recette est un cadeau fait à tous.</p>
+    <p class="sec-sub">Mille places à table. Chaque recette est un cadeau fait à tous.</p>
     <div class="sec-line"></div>
   </div>
   <div class="section-search-bar">
@@ -402,7 +415,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 <section class="about-section" id="a-propos">
   <div class="about-img-wrap">
     <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80" alt="Marché" class="about-img" />
-    <div class="about-badge"><span>100</span><span>Recettes communauté</span></div>
+    <div class="about-badge"><span>1000</span><span>Recettes communauté</span></div>
   </div>
   <div class="about-text">
     <span class="sec-tag">Notre histoire</span>
@@ -457,7 +470,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div id="mUstBlock"><div class="col-title">Ustensiles</div><div class="tags-row" id="mUst"></div></div>
       <div class="tip-box" id="mTip" style="display:none"><strong>Astuce</strong><span id="mTipTxt"></span></div>
       <div id="mGestBlock" style="display:none;margin-top:1.4rem;"><div class="col-title">Geste important</div><p style="font-size:.86rem;line-height:1.7;color:var(--charcoal);" id="mGestTxt"></p></div>
-      <!-- Bouton édition depuis la modale (si propriétaire) -->
       <div id="mEditBar" style="display:none;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--border);">
         <button class="btn btn-outline" id="mEditBtn" style="font-size:.75rem;">✏ Modifier cette recette</button>
       </div>
@@ -465,7 +477,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   </div>
 </div>
 
-<!-- ════ MODAL FORMULAIRE (Ajout + Édition) ════ -->
+<!-- ════ MODAL FORMULAIRE RECETTE ════ -->
 <div class="overlay" id="formOverlay">
   <div class="modal form-modal">
     <div class="form-head">
@@ -500,13 +512,13 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div class="f-group">
         <label class="f-label">Ingrédients <em>* — format : quantité · unité · nom</em></label>
         <textarea class="f-textarea" id="fIngr" rows="6" placeholder="200 · g · farine&#10;3 · pièces · œufs&#10;100 · ml · lait entier"></textarea>
-        <p class="f-hint">Une ligne par ingrédient. Le séparateur · permet l'ajustement automatique des quantités.</p>
+        <p class="f-hint">Une ligne par ingrédient. Le séparateur · permet l'ajustement automatique.</p>
       </div>
-      <div class="f-group"><label class="f-label">Étapes <em>* — une étape par ligne</em></label><textarea class="f-textarea" id="fEtapes" rows="6" placeholder="Préchauffer le four à 180°C.&#10;Mélanger la farine et les œufs.&#10;Cuire 30 min."></textarea></div>
-      <div class="f-group"><label class="f-label">Ustensiles <em>— séparés par des virgules</em></label><input type="text" class="f-input" id="fUst" placeholder="Fouet, Moule 28cm, Casserole…" /></div>
-      <div class="f-group"><label class="f-label">Astuce du chef</label><textarea class="f-textarea" id="fAstuce" rows="2" placeholder="Votre conseil secret…"></textarea></div>
-      <div class="f-group"><label class="f-label">Geste important</label><textarea class="f-textarea" id="fGeste" rows="2" placeholder="Le geste technique clé…"></textarea></div>
-      <div class="f-group"><label class="f-label">Région / Origine</label><input type="text" class="f-input" id="fRegion" placeholder="ex. Bretagne, Provence, Italie…" /></div>
+      <div class="f-group"><label class="f-label">Étapes <em>* — une étape par ligne</em></label><textarea class="f-textarea" id="fEtapes" rows="6"></textarea></div>
+      <div class="f-group"><label class="f-label">Ustensiles <em>— séparés par des virgules</em></label><input type="text" class="f-input" id="fUst" placeholder="Fouet, Moule 28cm…" /></div>
+      <div class="f-group"><label class="f-label">Astuce du chef</label><textarea class="f-textarea" id="fAstuce" rows="2"></textarea></div>
+      <div class="f-group"><label class="f-label">Geste important</label><textarea class="f-textarea" id="fGeste" rows="2"></textarea></div>
+      <div class="f-group"><label class="f-label">Région / Origine</label><input type="text" class="f-input" id="fRegion" placeholder="ex. Bretagne, Provence…" /></div>
     </div>
     <div class="form-foot">
       <button class="btn btn-accent" id="submitBtn">Publier ma recette</button>
@@ -515,46 +527,79 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   </div>
 </div>
 
-<!-- ════ MODAL AUTH GOOGLE ════ -->
+<!-- ════ MODAL AUTH — Magic Link ════ -->
 <div class="overlay" id="authOverlay">
   <div class="auth-modal modal">
-    <div class="auth-modal-top">
-      <div class="auth-modal-icon">🍽</div>
-      <h2 class="auth-modal-title">Rejoindre la table</h2>
-      <p class="auth-modal-sub">Connectez-vous pour partager vos recettes<br>avec la communauté.</p>
+    <div class="modal-topbar"><button class="close-btn" id="authClose">✕</button></div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignup" onclick="switchAuthTab('signup')">Créer un compte</button>
+      <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Se connecter</button>
     </div>
-    <div class="auth-modal-body">
-      <button class="google-btn" id="googleSignInBtn">
-        <!-- Logo Google SVG -->
-        <svg class="google-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-        Continuer avec Google
-      </button>
-      <p class="auth-note">En vous connectant, vous acceptez de partager vos recettes dans le respect des règles de la communauté.<br><br>Vous ne pouvez modifier ou supprimer que vos propres recettes.</p>
-      <button class="btn btn-outline" id="authClose" style="width:100%;margin-top:1rem;font-size:.75rem;">Annuler</button>
+
+    <!-- Inscription -->
+    <div class="auth-pane active" id="paneSignup">
+      <h2 class="auth-title">Rejoindre la table</h2>
+      <p class="auth-sub">Entrez votre email — nous vous enverrons un lien de connexion magique, sans mot de passe.</p>
+      <div class="f-group"><label class="f-label">Adresse email</label><input type="email" class="f-input" id="signupEmail" placeholder="votre@email.com" autocomplete="email" /></div>
+      <div class="auth-err" id="signupErr"></div>
+      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="signupBtn">Recevoir mon lien ✉</button></div>
+      <p style="font-size:.72rem;color:var(--warm-gray);margin-top:1rem;line-height:1.6;text-align:center;">Un email vous sera envoyé avec un lien sécurisé. Cliquez dessus pour vous connecter instantanément.</p>
+    </div>
+
+    <!-- Lien envoyé -->
+    <div class="auth-pane" id="paneMagicSent">
+      <div class="magic-sent">
+        <div class="magic-sent-icon">✉️</div>
+        <h2 class="magic-sent-title">Vérifiez votre boîte mail</h2>
+        <p class="magic-sent-sub">Un lien de connexion a été envoyé à<br><span class="magic-sent-email" id="magicSentEmail"></span></p>
+        <p style="font-size:.78rem;color:var(--warm-gray);line-height:1.6;">Cliquez sur le lien dans l'email pour vous connecter. Vous pouvez fermer cette fenêtre.</p>
+        <span class="magic-back" id="magicBackBtn">← Utiliser un autre email</span>
+      </div>
+    </div>
+
+    <!-- Connexion -->
+    <div class="auth-pane" id="paneLogin">
+      <h2 class="auth-title">Bon retour</h2>
+      <p class="auth-sub">Entrez votre email — nous vous enverrons un lien de connexion instantané.</p>
+      <div class="f-group"><label class="f-label">Adresse email</label><input type="email" class="f-input" id="loginEmail" placeholder="votre@email.com" autocomplete="email" /></div>
+      <div class="auth-err" id="loginErr"></div>
+      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="loginBtn">Recevoir mon lien ✉</button></div>
+    </div>
+
+    <!-- Lien envoyé (connexion) -->
+    <div class="auth-pane" id="paneLoginSent">
+      <div class="magic-sent">
+        <div class="magic-sent-icon">✉️</div>
+        <h2 class="magic-sent-title">Lien envoyé !</h2>
+        <p class="magic-sent-sub">Vérifiez votre boîte mail :<br><span class="magic-sent-email" id="loginSentEmail"></span></p>
+        <p style="font-size:.78rem;color:var(--warm-gray);line-height:1.6;">Cliquez sur le lien pour vous connecter. Vous pouvez fermer cette fenêtre.</p>
+        <span class="magic-back" id="loginBackBtn">← Utiliser un autre email</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ════ NEWSLETTER ════ -->
-<div class="overlay" id="nlOverlay">
-  <div class="nl-modal">
-    <img src="https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=600&q=80" alt="Newsletter" class="nl-modal-img" />
-    <div class="nl-modal-body">
-      <div style="font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;">On vous a remarqué !</div>
-      <h3>Rejoignez la communauté</h3>
-      <p>Vous revenez régulièrement — abonnez-vous à la newsletter pour recevoir les nouvelles recettes.</p>
-      <input type="text" class="f-input" id="nlNom" placeholder="Votre prénom" style="margin-bottom:.8rem;" />
-      <input type="email" class="f-input" id="nlEmail" placeholder="Votre adresse email" style="margin-bottom:1.2rem;" />
-      <div style="display:flex;gap:.8rem;justify-content:center;">
-        <button class="btn btn-accent" id="nlSubmit">M'abonner</button>
-        <button class="btn btn-outline" id="nlSkip">Plus tard</button>
+<!-- ════ ONBOARDING ════ -->
+<div class="overlay" id="onboardOverlay">
+  <div class="onboard-modal modal">
+    <div class="onboard-head">
+      <div class="onboard-step">Bienvenue · Profil</div>
+      <h2 class="onboard-title">Quelques infos sur vous</h2>
+    </div>
+    <div class="onboard-body">
+      <div class="avatar-upload-zone" id="avatarZone" onclick="document.getElementById('avatarInput').click()">
+        <input type="file" id="avatarInput" accept="image/*" style="display:none" />
+        <img id="avatarPreview" alt="Avatar" />
+        <div class="avatar-placeholder">
+          <span>📷</span>
+          <span>Photo de profil</span>
+        </div>
       </div>
-      <p style="font-size:.7rem;color:var(--warm-gray);margin-top:1rem;">Aucun spam. Désabonnement libre.</p>
+      <div class="f-group"><label class="f-label">Votre prénom <em>*</em></label><input type="text" class="f-input" id="onboardNom" placeholder="ex. Marie" /></div>
+      <div class="f-group"><label class="f-label">Votre âge <em>*</em></label><input type="number" class="f-input" id="onboardAge" placeholder="ex. 34" min="1" max="120" /></div>
+      <div class="auth-err" id="onboardErr"></div>
+      <div style="margin-top:1.5rem;"><button class="btn btn-accent" style="width:100%" id="onboardBtn">Commencer !</button></div>
     </div>
   </div>
 </div>
@@ -565,10 +610,10 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     <div style="font-size:2rem;margin-bottom:1rem;">🔑</div>
     <h3>Espace Léonard</h3>
     <p>Accès réservé à l'administrateur.</p>
-    <input type="password" class="f-input" id="loginPwd" placeholder="Mot de passe" style="text-align:center;letter-spacing:.3em;" />
-    <div class="err-msg" id="loginErr">Mot de passe incorrect.</div>
+    <input type="password" class="f-input" id="adminPwd" placeholder="Mot de passe" style="text-align:center;letter-spacing:.3em;" />
+    <div class="err-msg" id="adminErr">Mot de passe incorrect.</div>
     <div style="display:flex;gap:.8rem;margin-top:1.4rem;justify-content:center;">
-      <button class="btn btn-dark" id="loginBtn">Entrer</button>
+      <button class="btn btn-dark" id="adminLoginBtn">Entrer</button>
       <button class="btn btn-outline" id="loginCancel">Annuler</button>
     </div>
   </div>
@@ -584,14 +629,14 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
     <div class="admin-tabs">
       <button class="admin-tab active" data-tab="stats">Vue d'ensemble</button>
       <button class="admin-tab" data-tab="recipes">Recettes</button>
-      <button class="admin-tab" data-tab="visitors">Visiteurs</button>
-      <button class="admin-tab" data-tab="newsletter">Newsletter</button>
+      <button class="admin-tab" data-tab="members">Membres</button>
+      <button class="admin-tab" data-tab="email">Envoyer un email</button>
     </div>
     <div class="admin-pane active" id="tab-stats">
       <div class="admin-stat-row">
         <div class="admin-stat-box"><div class="n" id="aStatR">0</div><div class="l">Recettes</div></div>
-        <div class="admin-stat-box"><div class="n" id="aStatV">0</div><div class="l">Visiteurs</div></div>
-        <div class="admin-stat-box"><div class="n" id="aStatN">0</div><div class="l">Abonnés</div></div>
+        <div class="admin-stat-box"><div class="n" id="aStatM">0</div><div class="l">Membres</div></div>
+        <div class="admin-stat-box"><div class="n" id="aStatV">0</div><div class="l">Vues totales</div></div>
         <div class="admin-stat-box"><div class="n" id="aStatS">0</div><div class="l">Places libres</div></div>
       </div>
       <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.5rem;">
@@ -604,33 +649,23 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
         <span style="font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);">Gérer les recettes</span>
         <button class="table-del" id="deleteAllBtn">Tout supprimer</button>
       </div>
-      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Recette</th><th>Région</th><th>Difficulté</th><th>Date</th><th>Actions</th></tr></thead><tbody id="recipesTableBody"></tbody></table></div>
+      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Recette</th><th>Auteur</th><th>Région</th><th>Vues</th><th>Date</th><th>Actions</th></tr></thead><tbody id="recipesTableBody"></tbody></table></div>
       <div id="noRecipes" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucune recette.</div>
     </div>
-    <div class="admin-pane" id="tab-visitors">
-      <div style="background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;font-size:.82rem;color:var(--warm-gray);line-height:1.7;">
-        Après <strong style="color:var(--charcoal)">3 visites</strong>, la newsletter est proposée automatiquement.<br>
-        <span style="font-size:.75rem;color:var(--accent);">⚠ Le tracking IP peut être bloqué par certains navigateurs. C'est normal.</span>
-      </div>
-      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>IP</th><th>Visites</th><th>1ère visite</th><th>Dernière visite</th><th>Newsletter</th></tr></thead><tbody id="visitorsTableBody"></tbody></table></div>
-      <div id="noVisitors" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucun visiteur enregistré.</div>
+    <div class="admin-pane" id="tab-members">
+      <div style="margin-bottom:1rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);">Membres inscrits — <span id="membersCount">0</span></div>
+      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Avatar</th><th>Prénom</th><th>Âge</th><th>Email</th><th>Inscrit le</th></tr></thead><tbody id="membersTableBody"></tbody></table></div>
+      <div id="noMembers" style="text-align:center;color:var(--warm-gray);padding:3rem;font-size:.86rem;display:none;">Aucun membre.</div>
     </div>
-    <div class="admin-pane" id="tab-newsletter">
-      <div style="margin-bottom:1.5rem;">
-        <div style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Abonnés — <span id="nlTableCount">0</span> contact(s)</div>
-        <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Prénom</th><th>Email</th><th>Date</th><th>Action</th></tr></thead><tbody id="nlTableBody"></tbody></table></div>
-        <div id="noNl" style="text-align:center;color:var(--warm-gray);padding:2rem;font-size:.86rem;display:none;">Aucun abonné.</div>
+    <div class="admin-pane" id="tab-email">
+      <div style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem;">Envoyer à tous les membres</div>
+      <input type="text" class="compose-subject" id="composeSubject" placeholder="Objet de l'email…" />
+      <textarea class="compose-body" id="composeBody" placeholder="Rédigez votre message…"></textarea>
+      <div style="display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap;">
+        <button class="btn btn-accent" id="sendEmailBtn">📨 Envoyer à tous</button>
+        <button class="btn btn-outline" id="previewEmailBtn">Voir la liste</button>
       </div>
-      <div style="border-top:1px solid var(--border);padding-top:1.5rem;">
-        <div style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;">Envoyer une newsletter</div>
-        <input type="text" class="compose-subject" id="composeSubject" placeholder="Objet…" />
-        <textarea class="compose-body" id="composeBody" placeholder="Rédigez votre message…"></textarea>
-        <div style="display:flex;gap:.8rem;margin-top:1rem;flex-wrap:wrap;">
-          <button class="btn btn-accent" id="sendNlBtn">📨 Envoyer à tous</button>
-          <button class="btn btn-outline" id="previewNlBtn">Voir la liste</button>
-        </div>
-        <div id="nlPreview" style="display:none;margin-top:1rem;background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1rem;font-size:.78rem;color:var(--warm-gray);word-break:break-all;line-height:1.8;"></div>
-      </div>
+      <div id="emailPreview" style="display:none;margin-top:1rem;background:var(--cream);border:1px solid var(--border);border-radius:3px;padding:1rem;font-size:.78rem;color:var(--warm-gray);word-break:break-all;line-height:1.8;"></div>
     </div>
   </div>
 </div>
@@ -645,10 +680,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 </div>
 <div class="toast" id="toast"></div>
 
-
-<!-- ════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════ -->
 <script>
 // ══ CONFIG ══
 const SUPABASE_URL = 'https://poccnuekyqchzdymywfk.supabase.co';
@@ -660,61 +691,18 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ══ MOTS INTERDITS ══
-const MOTS_INTERDITS = [
-  'bite','bites','zizi','zob','teub','pine','pines','penis','pénis','vagin','vagins','vulve',
-  'chatte','chattes','foufoune','connasse','connasses','sperme','foutre','ejacul','éjacul',
-  'orgasme','niquer','nique','baise','baiser','baiseur','couille','couilles','anus','anal',
-  'sodomie','enculé','enculer','pute','putes','putain','salope','trainée','prostituée',
-  'branler','branleur','masturbation','fellation','cunnilingus','viol','violer','pedophile',
-  'pédophile','inceste','pornographie','porno','porn','merde','caca','pipi','urine','chier',
-  'pets','pet','péter','idiot','imbécile','crétin','abruti','débile','demeuré','salopard',
-  'ordure','enfoiré','nègre','négresse','youpin','bicot','bougnoule','bamboula','nazi',
-  'nazisme','fascisme','antisémite','raciste','racisme','génocide','tuer','assassiner',
-  'meurtre','suicide','bombe','terrorisme','terroriste','attentat','fusil','arme','massacrer',
-  'torture','cocaïne','cocaine','héroïne','heroine','crystal','meth','crack','drogue','drogues',
-  'dealer','junkie','overdose','isis','daesh','jihadiste','jihad','extrémiste',
-  'fuck','fucker','fucking','shit','shitty','bitch','asshole','cunt','dick','cock','pussy',
-  'nigger','nigga','motherfucker','bastard','whore','slut','retard','rape','pedophile',
-  'cum','blowjob','anal sex','nude','nudity','naked','penis','vagina','orgasm','masturbate',
-];
-
+const MOTS_INTERDITS = ['bite','bites','zizi','zob','teub','pine','pines','penis','pénis','vagin','vagins','vulve','chatte','chattes','foufoune','connasse','connasses','sperme','foutre','ejacul','éjacul','orgasme','niquer','nique','baise','baiser','baiseur','couille','couilles','anus','anal','sodomie','enculé','enculer','pute','putes','putain','salope','trainée','prostituée','branler','branleur','masturbation','fellation','cunnilingus','viol','violer','pedophile','pédophile','inceste','pornographie','porno','porn','merde','caca','pipi','urine','chier','pets','pet','péter','idiot','imbécile','crétin','abruti','débile','demeuré','salopard','ordure','enfoiré','nègre','négresse','youpin','bicot','bougnoule','bamboula','nazi','nazisme','fascisme','antisémite','raciste','racisme','génocide','tuer','assassiner','meurtre','suicide','bombe','terrorisme','terroriste','attentat','fusil','arme','massacrer','torture','cocaïne','cocaine','héroïne','heroine','crystal','meth','crack','drogue','drogues','dealer','junkie','overdose','isis','daesh','jihadiste','jihad','extrémiste','fuck','fucker','fucking','shit','shitty','bitch','asshole','cunt','dick','cock','pussy','nigger','nigga','motherfucker','bastard','whore','slut','retard','rape','pedophile','cum','blowjob'];
 function normaliser(txt){return(txt||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ');}
-function detecterMotInterdit(texte){
-  const norm=' '+normaliser(texte)+' ';
-  for(const mot of MOTS_INTERDITS){
-    const m=normaliser(mot);
-    if(norm.includes(' '+m+' ')||norm.includes(' '+m+'s ')||norm.includes(' '+m+'e ')||norm.includes(' '+m+'er ')||norm.includes(' '+m+'es ')) return mot;
-  }
-  return null;
-}
-function verifierContenu(){
-  const champs=['fNom','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegion','fUst'].map(id=>document.getElementById(id)?.value||'');
-  return detecterMotInterdit(champs.join(' '));
-}
-
-function bannir(motDetecte){
-  document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open'));
-  document.body.style.overflow='hidden';
-  try{ const ip=localStorage.getItem('ldp_uid')||'inconnu'; db.from('visiteurs').update({last_visit:'🚫 OBSCÈNE ['+motDetecte+'] - '+new Date().toLocaleString('fr-FR')}).eq('ip',ip); }catch(e){}
-  const ban=document.createElement('div');
-  ban.style.cssText='position:fixed;inset:0;z-index:9999;background:#060101;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;animation:banIn .4s ease;';
-  ban.innerHTML=`<style>@keyframes banIn{from{opacity:0;transform:scale(1.1);}to{opacity:1;transform:scale(1);}}</style>
-    <div style="font-size:4rem;margin-bottom:1rem;">🚫</div>
-    <h1 style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:#ff2222;margin-bottom:.8rem;">Contenu obscène</h1>
-    <p style="color:#ff4444;font-size:1rem;margin-bottom:.8rem;">Le mot <strong>"${motDetecte}"</strong> est interdit sur Les Délices Partagées.</p>
-    <p style="color:rgba(255,120,120,.7);font-size:.84rem;margin-bottom:2rem;">Ce site est un espace culinaire respectueux, ouvert à tous les âges.</p>
-    <p style="color:rgba(255,80,80,.4);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:2rem;">⚠ Cette tentative a été enregistrée</p>
-    <button onclick="window.location.reload()" style="background:transparent;color:#ff4444;border:1px solid rgba(255,50,50,.4);cursor:pointer;padding:1rem 2.8rem;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;border-radius:2px;font-family:'DM Sans',sans-serif;">← Retour au site</button>`;
-  document.body.appendChild(ban);
-}
+function detecterMotInterdit(texte){const norm=' '+normaliser(texte)+' ';for(const mot of MOTS_INTERDITS){const m=normaliser(mot);if(norm.includes(' '+m+' ')||norm.includes(' '+m+'s ')||norm.includes(' '+m+'e ')||norm.includes(' '+m+'er ')||norm.includes(' '+m+'es '))return mot;}return null;}
+function verifierContenu(){const champs=['fNom','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegion','fUst'].map(id=>document.getElementById(id)?.value||'');return detecterMotInterdit(champs.join(' '));}
+function bannir(mot){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open'));document.body.style.overflow='hidden';const ban=document.createElement('div');ban.style.cssText='position:fixed;inset:0;z-index:9999;background:#060101;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;';ban.innerHTML=`<div style="font-size:4rem;margin-bottom:1rem;">🚫</div><h1 style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:#ff2222;margin-bottom:.8rem;">Contenu obscène</h1><p style="color:#ff4444;font-size:1rem;margin-bottom:2rem;">Le mot <strong>"${mot}"</strong> est interdit.</p><button onclick="window.location.reload()" style="background:transparent;color:#ff4444;border:1px solid rgba(255,50,50,.4);cursor:pointer;padding:1rem 2.8rem;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;border-radius:2px;font-family:'DM Sans',sans-serif;">← Retour</button>`;document.body.appendChild(ban);}
 
 // ══ ÉTAT ══
-let recipes=[], visitors=[], subscribers=[];
-let isAdmin=false, currentUser=null;
+let recipes=[], members=[], profiles={};
+let isAdmin=false, currentUser=null, currentProfile=null;
 let currentRec=null, currentSrv=4, baseSrv=4;
-let adminClickCount=0, adminClickTimer=null;
-let searchQuery='', photoBase64='';
-let editingRecipeId=null; // null = création, id = édition
+let searchQuery='', photoBase64='', avatarBase64='';
+let editingRecipeId=null;
 
 // ══ TOAST ══
 let toastTimer;
@@ -723,108 +711,191 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 // ══ OVERLAY ══
 function openOverlay(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
 function closeOverlay(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
-['recipeOverlay','formOverlay','nlOverlay','loginOverlay','adminOverlay','authOverlay'].forEach(id=>{
+['recipeOverlay','formOverlay','authOverlay','onboardOverlay','loginOverlay','adminOverlay'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{if(e.target===document.getElementById(id))closeOverlay(id);});
 });
 
-// ══ AUTH ══
-function getUserName(){
-  if(!currentUser)return'';
-  const m=currentUser.user_metadata||{};
-  return m.full_name?.split(' ')[0]||m.name?.split(' ')[0]||m.email?.split('@')[0]||'Vous';
-}
-function getUserAvatar(){
-  if(!currentUser)return'';
-  const m=currentUser.user_metadata||{};
-  return m.avatar_url||m.picture||'';
-}
-
+// ══ AUTH UI ══
 function updateAuthUI(){
   const loginBtn=document.getElementById('navLoginBtn');
   const userArea=document.getElementById('navUserArea');
   const avatarEl=document.getElementById('navUserAvatar');
   const nameEl=document.getElementById('navUserName');
-  if(currentUser){
+  if(currentUser&&currentProfile){
     loginBtn.style.display='none';
     userArea.style.display='flex';
-    const av=getUserAvatar();
-    if(av){avatarEl.src=av;avatarEl.style.display='block';}else{avatarEl.style.display='none';}
-    nameEl.textContent=getUserName();
+    if(currentProfile.avatar){avatarEl.src=currentProfile.avatar;avatarEl.style.display='block';}
+    else{avatarEl.style.display='none';}
+    nameEl.textContent=currentProfile.nom||currentUser.email.split('@')[0];
+  }else if(currentUser&&!currentProfile){
+    loginBtn.style.display='none';
+    userArea.style.display='flex';
+    avatarEl.style.display='none';
+    nameEl.textContent=currentUser.email.split('@')[0];
   }else{
     loginBtn.style.display='flex';
     userArea.style.display='none';
   }
 }
 
+async function loadProfile(userId){
+  const{data}=await db.from('profils').select('*').eq('id',userId).single();
+  currentProfile=data||null;
+}
+
 async function initAuth(){
-  const {data:{session}}=await db.auth.getSession();
+  const{data:{session}}=await db.auth.getSession();
   currentUser=session?.user||null;
+  if(currentUser)await loadProfile(currentUser.id);
   updateAuthUI();
-  db.auth.onAuthStateChange((event,session)=>{
-    const prev=currentUser;
+
+  db.auth.onAuthStateChange(async(event,session)=>{
+    const wasLoggedIn=!!currentUser;
     currentUser=session?.user||null;
+    if(currentUser){
+      await loadProfile(currentUser.id);
+      if(event==='SIGNED_IN'&&!wasLoggedIn){
+        closeOverlay('authOverlay');
+        await loadData();
+        updateMemberCount();
+        if(!currentProfile){
+          setTimeout(()=>openOverlay('onboardOverlay'),400);
+        }else{
+          toast(`Bon retour ${currentProfile.nom||''} ! 👋`);
+          renderAll();
+        }
+      }
+    }else{
+      currentProfile=null;
+    }
     updateAuthUI();
-    if(event==='SIGNED_IN'&&!prev){
-      renderAll();
-      setTimeout(()=>toast(`Bienvenue ${getUserName()} ! 👋`),300);
-    }
-    if(event==='SIGNED_OUT'){renderAll();}
+    renderAll();
   });
 }
 
-async function signInWithGoogle(){
-  const{error}=await db.auth.signInWithOAuth({
-    provider:'google',
-    options:{
-      redirectTo:window.location.origin+window.location.pathname,
-      queryParams:{prompt:'select_account'}
-    }
+// ══ AUTH : ONGLETS ══
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.remove('active'));
+  if(tab==='signup'){
+    document.getElementById('tabSignup').classList.add('active');
+    document.getElementById('paneSignup').classList.add('active');
+  }else{
+    document.getElementById('tabLogin').classList.add('active');
+    document.getElementById('paneLogin').classList.add('active');
+  }
+}
+
+// ══ AUTH : MAGIC LINK INSCRIPTION ══
+document.getElementById('signupBtn').addEventListener('click',async()=>{
+  const email=document.getElementById('signupEmail').value.trim();
+  const errEl=document.getElementById('signupErr');
+  errEl.className='auth-err';
+  if(!email||!email.includes('@')){errEl.textContent='Email invalide.';errEl.className='auth-err show';return;}
+  const btn=document.getElementById('signupBtn');btn.disabled=true;btn.textContent='Envoi…';
+  const{error}=await db.auth.signInWithOtp({
+    email,
+    options:{emailRedirectTo:window.location.href, shouldCreateUser:true}
   });
-  if(error){toast('Erreur de connexion. Réessayez.');console.error(error);}
-}
+  btn.disabled=false;btn.textContent='Recevoir mon lien ✉';
+  if(error){errEl.textContent=error.message;errEl.className='auth-err show';return;}
+  document.getElementById('magicSentEmail').textContent=email;
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('paneMagicSent').classList.add('active');
+});
 
-async function signOut(){
-  await db.auth.signOut();
-  currentUser=null;
-  updateAuthUI();
-  renderAll();
-  toast('Vous êtes déconnecté(e).');
-}
+document.getElementById('magicBackBtn').addEventListener('click',()=>{
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('paneSignup').classList.add('active');
+  document.getElementById('signupEmail').value='';
+});
 
-document.getElementById('googleSignInBtn').addEventListener('click',signInWithGoogle);
-document.getElementById('navLogoutBtn').addEventListener('click',signOut);
-document.getElementById('navLoginBtn').addEventListener('click',()=>openOverlay('authOverlay'));
+// ══ AUTH : MAGIC LINK CONNEXION ══
+document.getElementById('loginBtn').addEventListener('click',async()=>{
+  const email=document.getElementById('loginEmail').value.trim();
+  const errEl=document.getElementById('loginErr');
+  errEl.className='auth-err';
+  if(!email||!email.includes('@')){errEl.textContent='Email invalide.';errEl.className='auth-err show';return;}
+  const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Envoi…';
+  const{error}=await db.auth.signInWithOtp({
+    email,
+    options:{emailRedirectTo:window.location.href, shouldCreateUser:false}
+  });
+  btn.disabled=false;btn.textContent='Recevoir mon lien ✉';
+  if(error){errEl.textContent='Aucun compte trouvé avec cet email.';errEl.className='auth-err show';return;}
+  document.getElementById('loginSentEmail').textContent=email;
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('paneLoginSent').classList.add('active');
+});
+
+document.getElementById('loginBackBtn').addEventListener('click',()=>{
+  document.querySelectorAll('.auth-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('paneLogin').classList.add('active');
+  document.getElementById('loginEmail').value='';
+});
+
+// ══ AUTH : DÉCONNEXION ══
+document.getElementById('navLogoutBtn').addEventListener('click',async()=>{
+  await db.auth.signOut();currentUser=null;currentProfile=null;updateAuthUI();renderAll();toast('Déconnecté(e).');
+});
+document.getElementById('navLoginBtn').addEventListener('click',()=>{switchAuthTab('signup');openOverlay('authOverlay');});
 document.getElementById('authClose').addEventListener('click',()=>closeOverlay('authOverlay'));
+
+// ══ ONBOARDING ══
+document.getElementById('avatarInput').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>2*1024*1024){toast('Image trop lourde (max 2 Mo).');return;}
+  const r=new FileReader();r.onload=ev=>{
+    avatarBase64=ev.target.result;
+    document.getElementById('avatarPreview').src=avatarBase64;
+    document.getElementById('avatarZone').classList.add('has-img');
+  };r.readAsDataURL(f);
+});
+
+document.getElementById('onboardBtn').addEventListener('click',async()=>{
+  const nom=document.getElementById('onboardNom').value.trim();
+  const age=parseInt(document.getElementById('onboardAge').value);
+  const errEl=document.getElementById('onboardErr');
+  errEl.className='auth-err';
+  if(!nom){errEl.textContent='Votre prénom est requis.';errEl.className='auth-err show';return;}
+  if(!age||age<1||age>120){errEl.textContent='Âge invalide.';errEl.className='auth-err show';return;}
+  if(!currentUser){errEl.textContent='Erreur : non connecté.';errEl.className='auth-err show';return;}
+  const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Enregistrement…';
+  // Sauvegarder l'email dans profils
+  const{error}=await db.from('profils').upsert({
+    id:currentUser.id,
+    nom,
+    age,
+    avatar:avatarBase64||null,
+    email:currentUser.email,   // ← Email sauvegardé ici
+    created_at:new Date().toISOString()
+  });
+  btn.disabled=false;btn.textContent='Commencer !';
+  if(error){errEl.textContent='Erreur: '+error.message;errEl.className='auth-err show';return;}
+  await loadProfile(currentUser.id);
+  updateAuthUI();
+  closeOverlay('onboardOverlay');
+  toast(`Bienvenue ${nom} ! 🎉`);
+  await loadData();renderAll();updateMemberCount();
+});
 
 // ══ LOAD DATA ══
 async function loadData(){
   try{
-    const[rRes,vRes,sRes]=await Promise.all([
-      db.from('recettes').select('*').order('created_at',{ascending:false}),
-      db.from('visiteurs').select('*').order('visits',{ascending:false}),
-      db.from('abonnes').select('*').order('created_at',{ascending:false})
+    const[rRes,mRes]=await Promise.all([
+      db.from('recettes').select('*').order('views',{ascending:false}).order('created_at',{ascending:false}),
+      db.from('profils').select('*').order('created_at',{ascending:false})
     ]);
-    recipes=rRes.data||[];visitors=vRes.data||[];subscribers=sRes.data||[];
+    recipes=rRes.data||[];
+    members=mRes.data||[];
+    profiles={};
+    members.forEach(m=>{profiles[m.id]=m;});
   }catch(e){console.error(e);}
 }
 
-// ══ TRACKING ══
-async function trackVisit(){
-  try{
-    let ip=localStorage.getItem('ldp_uid');
-    if(!ip){
-      try{const r=await fetch('https://api64.ipify.org?format=json',{signal:AbortSignal.timeout(3000)});const d=await r.json();ip=d.ip;}
-      catch(e){ip='local_'+Math.random().toString(36).substr(2,9);}
-      localStorage.setItem('ldp_uid',ip);
-    }
-    const now=new Date().toLocaleString('fr-FR');
-    const{data:ex}=await db.from('visiteurs').select('*').eq('ip',ip).single();
-    if(ex){
-      const nv=ex.visits+1;
-      await db.from('visiteurs').update({visits:nv,last_visit:now}).eq('ip',ip);
-      if(nv>=3&&!ex.nl_shown){const{data:sub}=await db.from('abonnes').select('id').eq('ip',ip).single();if(!sub){await db.from('visiteurs').update({nl_shown:true}).eq('ip',ip);setTimeout(()=>openOverlay('nlOverlay'),3500);}}
-    }else{await db.from('visiteurs').insert({ip,visits:1,first_visit:now,last_visit:now,nl_shown:false});}
-  }catch(e){}
+async function updateMemberCount(){
+  const{count}=await db.from('profils').select('*',{count:'exact',head:true});
+  document.getElementById('heroStatMembers').textContent=count||0;
 }
 
 // ══ SEARCH ══
@@ -843,25 +914,32 @@ function renderAll(){
   document.getElementById('countTag').textContent=count;
   document.getElementById('bannerCount').textContent=count;
   document.getElementById('heroStatCount').textContent=count;
-  document.getElementById('heroStatNl').textContent=subscribers.length;
   const filtered=filterRecipes(searchQuery);
   const countEl=document.getElementById('searchCount');
   if(searchQuery){countEl.textContent=filtered.length+' résultat'+(filtered.length!==1?'s':'');countEl.classList.add('visible');}else{countEl.classList.remove('visible');}
   const grid=document.getElementById('recipeGrid');
   let h='';
-  if(filtered.length===0&&searchQuery){h=`<div class="no-results"><div class="no-results-icon">🔍</div><p>Aucune recette pour "<strong>${searchQuery}</strong>"</p></div>`;grid.innerHTML=h;return;}
+  if(filtered.length===0&&searchQuery){h=`<div class="no-results"><div style="font-size:2.5rem;margin-bottom:1rem;opacity:.3">🔍</div><p>Aucune recette pour "<strong>${searchQuery}</strong>"</p></div>`;grid.innerHTML=h;return;}
   filtered.forEach((r,i)=>{
     const ri=recipes.indexOf(r);
     const img=r.img||'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80';
-    // Droits : admin voit tout, propriétaire voit ses recettes
     const isOwner=currentUser&&r.user_id&&r.user_id===currentUser.id;
     const showEdit=isAdmin||isOwner;
     const showDel=isAdmin||isOwner;
+    const views=r.views||0;
     h+=`<article class="recipe-card" onclick="openRec(${ri})">
-      ${showEdit?`<button class="card-edit-btn" style="display:flex" onclick="event.stopPropagation();editRec(${ri})" title="Modifier">✏</button>`:''}
-      ${showDel?`<button class="card-del-btn" style="display:flex" onclick="event.stopPropagation();delRec('${r.id}',${ri})" title="Supprimer">✕</button>`:''}
-      <div class="card-img-wrap"><img src="${img}" alt="${r.nom}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80'" /><span class="card-badge">${r.region||'Communauté'}</span></div>
-      <div class="card-body"><div class="card-meta"><span>⏱ ${r.temps}</span><span>👥 ${r.couverts} pers.</span></div><h3 class="card-title">${r.nom}</h3><p class="card-desc">${r.description||''}</p></div>
+      ${showEdit?`<button class="card-edit-btn" style="display:flex" onclick="event.stopPropagation();editRec(${ri})">✏</button>`:''}
+      ${showDel?`<button class="card-del-btn" style="display:flex" onclick="event.stopPropagation();delRec('${r.id}',${ri})">✕</button>`:''}
+      <div class="card-img-wrap">
+        <img src="${img}" alt="${r.nom}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80'" />
+        <span class="card-badge">${r.region||'Communauté'}</span>
+        <span class="card-views">👁 ${views}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta"><span>⏱ ${r.temps}</span><span>👥 ${r.couverts} pers.</span></div>
+        <h3 class="card-title">${r.nom}</h3>
+        <p class="card-desc">${r.description||''}</p>
+      </div>
       <div class="card-footer"><span class="card-diff">${r.diff}</span><span class="card-link">Voir la recette →</span></div>
     </article>`;
   });
@@ -870,12 +948,14 @@ function renderAll(){
 }
 
 // ══ MODAL RECETTE ══
-function openRec(idx){
+async function openRec(idx){
   const r=recipes[idx];if(!r)return;
+  const newViews=(r.views||0)+1;
+  db.from('recettes').update({views:newViews}).eq('id',r.id).then(()=>{recipes[idx].views=newViews;});
   currentRec={data:r,idx};baseSrv=parseInt(r.couverts)||4;currentSrv=baseSrv;
   const img=document.getElementById('mImg');
   if(r.img){img.src=r.img;img.style.display='block';}else{img.style.display='none';}
-  document.getElementById('mTag').textContent=`${r.region||'Communauté'} · ${r.diff}`;
+  document.getElementById('mTag').textContent=`${r.region||'Communauté'} · ${r.diff} · 👁 ${newViews}`;
   document.getElementById('mTitle').textContent=r.nom;
   document.getElementById('mDesc').textContent=r.description||'';
   document.getElementById('srvCount').textContent=currentSrv;
@@ -886,27 +966,16 @@ function openRec(idx){
   if(r.astuce){document.getElementById('mTip').style.display='block';document.getElementById('mTipTxt').textContent=r.astuce;}else{document.getElementById('mTip').style.display='none';}
   const gb=document.getElementById('mGestBlock');
   if(r.geste){gb.style.display='block';document.getElementById('mGestTxt').textContent=r.geste;}else{gb.style.display='none';}
-  // Bouton modifier si propriétaire
   const isOwner=currentUser&&r.user_id&&r.user_id===currentUser.id;
   const editBar=document.getElementById('mEditBar');
-  if(isAdmin||isOwner){
-    editBar.style.display='block';
-    document.getElementById('mEditBtn').onclick=()=>{closeOverlay('recipeOverlay');editRec(idx);};
-  }else{editBar.style.display='none';}
+  if(isAdmin||isOwner){editBar.style.display='block';document.getElementById('mEditBtn').onclick=()=>{closeOverlay('recipeOverlay');editRec(idx);};}else{editBar.style.display='none';}
   openOverlay('recipeOverlay');
 }
 function renderIngr(){
   const r=currentRec.data;const ratio=currentSrv/baseSrv;
   let ingrs=safeJSON(r.ingredients);
-  if(!Array.isArray(ingrs)){
-    const raw=r.ingredients||'';
-    ingrs=raw.split('\n').filter(l=>l.trim()).map(line=>{const p=line.split('·').map(x=>x.trim());if(p.length>=3)return{qty:parseFloat(p[0])||null,unit:p[1],name:p[2],raw:line};return{qty:null,unit:'',name:line,raw:line};});
-  }
-  document.getElementById('mIngr').innerHTML=ingrs.map(ing=>{
-    let qty=parseFloat(ing.qty),unit=ing.unit||'',name=ing.name||ing.raw||'';
-    if(!isNaN(qty)&&qty>0){const s=qty*ratio;const d=Number.isInteger(s)?s:parseFloat(s.toFixed(1));return`<li><span class="ingr-qty">${d} ${unit.trim()}</span>${name.trim()}</li>`;}
-    return`<li><span class="ingr-qty">—</span>${name.trim()}</li>`;
-  }).join('');
+  if(!Array.isArray(ingrs)){const raw=r.ingredients||'';ingrs=raw.split('\n').filter(l=>l.trim()).map(line=>{const p=line.split('·').map(x=>x.trim());if(p.length>=3)return{qty:parseFloat(p[0])||null,unit:p[1],name:p[2],raw:line};return{qty:null,unit:'',name:line,raw:line};});}
+  document.getElementById('mIngr').innerHTML=ingrs.map(ing=>{let qty=parseFloat(ing.qty),unit=ing.unit||'',name=ing.name||ing.raw||'';if(!isNaN(qty)&&qty>0){const s=qty*ratio;const d=Number.isInteger(s)?s:parseFloat(s.toFixed(1));return`<li><span class="ingr-qty">${d} ${unit.trim()}</span>${name.trim()}</li>`;}return`<li><span class="ingr-qty">—</span>${name.trim()}</li>`;}).join('');
 }
 function renderSteps(steps){document.getElementById('mSteps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('');}
 function safeJSON(s){try{return JSON.parse(s);}catch(e){return null;}}
@@ -914,16 +983,7 @@ document.getElementById('srvDown').addEventListener('click',()=>{if(currentSrv>1
 document.getElementById('srvUp').addEventListener('click',()=>{if(currentSrv<50){currentSrv++;document.getElementById('srvCount').textContent=currentSrv;renderIngr();}});
 document.getElementById('recipeClose').addEventListener('click',()=>closeOverlay('recipeOverlay'));
 
-// ══ PARSE INGREDIENTS ══
-function parseIngr(txt){
-  return txt.trim().split('\n').filter(l=>l.trim()).map(line=>{
-    const p=line.split('·').map(x=>x.trim());
-    if(p.length>=3)return{qty:parseFloat(p[0])||null,unit:p[1],name:p[2],raw:line};
-    return{qty:null,unit:'',name:line,raw:line};
-  });
-}
-
-// ══ PHOTO ══
+// ══ PHOTO RECETTE ══
 document.getElementById('photoInput').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;
   if(f.size>2*1024*1024){toast('Image trop lourde — max 2 Mo.');return;}
@@ -931,42 +991,34 @@ document.getElementById('photoInput').addEventListener('change',e=>{
 });
 function removePhoto(){photoBase64='';document.getElementById('photoPreview').src='';document.getElementById('photoZone').classList.remove('has-photo');document.getElementById('photoInput').value='';}
 
-// ══ FILTRAGE EN TEMPS RÉEL ══
-const CHAMPS_SURVEILLES=['fNom','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegion','fUst','fCuisson','fTemps'];
+// ══ PARSE INGREDIENTS ══
+function parseIngr(txt){return txt.trim().split('\n').filter(l=>l.trim()).map(line=>{const p=line.split('·').map(x=>x.trim());if(p.length>=3)return{qty:parseFloat(p[0])||null,unit:p[1],name:p[2],raw:line};return{qty:null,unit:'',name:line,raw:line};});}
+
+// ══ FILTRAGE MOTS INTERDITS ══
+const CHAMPS_SURVEILLES=['fNom','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegion','fUst'];
 function filtrerSaisie(e){
   const el=e.target,valeur=el.value,mot=detecterMotInterdit(valeur);
   if(mot){
     const regex=new RegExp(normaliser(mot),'gi');
     el.value=valeur.replace(regex,'').replace(/\s{2,}/g,' ').trim();
     let warn=el.parentElement.querySelector('.mot-interdit-warn');
-    if(!warn){warn=document.createElement('div');warn.className='mot-interdit-warn';warn.style.cssText='color:#c0614b;font-size:.72rem;margin-top:.4rem;animation:fadeWarn .3s ease;';el.parentElement.appendChild(warn);}
-    warn.textContent='🚫 Mot interdit détecté et supprimé : "'+mot+'"';
-    el.style.borderColor='#c0614b';el.style.boxShadow='0 0 0 3px rgba(192,97,75,.12)';
+    if(!warn){warn=document.createElement('div');warn.className='mot-interdit-warn';warn.style.cssText='color:#c0614b;font-size:.72rem;margin-top:.4rem;';el.parentElement.appendChild(warn);}
+    warn.textContent='🚫 Mot interdit supprimé : "'+mot+'"';
+    el.style.borderColor='#c0614b';
     clearTimeout(el._warnTimer);
-    el._warnTimer=setTimeout(()=>{if(warn)warn.textContent='';el.style.borderColor='';el.style.boxShadow='';},3000);
+    el._warnTimer=setTimeout(()=>{if(warn)warn.textContent='';el.style.borderColor='';},3000);
   }
 }
-function attacherFiltres(){
-  CHAMPS_SURVEILLES.forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.addEventListener('input',filtrerSaisie);el.addEventListener('paste',e=>setTimeout(()=>filtrerSaisie({target:el}),10));}
-  });
-}
+function attacherFiltres(){CHAMPS_SURVEILLES.forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',filtrerSaisie);el.addEventListener('paste',e=>setTimeout(()=>filtrerSaisie({target:el}),10));}});}
 
 // ══ FORMULAIRE : OUVERTURE ══
 function openForm(){
-  if(!currentUser&&!isAdmin){
-    toast('Connectez-vous pour ajouter une recette.');
-    openOverlay('authOverlay');
-    return;
-  }
+  if(!currentUser){toast('Connectez-vous pour ajouter une recette.');switchAuthTab('login');openOverlay('authOverlay');return;}
   if(recipes.length>=MAX_SLOTS){toast('Les places sont toutes occupées !');return;}
-  // Mode création
   editingRecipeId=null;
   document.getElementById('formTitle').textContent='Partager ma recette';
   document.getElementById('submitBtn').textContent='Publier ma recette';
   document.getElementById('formSuccess').style.display='none';
-  // Reset champs
   ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fDiff').value='Intermédiaire';
   removePhoto();
@@ -975,46 +1027,32 @@ function openForm(){
 
 // ══ FORMULAIRE : ÉDITION ══
 function editRec(idx){
-  if(!currentUser&&!isAdmin){openOverlay('authOverlay');return;}
+  if(!currentUser&&!isAdmin){switchAuthTab('login');openOverlay('authOverlay');return;}
   const r=recipes[idx];if(!r)return;
-  // Vérif propriétaire
   const isOwner=currentUser&&r.user_id&&r.user_id===currentUser.id;
   if(!isAdmin&&!isOwner){toast('Vous ne pouvez modifier que vos propres recettes.');return;}
   editingRecipeId=r.id;
   document.getElementById('formTitle').textContent='Modifier ma recette';
   document.getElementById('submitBtn').textContent='Enregistrer les modifications';
   document.getElementById('formSuccess').style.display='none';
-  // Pré-remplissage
   document.getElementById('fNom').value=r.nom||'';
   document.getElementById('fCouverts').value=r.couverts||4;
   document.getElementById('fTemps').value=r.temps||'';
   document.getElementById('fCuisson').value=r.cuisson||'';
   if(['Facile','Intermédiaire','Avancé','Expert'].includes(r.diff))document.getElementById('fDiff').value=r.diff;
   document.getElementById('fDesc').value=r.description||'';
-  // Ingrédients → texte
   const ingrs=safeJSON(r.ingredients);
-  if(Array.isArray(ingrs)){
-    document.getElementById('fIngr').value=ingrs.map(i=>{
-      if(i.qty&&i.name)return`${i.qty} · ${i.unit||'-'} · ${i.name}`;
-      return i.raw||i.name||'';
-    }).join('\n');
-  }else{document.getElementById('fIngr').value=r.ingredients||'';}
-  // Étapes → texte
+  if(Array.isArray(ingrs)){document.getElementById('fIngr').value=ingrs.map(i=>{if(i.qty&&i.name)return`${i.qty} · ${i.unit||'-'} · ${i.name}`;return i.raw||i.name||'';}).join('\n');}
+  else{document.getElementById('fIngr').value=r.ingredients||'';}
   const steps=safeJSON(r.etapes);
   document.getElementById('fEtapes').value=Array.isArray(steps)?steps.join('\n'):(r.etapes||'');
   document.getElementById('fUst').value=r.ust||'';
   document.getElementById('fAstuce').value=r.astuce||'';
   document.getElementById('fGeste').value=r.geste||'';
   document.getElementById('fRegion').value=r.region||'';
-  // Photo existante
-  if(r.img&&r.img.startsWith('data:')){
-    photoBase64=r.img;
-    document.getElementById('photoPreview').src=r.img;
-    document.getElementById('photoZone').classList.add('has-photo');
-  }else{removePhoto();}
+  if(r.img&&r.img.startsWith('data:')){photoBase64=r.img;document.getElementById('photoPreview').src=r.img;document.getElementById('photoZone').classList.add('has-photo');}else{removePhoto();}
   openOverlay('formOverlay');
 }
-
 document.getElementById('formClose').addEventListener('click',()=>{editingRecipeId=null;closeOverlay('formOverlay');});
 document.getElementById('formCancel').addEventListener('click',()=>{editingRecipeId=null;closeOverlay('formOverlay');});
 
@@ -1030,43 +1068,25 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
   const motInterdit=verifierContenu();
   if(motInterdit){bannir(motInterdit);return;}
   const btn=document.getElementById('submitBtn');btn.disabled=true;
-  const payload={
-    nom,couverts:parseInt(couv),temps,
-    cuisson:document.getElementById('fCuisson').value.trim(),
-    diff:document.getElementById('fDiff').value,
-    description:desc,
-    ingredients:JSON.stringify(parseIngr(ingrRaw)),
-    etapes:JSON.stringify(etRaw.split('\n').filter(l=>l.trim())),
-    ust:document.getElementById('fUst').value.trim(),
-    astuce:document.getElementById('fAstuce').value.trim(),
-    geste:document.getElementById('fGeste').value.trim(),
-    region:document.getElementById('fRegion').value.trim(),
-  };
+  const payload={nom,couverts:parseInt(couv),temps,cuisson:document.getElementById('fCuisson').value.trim(),diff:document.getElementById('fDiff').value,description:desc,ingredients:JSON.stringify(parseIngr(ingrRaw)),etapes:JSON.stringify(etRaw.split('\n').filter(l=>l.trim())),ust:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim()};
   let error;
   if(editingRecipeId){
-    // MODIFICATION
     btn.textContent='Modification…';
     const existing=recipes.find(r=>r.id===editingRecipeId);
     payload.img=photoBase64||(existing?.img||'');
     ({error}=await db.from('recettes').update(payload).eq('id',editingRecipeId));
     btn.textContent='Enregistrer les modifications';btn.disabled=false;
     if(error){toast('Erreur lors de la modification.');console.error(error);return;}
-    const successMsg=document.getElementById('formSuccess');
-    successMsg.textContent='✓ Recette modifiée avec succès !';
-    successMsg.style.display='block';
+    document.getElementById('formSuccess').textContent='✓ Recette modifiée !';document.getElementById('formSuccess').style.display='block';
     toast('Recette modifiée !');
   }else{
-    // CRÉATION
     btn.textContent='Publication…';
-    payload.img=photoBase64||'';
-    payload.date_ajout=new Date().toLocaleDateString('fr-FR');
+    payload.img=photoBase64||'';payload.date_ajout=new Date().toLocaleDateString('fr-FR');payload.views=0;
     if(currentUser)payload.user_id=currentUser.id;
     ({error}=await db.from('recettes').insert(payload));
     btn.textContent='Publier ma recette';btn.disabled=false;
     if(error){toast('Erreur lors de la publication.');console.error(error);return;}
-    const successMsg=document.getElementById('formSuccess');
-    successMsg.textContent='✓ Recette publiée avec succès !';
-    successMsg.style.display='block';
+    document.getElementById('formSuccess').textContent='✓ Recette publiée !';document.getElementById('formSuccess').style.display='block';
     toast('Recette publiée !');
   }
   await loadData();renderAll();
@@ -1083,73 +1103,111 @@ async function delRec(id,idx){
   toast('Recette supprimée.');await loadData();renderAll();
 }
 
-// ══ NEWSLETTER ══
-document.getElementById('nlSkip').addEventListener('click',()=>closeOverlay('nlOverlay'));
-document.getElementById('nlSubmit').addEventListener('click',async()=>{
-  const nom=document.getElementById('nlNom').value.trim(),email=document.getElementById('nlEmail').value.trim();
-  if(!nom||!email||!email.includes('@')){toast('Prénom et email requis.');return;}
-  let ip=localStorage.getItem('ldp_uid')||'inconnu';
-  const{data:ex}=await db.from('abonnes').select('id').eq('email',email).single();
-  if(ex){toast('Vous êtes déjà abonné(e) !');closeOverlay('nlOverlay');return;}
-  const{error}=await db.from('abonnes').insert({nom,email,ip,date_ajout:new Date().toLocaleDateString('fr-FR')});
-  if(error){toast('Erreur inscription.');return;}
-  await loadData();document.getElementById('heroStatNl').textContent=subscribers.length;
-  toast(`Bienvenue ${nom} ! Abonnement confirmé.`);closeOverlay('nlOverlay');
-});
-
 // ══ ADMIN ══
 document.getElementById('adminTrigger').addEventListener('click',()=>{
-  adminClickCount++;clearTimeout(adminClickTimer);adminClickTimer=setTimeout(()=>adminClickCount=0,3000);
-  if(adminClickCount>=3){adminClickCount=0;clearTimeout(adminClickTimer);openOverlay('loginOverlay');}
+  if(!window._ac)window._ac=0;
+  window._ac++;
+  clearTimeout(window._at);
+  window._at=setTimeout(()=>window._ac=0,3000);
+  if(window._ac>=3){window._ac=0;clearTimeout(window._at);openOverlay('loginOverlay');}
 });
 document.getElementById('loginCancel').addEventListener('click',()=>closeOverlay('loginOverlay'));
-document.getElementById('loginBtn').addEventListener('click',()=>{
-  if(document.getElementById('loginPwd').value===ADMIN_PWD){
+document.getElementById('adminLoginBtn').addEventListener('click',()=>{
+  if(document.getElementById('adminPwd').value===ADMIN_PWD){
     isAdmin=true;document.body.classList.add('admin-mode');document.getElementById('adminBar').classList.add('on');
-    closeOverlay('loginOverlay');document.getElementById('loginPwd').value='';document.getElementById('loginErr').style.display='none';
+    closeOverlay('loginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').style.display='none';
     toast('Bienvenue Léonard 👋');renderAll();
-  }else{document.getElementById('loginErr').style.display='block';document.getElementById('loginPwd').value='';}
+  }else{document.getElementById('adminErr').style.display='block';document.getElementById('adminPwd').value='';}
 });
-document.getElementById('loginPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});
-document.getElementById('adminPanelBtn').addEventListener('click',async()=>{await loadData();refreshPanel();openOverlay('adminOverlay');});
+document.getElementById('adminPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('adminLoginBtn').click();});
+document.getElementById('adminPanelBtn').addEventListener('click',async()=>{await loadData();await loadMembers();refreshPanel();openOverlay('adminOverlay');});
 document.getElementById('adminQuitBtn').addEventListener('click',()=>{isAdmin=false;document.body.classList.remove('admin-mode');document.getElementById('adminBar').classList.remove('on');renderAll();toast('Mode admin désactivé.');});
 document.getElementById('adminClose').addEventListener('click',()=>closeOverlay('adminOverlay'));
 document.querySelectorAll('.admin-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.remove('active'));tab.classList.add('active');document.getElementById('tab-'+tab.dataset.tab).classList.add('active');});});
 
+let membersWithEmail=[];
+async function loadMembers(){
+  const{data}=await db.from('profils').select('*').order('created_at',{ascending:false});
+  membersWithEmail=data||[];
+}
+
 function refreshPanel(){
-  document.getElementById('aStatR').textContent=recipes.length;document.getElementById('aStatV').textContent=visitors.length;document.getElementById('aStatN').textContent=subscribers.length;document.getElementById('aStatS').textContent=MAX_SLOTS-recipes.length;
-  const recent=recipes.slice(0,5);document.getElementById('recentRecipes').innerHTML=recent.length?recent.map(r=>`<div>• <strong>${r.nom}</strong> — ${r.region||'Communauté'} (${r.date_ajout||''})</div>`).join(''):'<div>Aucune recette.</div>';
+  const totalViews=recipes.reduce((s,r)=>s+(r.views||0),0);
+  document.getElementById('aStatR').textContent=recipes.length;
+  document.getElementById('aStatM').textContent=membersWithEmail.length;
+  document.getElementById('aStatV').textContent=totalViews;
+  document.getElementById('aStatS').textContent=MAX_SLOTS-recipes.length;
+  const recent=recipes.slice(0,5);
+  document.getElementById('recentRecipes').innerHTML=recent.length?recent.map(r=>`<div>• <strong>${r.nom}</strong> — ${r.region||'Communauté'} — 👁 ${r.views||0} vues (${r.date_ajout||''})</div>`).join(''):'<div>Aucune recette.</div>';
+
+  // Recettes
   const rtb=document.getElementById('recipesTableBody'),noR=document.getElementById('noRecipes');
   if(!recipes.length){rtb.innerHTML='';noR.style.display='block';}else{
     noR.style.display='none';
-    rtb.innerHTML=recipes.map((r,i)=>`<tr>
-      <td><strong>${r.nom}</strong></td>
-      <td>${r.region||'—'}</td>
-      <td>${r.diff}</td>
-      <td style="font-size:.78rem;">${r.date_ajout||''}</td>
-      <td>
-        <button class="table-edit" onclick="adminEditRec(${i})">Modifier</button>
-        <button class="table-del" onclick="adminDelRec('${r.id}',${i})">Supprimer</button>
-      </td>
-    </tr>`).join('');
+    rtb.innerHTML=recipes.map((r,i)=>{
+      const prof=profiles[r.user_id];
+      const auteur=prof?prof.nom:'—';
+      return`<tr>
+        <td><strong>${r.nom}</strong></td>
+        <td>${auteur}</td>
+        <td>${r.region||'—'}</td>
+        <td>👁 ${r.views||0}</td>
+        <td style="font-size:.78rem;">${r.date_ajout||''}</td>
+        <td>
+          <button class="table-edit" onclick="adminEditRec(${i})">Modifier</button>
+          <button class="table-del" onclick="adminDelRec('${r.id}',${i})">Supprimer</button>
+        </td>
+      </tr>`;
+    }).join('');
   }
-  const vtb=document.getElementById('visitorsTableBody'),noV=document.getElementById('noVisitors');
-  if(!visitors.length){vtb.innerHTML='';noV.style.display='block';}else{noV.style.display='none';vtb.innerHTML=visitors.map(v=>`<tr><td><code style="font-size:.75rem;">${v.ip}</code></td><td><strong style="color:${v.visits>=3?'var(--accent)':'inherit'}">${v.visits}</strong></td><td style="font-size:.78rem;">${v.first_visit||''}</td><td style="font-size:.78rem;">${v.last_visit||''}</td><td>${subscribers.find(s=>s.ip===v.ip)?'<span style="color:var(--success);font-size:.75rem;">✓</span>':v.visits>=3?'<span style="color:var(--accent-light);font-size:.75rem;">Proposé</span>':'<span style="color:var(--warm-gray);font-size:.75rem;">—</span>'}</td></tr>`).join('');}
-  const ntb=document.getElementById('nlTableBody'),noNl=document.getElementById('noNl');
-  document.getElementById('nlTableCount').textContent=subscribers.length;
-  if(!subscribers.length){ntb.innerHTML='';noNl.style.display='block';}else{noNl.style.display='none';ntb.innerHTML=subscribers.map((s,i)=>`<tr><td>${s.nom}</td><td>${s.email}</td><td style="font-size:.78rem;">${s.date_ajout||''}</td><td><button class="table-del" onclick="removeSub('${s.id}',${i})">Retirer</button></td></tr>`).join('');}
+
+  // Membres — avec email visible
+  const mtb=document.getElementById('membersTableBody'),noM=document.getElementById('noMembers');
+  document.getElementById('membersCount').textContent=membersWithEmail.length;
+  if(!membersWithEmail.length){mtb.innerHTML='';noM.style.display='block';}else{
+    noM.style.display='none';
+    mtb.innerHTML=membersWithEmail.map(m=>{
+      const av=m.avatar?`<img src="${m.avatar}" class="user-mini-avatar" />`:`<div style="width:32px;height:32px;border-radius:50%;background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:.75rem;vertical-align:middle;margin-right:.5rem;">${(m.nom||'?')[0].toUpperCase()}</div>`;
+      const date=m.created_at?new Date(m.created_at).toLocaleDateString('fr-FR'):'—';
+      // Email affiché avec badge stylé
+      const emailDisplay=m.email
+        ? `<span class="email-badge">✉ ${m.email}</span>`
+        : `<span style="color:var(--warm-gray);font-size:.75rem;font-style:italic;">—</span>`;
+      return`<tr>
+        <td>${av}</td>
+        <td><strong>${m.nom||'—'}</strong></td>
+        <td>${m.age||'—'}</td>
+        <td>${emailDisplay}</td>
+        <td style="font-size:.78rem;">${date}</td>
+      </tr>`;
+    }).join('');
+  }
 }
 
-// Édition depuis le panel admin
-function adminEditRec(idx){
-  closeOverlay('adminOverlay');
-  editRec(idx);
-}
+function adminEditRec(idx){closeOverlay('adminOverlay');editRec(idx);}
 async function adminDelRec(id,idx){if(!confirm(`Supprimer "${recipes[idx].nom}" ?`))return;await db.from('recettes').delete().eq('id',id);toast('Supprimée.');await loadData();renderAll();refreshPanel();}
-async function removeSub(id,idx){if(!confirm(`Retirer ${subscribers[idx].email} ?`))return;await db.from('abonnes').delete().eq('id',id);toast('Retiré.');await loadData();refreshPanel();}
 document.getElementById('deleteAllBtn').addEventListener('click',async()=>{if(!confirm('Tout supprimer ?'))return;await db.from('recettes').delete().neq('id','00000000-0000-0000-0000-000000000000');toast('Tout supprimé.');await loadData();renderAll();refreshPanel();});
-document.getElementById('sendNlBtn').addEventListener('click',()=>{if(!subscribers.length){toast('Aucun abonné.');return;}const s=encodeURIComponent(document.getElementById('composeSubject').value||'Newsletter — Les Délices Partagées'),b=encodeURIComponent(document.getElementById('composeBody').value||''),bcc=subscribers.map(x=>x.email).join(',');window.open(`mailto:${ADMIN_EMAIL}?bcc=${encodeURIComponent(bcc)}&subject=${s}&body=${b}`,'_blank');toast('Client mail ouvert.');});
-document.getElementById('previewNlBtn').addEventListener('click',()=>{const p=document.getElementById('nlPreview');if(p.style.display==='none'){p.innerHTML=subscribers.length?'<strong>Destinataires :</strong><br>'+subscribers.map(s=>`${s.nom} &lt;${s.email}&gt;`).join('<br>'):'Aucun abonné.';p.style.display='block';}else{p.style.display='none';}});
+
+// Email à tous
+document.getElementById('sendEmailBtn').addEventListener('click',()=>{
+  const emailsAvecCompte=membersWithEmail.filter(m=>m.email).map(m=>m.email);
+  if(!emailsAvecCompte.length){toast('Aucun membre avec email enregistré.');return;}
+  const s=encodeURIComponent(document.getElementById('composeSubject').value||'Message — Les Délices Partagées');
+  const b=encodeURIComponent(document.getElementById('composeBody').value||'');
+  const bcc=emailsAvecCompte.join(',');
+  window.open(`mailto:?bcc=${encodeURIComponent(bcc)}&subject=${s}&body=${b}`,'_blank');
+  toast(`📨 Ouverture du client email avec ${emailsAvecCompte.length} destinataire(s).`);
+});
+document.getElementById('previewEmailBtn').addEventListener('click',()=>{
+  const p=document.getElementById('emailPreview');
+  if(p.style.display==='none'){
+    const liste=membersWithEmail.filter(m=>m.email);
+    p.innerHTML=liste.length
+      ?'<strong>Emails enregistrés :</strong><br>'+liste.map(m=>`✉ ${m.email} — ${m.nom||'—'} (${m.age||'?'} ans)`).join('<br>')
+      :'Aucun email enregistré pour l\'instant.<br><small>Les emails sont enregistrés lors de l\'inscription via magic link.</small>';
+    p.style.display='block';
+  }else{p.style.display='none';}
+});
 
 // ══ NAV ACTIONS ══
 document.getElementById('navAddBtn').addEventListener('click',e=>{e.preventDefault();openForm();});
@@ -1164,7 +1222,7 @@ async function init(){
   await initAuth();
   await loadData();
   renderAll();
-  trackVisit();
+  updateMemberCount();
   attacherFiltres();
 }
 init();
