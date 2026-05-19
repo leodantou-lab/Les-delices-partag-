@@ -9,44 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-<!--
-  ══════════════════════════════════════════════════════════
-  SUPABASE SQL — À exécuter avant de tester :
-
-  1. Ajouter la colonne views aux recettes :
-  ALTER TABLE recettes ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0;
-
-  2. Ajouter user_id si pas encore fait :
-  ALTER TABLE recettes ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id);
-
-  3. Créer la table profils :
-  CREATE TABLE IF NOT EXISTS profils (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    nom TEXT,
-    age INTEGER,
-    avatar TEXT,
-    email TEXT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-  );
-
-  4. RLS sur profils :
-  ALTER TABLE profils ENABLE ROW LEVEL SECURITY;
-  CREATE POLICY "Lecture publique profils" ON profils FOR SELECT USING (true);
-  CREATE POLICY "Insertion propre profil" ON profils FOR INSERT WITH CHECK (auth.uid() = id);
-  CREATE POLICY "Modification propre profil" ON profils FOR UPDATE USING (auth.uid() = id);
-
-  5. Dans Supabase > Authentication > Settings :
-     - Activer "Enable email confirmations"
-     - Site URL : votre domaine
-     - Dans Providers > Email : activer "Confirm email"
-     - Le flux : inscription → email de confirmation (lien magique) → retour sur le site →
-       onboarding (nom, âge, photo, mot de passe) → connexion future par email+mdp
-
-  6. Ajout colonne email si manquante :
-  ALTER TABLE profils ADD COLUMN IF NOT EXISTS email TEXT;
-  ══════════════════════════════════════════════════════════
--->
-
 <style>
 :root{
   --cream:#faf7f2;--beige:#f0ebe0;--sand:#e2d9c8;
@@ -344,7 +306,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 /* ── TOAST ── */
 .toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--charcoal);color:var(--cream);padding:.9rem 1.6rem;border-radius:3px;font-size:.83rem;border-left:3px solid var(--accent);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1);pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
-@keyframes fadeWarn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
@@ -547,44 +508,24 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   </div>
 </div>
 
-<!-- ════ MODAL AUTH — Email + Mot de passe ════ -->
+<!-- ════ MODAL AUTH ════ -->
 <div class="overlay" id="authOverlay">
   <div class="auth-modal modal">
     <div class="modal-topbar"><button class="close-btn" id="authClose">✕</button></div>
-
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabSignup" onclick="switchAuthTab('signup')">Créer un compte</button>
       <button class="auth-tab" id="tabLogin" onclick="switchAuthTab('login')">Se connecter</button>
     </div>
-
-    <!-- ── INSCRIPTION ── -->
     <div class="auth-pane active" id="paneSignup">
       <h2 class="auth-title">Rejoindre la table</h2>
       <p class="auth-sub">Créez votre compte avec un email et un mot de passe. Un lien de vérification vous sera envoyé.</p>
-      <div class="f-group">
-        <label class="f-label">Adresse email</label>
-        <input type="email" class="f-input" id="signupEmail" placeholder="votre@email.com" autocomplete="email" />
-      </div>
-      <div class="f-group">
-        <label class="f-label">Mot de passe</label>
-        <div class="pwd-toggle">
-          <input type="password" class="f-input" id="signupPwd" placeholder="Au moins 6 caractères" autocomplete="new-password" />
-          <button class="pwd-toggle-btn" type="button" onclick="togglePwd('signupPwd',this)">👁</button>
-        </div>
-      </div>
-      <div class="f-group">
-        <label class="f-label">Confirmer le mot de passe</label>
-        <div class="pwd-toggle">
-          <input type="password" class="f-input" id="signupPwd2" placeholder="Répétez le mot de passe" autocomplete="new-password" />
-          <button class="pwd-toggle-btn" type="button" onclick="togglePwd('signupPwd2',this)">👁</button>
-        </div>
-      </div>
+      <div class="f-group"><label class="f-label">Adresse email</label><input type="email" class="f-input" id="signupEmail" placeholder="votre@email.com" autocomplete="email" /></div>
+      <div class="f-group"><label class="f-label">Mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="signupPwd" placeholder="Au moins 6 caractères" autocomplete="new-password" /><button class="pwd-toggle-btn" type="button" onclick="togglePwd('signupPwd',this)">👁</button></div></div>
+      <div class="f-group"><label class="f-label">Confirmer le mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="signupPwd2" placeholder="Répétez le mot de passe" autocomplete="new-password" /><button class="pwd-toggle-btn" type="button" onclick="togglePwd('signupPwd2',this)">👁</button></div></div>
       <div class="auth-err" id="signupErr"></div>
       <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="signupBtn">Créer mon compte →</button></div>
       <p style="font-size:.72rem;color:var(--warm-gray);margin-top:1rem;line-height:1.6;text-align:center;">Un email de vérification vous sera envoyé. Cliquez sur le lien pour activer votre compte et compléter votre profil.</p>
     </div>
-
-    <!-- ── LIEN ENVOYÉ ── -->
     <div class="auth-pane" id="paneSignupSent">
       <div class="magic-sent">
         <div class="magic-sent-icon">✉️</div>
@@ -594,37 +535,19 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
         <span class="magic-back" onclick="switchAuthPane('paneSignup')">← Utiliser un autre email</span>
       </div>
     </div>
-
-    <!-- ── CONNEXION ── -->
     <div class="auth-pane" id="paneLogin">
       <h2 class="auth-title">Bon retour</h2>
       <p class="auth-sub">Connectez-vous avec votre email et votre mot de passe.</p>
-      <div class="f-group">
-        <label class="f-label">Adresse email</label>
-        <input type="email" class="f-input" id="loginEmail" placeholder="votre@email.com" autocomplete="email" />
-      </div>
-      <div class="f-group">
-        <label class="f-label">Mot de passe</label>
-        <div class="pwd-toggle">
-          <input type="password" class="f-input" id="loginPwdField" placeholder="Votre mot de passe" autocomplete="current-password" />
-          <button class="pwd-toggle-btn" type="button" onclick="togglePwd('loginPwdField',this)">👁</button>
-        </div>
-      </div>
+      <div class="f-group"><label class="f-label">Adresse email</label><input type="email" class="f-input" id="loginEmail" placeholder="votre@email.com" autocomplete="email" /></div>
+      <div class="f-group"><label class="f-label">Mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="loginPwdField" placeholder="Votre mot de passe" autocomplete="current-password" /><button class="pwd-toggle-btn" type="button" onclick="togglePwd('loginPwdField',this)">👁</button></div></div>
       <div class="auth-err" id="loginAuthErr"></div>
       <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="loginAuthBtn">Se connecter →</button></div>
-      <div style="text-align:center;margin-top:1rem;">
-        <span style="font-size:.72rem;color:var(--warm-gray);cursor:pointer;text-decoration:underline;" onclick="showResetPane()">Mot de passe oublié ?</span>
-      </div>
+      <div style="text-align:center;margin-top:1rem;"><span style="font-size:.72rem;color:var(--warm-gray);cursor:pointer;text-decoration:underline;" onclick="showResetPane()">Mot de passe oublié ?</span></div>
     </div>
-
-    <!-- ── MOT DE PASSE OUBLIÉ ── -->
     <div class="auth-pane" id="paneReset">
       <h2 class="auth-title">Réinitialiser</h2>
       <p class="auth-sub">Entrez votre email — nous vous enverrons un lien de réinitialisation.</p>
-      <div class="f-group">
-        <label class="f-label">Adresse email</label>
-        <input type="email" class="f-input" id="resetEmail" placeholder="votre@email.com" />
-      </div>
+      <div class="f-group"><label class="f-label">Adresse email</label><input type="email" class="f-input" id="resetEmail" placeholder="votre@email.com" /></div>
       <div class="auth-err" id="resetErr"></div>
       <div class="auth-ok" id="resetOk">Email envoyé ! Vérifiez votre boîte mail.</div>
       <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="resetBtn">Envoyer le lien →</button></div>
@@ -633,7 +556,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   </div>
 </div>
 
-<!-- ════ ONBOARDING — Profil + mot de passe déjà défini ════ -->
+<!-- ════ ONBOARDING ════ -->
 <div class="overlay" id="onboardOverlay">
   <div class="onboard-modal modal">
     <div class="onboard-head">
@@ -645,10 +568,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div class="avatar-upload-zone" id="avatarZone" onclick="document.getElementById('avatarInput').click()">
         <input type="file" id="avatarInput" accept="image/*" style="display:none" />
         <img id="avatarPreview" alt="Avatar" />
-        <div class="avatar-placeholder">
-          <span>📷</span>
-          <span>Photo de profil</span>
-        </div>
+        <div class="avatar-placeholder"><span>📷</span><span>Photo de profil</span></div>
       </div>
       <div class="f-group"><label class="f-label">Votre prénom <em style="color:var(--accent)">*</em></label><input type="text" class="f-input" id="onboardNom" placeholder="ex. Marie" /></div>
       <div class="f-group"><label class="f-label">Votre âge <em style="color:var(--accent)">*</em></label><input type="number" class="f-input" id="onboardAge" placeholder="ex. 34" min="1" max="120" /></div>
@@ -734,9 +654,6 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 </div>
 <div class="toast" id="toast"></div>
 
-<!-- ════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════ -->
 <script>
 // ══ CONFIG ══
 const SUPABASE_URL = 'https://poccnuekyqchzdymywfk.supabase.co';
@@ -806,20 +723,27 @@ async function loadProfile(userId){
 async function initAuth(){
   const{data:{session}}=await db.auth.getSession();
   currentUser=session?.user||null;
-  if(currentUser)await loadProfile(currentUser.id);
+  if(currentUser){
+    await loadProfile(currentUser.id);
+    // ✅ FIX : Si l'utilisateur est connecté au chargement mais sans profil
+    // (cas : retour après clic sur lien de vérification email)
+    if(!currentProfile){
+      setTimeout(()=>openOverlay('onboardOverlay'),600);
+    }
+  }
   updateAuthUI();
 
   db.auth.onAuthStateChange(async(event,session)=>{
-    const wasLoggedIn=!!currentUser;
     currentUser=session?.user||null;
     if(currentUser){
       await loadProfile(currentUser.id);
-      if(event==='SIGNED_IN'&&!wasLoggedIn){
+      // ✅ FIX : Suppression du &&!wasLoggedIn — l'onboarding se déclenche
+      // à chaque SIGNED_IN si le profil est absent, peu importe l'état précédent
+      if(event==='SIGNED_IN'){
         closeOverlay('authOverlay');
         await loadData();
         updateMemberCount();
         if(!currentProfile){
-          // Première connexion après vérification email → onboarding
           setTimeout(()=>openOverlay('onboardOverlay'),400);
         }else{
           toast(`Bon retour ${currentProfile.nom||''} ! 👋`);
@@ -852,7 +776,7 @@ function switchAuthPane(paneId){
 }
 function showResetPane(){switchAuthPane('paneReset');}
 
-// ══ INSCRIPTION : EMAIL + MOT DE PASSE ══
+// ══ INSCRIPTION ══
 document.getElementById('signupBtn').addEventListener('click',async()=>{
   const email=document.getElementById('signupEmail').value.trim();
   const pwd=document.getElementById('signupPwd').value;
@@ -866,10 +790,7 @@ document.getElementById('signupBtn').addEventListener('click',async()=>{
   const{data,error}=await db.auth.signUp({
     email,
     password:pwd,
-    options:{
-      emailRedirectTo:window.location.href,
-      data:{needs_onboarding:true}
-    }
+    options:{emailRedirectTo:window.location.href,data:{needs_onboarding:true}}
   });
   btn.disabled=false;btn.textContent='Créer mon compte →';
   if(error){errEl.textContent=error.message==='User already registered'?'Un compte existe déjà avec cet email.':error.message;errEl.className='auth-err show';return;}
@@ -877,7 +798,7 @@ document.getElementById('signupBtn').addEventListener('click',async()=>{
   switchAuthPane('paneSignupSent');
 });
 
-// ══ CONNEXION : EMAIL + MOT DE PASSE ══
+// ══ CONNEXION ══
 document.getElementById('loginAuthBtn').addEventListener('click',async()=>{
   const email=document.getElementById('loginEmail').value.trim();
   const pwd=document.getElementById('loginPwdField').value;
@@ -892,7 +813,6 @@ document.getElementById('loginAuthBtn').addEventListener('click',async()=>{
     if(error.message.includes('Email not confirmed'))msg='Votre email n\'est pas encore vérifié. Consultez votre boîte mail.';
     errEl.textContent=msg;errEl.className='auth-err show';
   }
-  // onAuthStateChange gère la suite
 });
 document.getElementById('loginPwdField').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginAuthBtn').click();});
 
@@ -950,7 +870,6 @@ document.getElementById('onboardBtn').addEventListener('click',async()=>{
   closeOverlay('onboardOverlay');
   toast(`Bienvenue ${nom} ! 🎉`);
   await loadData();renderAll();updateMemberCount();
-  // Pré-remplir le nom auteur dans le formulaire
   document.getElementById('fAuteur').value=nom;
 });
 
@@ -1002,7 +921,6 @@ function renderAll(){
     const showEdit=isAdmin||isOwner;
     const showDel=isAdmin||isOwner;
     const views=r.views||0;
-    // Auteur affiché
     const auteurNom=r.auteur||null;
     const prof=profiles[r.user_id]||null;
     const auteurAffiche=auteurNom||(prof?prof.nom:null);
@@ -1044,8 +962,6 @@ async function openRec(idx){
   if(r.img){img.src=r.img;img.style.display='block';}else{img.style.display='none';}
   document.getElementById('mTag').textContent=`${r.region||'Communauté'} · ${r.diff} · 👁 ${newViews}`;
   document.getElementById('mTitle').textContent=r.nom;
-
-  // Auteur dans la modale
   const auteurNom=r.auteur||null;
   const prof=profiles[r.user_id]||null;
   const auteurAffiche=auteurNom||(prof?prof.nom:null);
@@ -1058,7 +974,6 @@ async function openRec(idx){
     else{authorAvatarEl.outerHTML=`<span class="modal-author-initial" id="mAuthorAvatar">${auteurAffiche[0].toUpperCase()}</span>`;}
     authorNameEl.textContent=`Recette de ${auteurAffiche}`;
   }else{authorRow.style.display='none';}
-
   document.getElementById('mDesc').textContent=r.description||'';
   document.getElementById('srvCount').textContent=currentSrv;
   renderIngr();
@@ -1123,7 +1038,6 @@ function openForm(){
   document.getElementById('formSuccess').style.display='none';
   ['fNom','fCouverts','fTemps','fCuisson','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fDiff').value='Intermédiaire';
-  // Pré-remplir auteur depuis le profil
   document.getElementById('fAuteur').value=currentProfile?currentProfile.nom:'';
   removePhoto();
   openOverlay('formOverlay');
@@ -1245,27 +1159,15 @@ function refreshPanel(){
   document.getElementById('aStatS').textContent=MAX_SLOTS-recipes.length;
   const recent=recipes.slice(0,5);
   document.getElementById('recentRecipes').innerHTML=recent.length?recent.map(r=>`<div>• <strong>${r.nom}</strong>${r.auteur?' — par '+r.auteur:''} — ${r.region||'Communauté'} — 👁 ${r.views||0} vues (${r.date_ajout||''})</div>`).join(''):'<div>Aucune recette.</div>';
-
   const rtb=document.getElementById('recipesTableBody'),noR=document.getElementById('noRecipes');
   if(!recipes.length){rtb.innerHTML='';noR.style.display='block';}else{
     noR.style.display='none';
     rtb.innerHTML=recipes.map((r,i)=>{
       const prof=profiles[r.user_id];
       const auteur=r.auteur||(prof?prof.nom:'—');
-      return`<tr>
-        <td><strong>${r.nom}</strong></td>
-        <td>${auteur}</td>
-        <td>${r.region||'—'}</td>
-        <td>👁 ${r.views||0}</td>
-        <td style="font-size:.78rem;">${r.date_ajout||''}</td>
-        <td>
-          <button class="table-edit" onclick="adminEditRec(${i})">Modifier</button>
-          <button class="table-del" onclick="adminDelRec('${r.id}',${i})">Supprimer</button>
-        </td>
-      </tr>`;
+      return`<tr><td><strong>${r.nom}</strong></td><td>${auteur}</td><td>${r.region||'—'}</td><td>👁 ${r.views||0}</td><td style="font-size:.78rem;">${r.date_ajout||''}</td><td><button class="table-edit" onclick="adminEditRec(${i})">Modifier</button><button class="table-del" onclick="adminDelRec('${r.id}',${i})">Supprimer</button></td></tr>`;
     }).join('');
   }
-
   const mtb=document.getElementById('membersTableBody'),noM=document.getElementById('noMembers');
   document.getElementById('membersCount').textContent=membersAdmin.length;
   if(!membersAdmin.length){mtb.innerHTML='';noM.style.display='block';}else{
