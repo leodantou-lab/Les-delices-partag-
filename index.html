@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -94,9 +94,11 @@ nav.scrolled{box-shadow:0 4px 30px rgba(44,40,36,.08);}
 .card-footer{padding:.9rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .card-diff{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warm-gray);}
 .card-link{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+/* Boutons admin sur les cartes */
 .card-admin-btns{position:absolute;top:.7rem;right:.7rem;display:none;gap:.4rem;z-index:2;}
-body.admin-mode .card-admin-btns,.card-admin-btns.owner{display:flex;}
-.card-btn{width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:transform .2s;}
+body.admin-mode .card-admin-btns{display:flex;}
+.card-admin-btns.owner{display:flex;}
+.card-btn{width:30px;height:30px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:transform .2s;line-height:1;}
 .card-btn.edit{background:var(--accent);color:white;}
 .card-btn.del{background:var(--danger);color:white;}
 .card-btn:hover{transform:scale(1.1);}
@@ -147,26 +149,22 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .srv-btn{background:white;border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;color:var(--charcoal);display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .srv-btn:hover{background:var(--accent);color:white;border-color:var(--accent);}
 .srv-n{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--accent);min-width:28px;text-align:center;}
-
-/* ── INGRÉDIENTS MODE ── */
+/* Ingredients mode */
 .ingr-mode-btns{display:flex;gap:.5rem;margin-bottom:1.2rem;}
 .mode-btn{background:white;border:1px solid var(--border);border-radius:50px;padding:.35rem .9rem;font-size:.68rem;cursor:pointer;color:var(--warm-gray);transition:all .2s;font-family:'DM Sans',sans-serif;}
 .mode-btn.active{background:var(--accent);color:white;border-color:var(--accent);}
-
-/* Mode visuel Marmiton style */
+/* Mode visuel Marmiton */
 .ingr-visual-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;margin-bottom:1.8rem;}
 .ingr-card{background:white;border:1px solid var(--border);border-radius:12px;padding:1rem .8rem .8rem;text-align:center;transition:box-shadow .2s;}
 .ingr-card:hover{box-shadow:0 4px 16px rgba(139,111,78,.12);}
-.ingr-card-img{width:72px;height:72px;object-fit:contain;display:block;margin:0 auto .5rem;}
+.ingr-card-img{width:80px;height:80px;object-fit:cover;display:block;margin:0 auto .6rem;border-radius:8px;background:var(--beige);}
 .ingr-card-qty{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--accent);font-weight:500;display:block;margin-bottom:.2rem;}
 .ingr-card-name{color:var(--charcoal);display:block;font-size:.75rem;line-height:1.3;}
-
 /* Mode liste */
 .ingr-list{list-style:none;}
 .ingr-list li{display:flex;gap:.8rem;padding:.5rem 0;border-bottom:1px solid rgba(226,217,200,.4);font-size:.86rem;}
 .ingr-list li:last-child{border-bottom:none;}
 .ingr-qty{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--accent);min-width:58px;flex-shrink:0;}
-
 .two-cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:1.8rem;}
 .col-title{font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);padding-bottom:.6rem;border-bottom:1px solid var(--border);margin-bottom:1.1rem;}
 .steps-list{list-style:none;counter-reset:steps;}
@@ -190,6 +188,10 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .f-textarea{resize:vertical;min-height:90px;line-height:1.65;}
 .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
 .f-hint{font-size:.7rem;color:var(--warm-gray);margin-top:.4rem;line-height:1.5;}
+.ai-row{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.55rem;}
+.ai-btn{background:white;border:1px solid var(--border);border-radius:50px;padding:.38rem .85rem;font-size:.68rem;color:var(--accent);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.ai-btn:hover{background:var(--accent);border-color:var(--accent);color:white;}
+.ai-btn:disabled{opacity:.55;cursor:wait;background:var(--beige);color:var(--warm-gray);}
 .form-foot{padding:1.4rem 2.5rem 2rem;border-top:1px solid var(--border);display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;}
 .photo-zone{border:2px dashed var(--border);border-radius:4px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--cream);position:relative;overflow:hidden;}
 .photo-zone:hover{border-color:var(--accent-light);background:var(--beige);}
@@ -288,6 +290,39 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .btn-bar:hover{color:white;border-color:rgba(255,255,255,.4);}
 .btn-bar.red{border-color:rgba(192,97,75,.4);color:rgba(192,97,75,.8);}
 .btn-bar.red:hover{color:var(--danger);}
+.ai-modal{background:white;max-width:760px;border-radius:8px;overflow:hidden;}
+.ai-head{background:var(--dark);padding:2rem 2.2rem;position:relative;}
+.ai-head::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1556911220-bff31c812dba?w=900&q=70') center/cover;opacity:.12;}
+.ai-kicker{position:relative;z-index:1;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-light);margin-bottom:.4rem;}
+.ai-title{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--cream);}
+.ai-body{padding:2rem 2.2rem;}
+.ai-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem;}
+.ai-mini{font-size:.72rem;color:var(--warm-gray);line-height:1.6;margin-top:.6rem;}
+.chat-box{height:260px;overflow-y:auto;background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:1rem;display:flex;flex-direction:column;gap:.8rem;}
+.chat-msg{max-width:86%;padding:.8rem 1rem;border-radius:10px;font-size:.86rem;line-height:1.55;}
+.chat-msg.user{align-self:flex-end;background:var(--accent);color:white;border-bottom-right-radius:2px;}
+.chat-msg.bot{align-self:flex-start;background:white;border:1px solid var(--border);color:var(--charcoal);border-bottom-left-radius:2px;}
+.chat-input-row{display:flex;gap:.7rem;margin-top:1rem;}
+.chat-input-row textarea{flex:1;min-height:54px;resize:vertical;}
+.ai-preview{display:none;background:var(--cream);border:1px solid var(--border);border-radius:4px;padding:1rem;margin-top:1rem;font-size:.83rem;line-height:1.55;max-height:240px;overflow:auto;}
+.ai-preview.on{display:block;}
+.chef-launcher{position:fixed;left:1.4rem;bottom:1.4rem;z-index:450;width:64px;height:64px;border-radius:50%;border:2px solid var(--accent-light);background:var(--accent);color:white;box-shadow:0 12px 34px rgba(44,40,36,.24);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-style:italic;transition:transform .2s,box-shadow .2s;}
+.chef-launcher:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(44,40,36,.3);}
+.chef-launcher span{font-family:'DM Sans',sans-serif;font-size:.48rem;font-style:normal;letter-spacing:.12em;text-transform:uppercase;margin-top:-.15rem;}
+.chef-panel{position:fixed;left:1.4rem;bottom:6rem;z-index:451;width:min(420px,calc(100vw - 2rem));max-height:min(680px,calc(100vh - 8rem));background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 18px 60px rgba(44,40,36,.22);display:none;overflow:hidden;}
+.chef-panel.open{display:block;}
+.chef-panel-head{background:var(--dark);color:var(--cream);padding:1rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;}
+.chef-panel-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;}
+.chef-panel-sub{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-light);margin-top:.1rem;}
+.chef-panel-close{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);cursor:pointer;font-size:1rem;}
+.chef-panel-body{padding:1rem;}
+.chef-tools{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem;}
+.chef-tool{background:var(--cream);border:1px solid var(--border);border-radius:50px;padding:.4rem .8rem;font-size:.68rem;color:var(--accent);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.chef-tool:hover{background:var(--accent);color:white;border-color:var(--accent);}
+.chef-panel .chat-input-row{align-items:stretch;}
+.chef-panel .chat-input-row textarea{min-height:48px;}
+.chef-panel .chat-input-row .btn{padding:.7rem 1rem;min-width:92px;}
+.chef-panel .ai-preview{max-height:150px;}
 .toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--charcoal);color:var(--cream);padding:.9rem 1.6rem;border-radius:3px;font-size:.83rem;border-left:3px solid var(--accent);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1);pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
 @media(max-width:768px){
@@ -298,6 +333,8 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   .form-head,.form-body,.form-foot{padding-left:1.5rem;padding-right:1.5rem;}
   .admin-pane{padding:1.5rem;}
   .ingr-visual-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));}
+  .chef-panel{left:1rem;right:1rem;bottom:5.5rem;width:auto;}
+  .chef-launcher{left:1rem;bottom:1rem;}
 }
 </style>
 </head>
@@ -427,8 +464,8 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
         <button class="srv-btn" id="srvUp">+</button>
       </div>
       <div class="ingr-mode-btns">
-        <button class="mode-btn active" id="modeVisual">🖼 Photos</button>
-        <button class="mode-btn" id="modeList">≡ Liste</button>
+        <button class="mode-btn active" id="modeVisual">Photos</button>
+        <button class="mode-btn" id="modeList">Liste</button>
       </div>
       <div id="ingrVisualWrap"><div class="ingr-visual-grid" id="mIngrVisual"></div></div>
       <div id="ingrListWrap" style="display:none"><ul class="ingr-list" id="mIngr"></ul></div>
@@ -439,7 +476,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div class="tip-box" id="mTip" style="display:none"><strong>Astuce</strong><span id="mTipTxt"></span></div>
       <div id="mGestBlock" style="display:none;margin-top:1.4rem;"><div class="col-title">Geste important</div><p style="font-size:.86rem;line-height:1.7;" id="mGestTxt"></p></div>
       <div id="mEditBar" style="display:none;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--border);">
-        <button class="btn btn-outline" id="mEditBtn" style="font-size:.75rem;">✏ Modifier cette recette</button>
+        <button class="btn btn-outline" id="mEditBtn" style="font-size:.75rem;">Modifier cette recette</button>
       </div>
     </div>
   </div>
@@ -459,7 +496,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
         <div class="photo-zone" id="photoZone" onclick="document.getElementById('photoInput').click()">
           <input type="file" id="photoInput" accept="image/*" style="display:none">
           <img class="photo-preview" id="photoPreview" alt="">
-          <div class="photo-placeholder"><div style="font-size:1.8rem;opacity:.4;">📷</div><div style="font-size:.78rem;">Cliquez pour ajouter une photo</div><div style="font-size:.68rem;opacity:.6;">JPG, PNG — max 5 Mo</div></div>
+          <div class="photo-placeholder"><div style="font-size:1.8rem;opacity:.4;">[ Photo ]</div><div style="font-size:.78rem;">Cliquez pour ajouter une photo</div><div style="font-size:.68rem;opacity:.6;">JPG, PNG — max 5 Mo</div></div>
           <button class="photo-remove" id="photoRemove" onclick="event.stopPropagation();removePhoto()">✕</button>
         </div>
       </div>
@@ -477,7 +514,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div class="f-group"><label class="f-label">Description <em>*</em></label><textarea class="f-textarea" id="fDesc" rows="2" placeholder="Quelques mots pour présenter votre recette…" maxlength="500"></textarea><div class="bad-warn" id="warnDesc"></div></div>
       <div class="f-group">
         <label class="f-label">Ingrédients <em>* — format : quantité · unité · nom</em></label>
-        <textarea class="f-textarea" id="fIngr" rows="7" placeholder="200 · g · farine&#10;3 · pièces · œufs&#10;100 · ml · lait entier" maxlength="4000"></textarea>
+        <textarea class="f-textarea" id="fIngr" rows="7" placeholder="200 · g · farine&#10;3 · pièces · oeufs&#10;100 · ml · lait entier" maxlength="4000"></textarea>
         <p class="f-hint">Une ligne par ingrédient. Le · sépare quantité, unité et nom.</p>
         <div class="bad-warn" id="warnIngr"></div>
       </div>
@@ -506,14 +543,14 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <h2 class="auth-title">Rejoindre la table</h2>
       <p class="auth-sub">Créez votre compte avec un email et un mot de passe.</p>
       <div class="f-group"><label class="f-label">Email</label><input type="email" class="f-input" id="signupEmail" placeholder="votre@email.com" autocomplete="email"></div>
-      <div class="f-group"><label class="f-label">Mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="signupPwd" placeholder="Au moins 6 caractères"><button class="pwd-toggle-btn" onclick="togglePwd('signupPwd',this)">👁</button></div></div>
-      <div class="f-group"><label class="f-label">Confirmer</label><div class="pwd-toggle"><input type="password" class="f-input" id="signupPwd2" placeholder="Répétez le mot de passe"><button class="pwd-toggle-btn" onclick="togglePwd('signupPwd2',this)">👁</button></div></div>
+      <div class="f-group"><label class="f-label">Mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="signupPwd" placeholder="Au moins 6 caractères"><button class="pwd-toggle-btn" onclick="togglePwd('signupPwd',this)">Voir</button></div></div>
+      <div class="f-group"><label class="f-label">Confirmer</label><div class="pwd-toggle"><input type="password" class="f-input" id="signupPwd2" placeholder="Répétez le mot de passe"><button class="pwd-toggle-btn" onclick="togglePwd('signupPwd2',this)">Voir</button></div></div>
       <div class="auth-err" id="signupErr"></div>
-      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="signupBtn">Créer mon compte →</button></div>
+      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="signupBtn">Créer mon compte</button></div>
     </div>
     <div class="auth-pane" id="pSignupSent">
       <div class="magic-sent">
-        <div style="font-size:3rem;margin-bottom:1rem;">✉️</div>
+        <div style="font-size:1.4rem;margin-bottom:1rem;">[mail]</div>
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--dark);margin-bottom:.6rem;">Vérifiez votre boîte mail</h2>
         <p style="font-size:.84rem;color:var(--warm-gray);line-height:1.7;">Un email a été envoyé à<br><strong id="signupSentEmail" style="color:var(--accent);"></strong></p>
         <span class="magic-back" onclick="authPane('pSignup')">← Autre email</span>
@@ -523,9 +560,9 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <h2 class="auth-title">Bon retour</h2>
       <p class="auth-sub">Connectez-vous avec votre email et mot de passe.</p>
       <div class="f-group"><label class="f-label">Email</label><input type="email" class="f-input" id="loginEmail" placeholder="votre@email.com" autocomplete="email"></div>
-      <div class="f-group"><label class="f-label">Mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="loginPwd" placeholder="Votre mot de passe" autocomplete="current-password"><button class="pwd-toggle-btn" onclick="togglePwd('loginPwd',this)">👁</button></div></div>
+      <div class="f-group"><label class="f-label">Mot de passe</label><div class="pwd-toggle"><input type="password" class="f-input" id="loginPwd" placeholder="Votre mot de passe" autocomplete="current-password"><button class="pwd-toggle-btn" onclick="togglePwd('loginPwd',this)">Voir</button></div></div>
       <div class="auth-err" id="loginErr"></div>
-      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="loginBtn">Se connecter →</button></div>
+      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="loginBtn">Se connecter</button></div>
       <div style="text-align:center;margin-top:1rem;"><span style="font-size:.72rem;color:var(--warm-gray);cursor:pointer;text-decoration:underline;" onclick="authPane('pReset')">Mot de passe oublié ?</span></div>
     </div>
     <div class="auth-pane" id="pReset">
@@ -534,7 +571,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div class="f-group"><label class="f-label">Email</label><input type="email" class="f-input" id="resetEmail" placeholder="votre@email.com"></div>
       <div class="auth-err" id="resetErr"></div>
       <div class="auth-ok" id="resetOk">Email envoyé ! Consultez votre boîte mail.</div>
-      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="resetBtn">Envoyer le lien →</button></div>
+      <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="resetBtn">Envoyer le lien</button></div>
       <span class="magic-back" onclick="authTab('login')">← Retour</span>
     </div>
   </div>
@@ -551,13 +588,13 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
       <div class="avatar-zone" id="avatarZone" onclick="document.getElementById('avatarInput').click()">
         <input type="file" id="avatarInput" accept="image/*" style="display:none">
         <img id="avatarPreview" alt="">
-        <div class="av-ph"><span style="font-size:1.4rem;opacity:.4;">📷</span><span style="font-size:.62rem;">Ajouter</span></div>
+        <div class="av-ph"><span style="font-size:1.4rem;opacity:.4;">[+]</span><span style="font-size:.62rem;">Ajouter</span></div>
       </div>
       <p style="text-align:center;font-size:.72rem;color:var(--warm-gray);margin-bottom:1.2rem;opacity:.7;">Photo de profil (optionnel)</p>
       <div class="f-group"><label class="f-label">Votre prénom <em style="color:var(--accent)">*</em></label><input type="text" class="f-input" id="onboardNom" placeholder="ex. Marie"></div>
       <div class="f-group"><label class="f-label">Votre âge <em style="color:var(--accent)">*</em></label><input type="number" class="f-input" id="onboardAge" placeholder="ex. 34" min="1" max="120"></div>
       <div class="auth-err" id="onboardErr"></div>
-      <div style="margin-top:1.5rem;"><button class="btn btn-accent" style="width:100%" id="onboardBtn">Commencer ! 🍽</button></div>
+      <div style="margin-top:1.5rem;"><button class="btn btn-accent" style="width:100%" id="onboardBtn">Commencer !</button></div>
     </div>
   </div>
 </div>
@@ -588,7 +625,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 <!-- LOGIN ADMIN -->
 <div class="overlay" id="loginOverlay">
   <div class="login-box">
-    <div style="font-size:2rem;margin-bottom:1rem;">🔑</div>
+    <div style="font-size:1.4rem;margin-bottom:1rem;">[Cle]</div>
     <h3>Espace Léonard</h3>
     <p style="font-size:.82rem;color:var(--warm-gray);margin-bottom:1.6rem;">Accès réservé à l'administrateur.</p>
     <input type="password" class="f-input" id="adminPwd" placeholder="Mot de passe" style="text-align:center;letter-spacing:.3em;" autocomplete="off">
@@ -604,7 +641,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 <div class="overlay" id="adminOverlay">
   <div class="admin-panel modal-lg">
     <div class="admin-head">
-      <div><h2 style="color:var(--cream);">🍽 Espace Léonard</h2><p style="font-size:.78rem;color:rgba(240,235,224,.5);margin-top:.2rem;">Tableau de bord — Les Délices Partagées</p></div>
+      <div><h2 style="color:var(--cream);">Espace Léonard</h2><p style="font-size:.78rem;color:rgba(240,235,224,.5);margin-top:.2rem;">Tableau de bord — Les Délices Partagées</p></div>
       <button class="close-btn" id="adminClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);">✕</button>
     </div>
     <div class="admin-tabs">
@@ -645,9 +682,34 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
         <div class="compose-body"><textarea id="emailBody" placeholder="Rédigez votre message ici…"></textarea></div>
       </div>
       <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
-        <button class="btn btn-accent" id="emailSendBtn">📨 Ouvrir dans mon client email</button>
+        <button class="btn btn-accent" id="emailSendBtn">Ouvrir dans mon client email</button>
         <span style="font-size:.72rem;color:var(--warm-gray);align-self:center;">Envoi via votre client email (BCC).</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYSE URL IA -->
+<div class="overlay" id="analyzeOverlay">
+  <div class="modal ai-modal">
+    <div class="modal-topbar" style="background:var(--dark);">
+      <button class="close-btn" id="analyzeClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);">✕</button>
+    </div>
+    <div class="ai-head" style="margin-top:-60px;padding-top:2.6rem;">
+      <div class="ai-kicker">Importer depuis une vidéo ou une page</div>
+      <h2 class="ai-title">Analyser une recette</h2>
+    </div>
+    <div class="ai-body">
+      <div class="f-group">
+        <label class="f-label">URL YouTube, Shorts, TikTok ou Instagram</label>
+        <input type="url" class="f-input" id="aiUrl" placeholder="https://...">
+        <p class="ai-mini">YouTube fonctionne le mieux. TikTok et Instagram peuvent bloquer l'analyse automatique selon la page.</p>
+      </div>
+      <div class="ai-actions">
+        <button class="btn btn-accent" id="analyzeUrlBtn">Analyser</button>
+        <button class="btn btn-outline" id="analyzeFillBtn" style="display:none;">Remplir le formulaire</button>
+      </div>
+      <div class="ai-preview" id="analyzePreview"></div>
     </div>
   </div>
 </div>
@@ -657,6 +719,34 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
   <div class="admin-bar-btns">
     <button class="btn-bar" id="adminPanelBtn">Ouvrir le panel</button>
     <button class="btn-bar red" id="adminQuitBtn">Quitter</button>
+  </div>
+</div>
+
+<button class="chef-launcher" id="chefLauncher" title="Chef Gustave">CG<span>Chef</span></button>
+<div class="chef-panel" id="chefPanel">
+  <div class="chef-panel-head">
+    <div>
+      <div class="chef-panel-title">Chef Gustave</div>
+      <div class="chef-panel-sub">Agent recette</div>
+    </div>
+    <button class="chef-panel-close" id="chefPanelClose">✕</button>
+  </div>
+  <div class="chef-panel-body">
+    <div class="chef-tools">
+      <button class="chef-tool" id="chefAnalyzeTool">Analyser URL</button>
+      <button class="chef-tool" id="chefResetTool">Nouvelle discussion</button>
+    </div>
+    <div class="chat-box" id="chefChat">
+      <div class="chat-msg bot">Bonjour. Je peux créer une recette ou remplir le formulaire quand tu valides.</div>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="f-textarea" id="chefInput" placeholder="Ex. Fais-moi une tarte aux pommes simple."></textarea>
+      <button class="btn btn-accent" id="chefSendBtn">Envoyer</button>
+    </div>
+    <div class="ai-actions">
+      <button class="btn btn-outline" id="chefFillBtn" style="display:none;">Remplir le formulaire</button>
+    </div>
+    <div class="ai-preview" id="chefPreview"></div>
   </div>
 </div>
 
@@ -671,7 +761,7 @@ const MAX=1000;
 const SITE=location.origin+location.pathname;
 const db=supabase.createClient(SB_URL,SB_KEY);
 
-// ══ IMAGES PAR CATÉGORIE (fallback sans photo) ══
+// ══ IMAGES PAR CATÉGORIE ══
 const CAT_IMAGES={
   'Gâteaux & desserts':'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
   'Pâtes & riz':'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=800&q=80',
@@ -689,211 +779,113 @@ const CAT_IMAGES={
   'Plats du monde':'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80',
   'default':'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80'
 };
-function getDefaultImg(categorie){return CAT_IMAGES[categorie]||CAT_IMAGES['default'];}
+function getDefaultImg(cat){return CAT_IMAGES[cat]||CAT_IMAGES['default'];}
 
-// ══ BIBLIOTHÈQUE INGRÉDIENTS (~200) avec images Wikimedia/CDN ══
-// Format: [mot-clé-recherche, url-image]
-const INGR_DB = {
-  // Produits laitiers
-  'beurre':       'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Butter_dish.jpg/320px-Butter_dish.jpg',
-  'margarine':    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Butter_dish.jpg/320px-Butter_dish.jpg',
-  'lait':         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/320px-Milk_glass.jpg',
-  'crème':        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Beurre_normand.jpg/320px-Beurre_normand.jpg',
-  'crème fraîche':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Beurre_normand.jpg/320px-Beurre_normand.jpg',
-  'fromage':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'gruyère':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'emmental':     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'parmesan':     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'mozzarella':   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'ricotta':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'mascarpone':   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'comté':        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'camembert':    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'roquefort':    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Plateau_fromages.jpg/320px-Plateau_fromages.jpg',
-  'yaourt':       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dairy_products.jpg/320px-Dairy_products.jpg',
-  'lait de coco': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Coconut_and_oil.jpg/320px-Coconut_and_oil.jpg',
-  // Œufs
-  'œuf':          'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowEggsOnWhite.jpg/320px-YellowEggsOnWhite.jpg',
-  'oeuf':         'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowEggsOnWhite.jpg/320px-YellowEggsOnWhite.jpg',
-  'oeufs':        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowEggsOnWhite.jpg/320px-YellowEggsOnWhite.jpg',
-  'jaune':        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowEggsOnWhite.jpg/320px-YellowEggsOnWhite.jpg',
-  'blanc':        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/YellowEggsOnWhite.jpg/320px-YellowEggsOnWhite.jpg',
-  // Farines & féculents
-  'farine':       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'fécule':       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'maïzena':      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'semoule':      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'chapelure':    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Semoule_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  // Sucres
-  'sucre':        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Fresh_made_coffee_05.jpg/320px-Fresh_made_coffee_05.jpg',
-  'cassonade':    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Fresh_made_coffee_05.jpg/320px-Fresh_made_coffee_05.jpg',
-  'miel':         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Runny_hunny.jpg/320px-Runny_hunny.jpg',
-  'sirop':        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Runny_hunny.jpg/320px-Runny_hunny.jpg',
-  'confiture':    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Runny_hunny.jpg/320px-Runny_hunny.jpg',
-  'vanille':      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Vanilla_planifolia_2.jpg/320px-Vanilla_planifolia_2.jpg',
-  'sucre vanillé':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Vanilla_planifolia_2.jpg/320px-Vanilla_planifolia_2.jpg',
-  // Assaisonnements
-  'sel':          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Salt_shaker_on_white_background.jpg/320px-Salt_shaker_on_white_background.jpg',
-  'poivre':       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cayenne_pepper.jpg/320px-Cayenne_pepper.jpg',
-  'piment':       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cayenne_pepper.jpg/320px-Cayenne_pepper.jpg',
-  'paprika':      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cayenne_pepper.jpg/320px-Cayenne_pepper.jpg',
-  'curry':        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cayenne_pepper.jpg/320px-Cayenne_pepper.jpg',
-  'cumin':        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cayenne_pepper.jpg/320px-Cayenne_pepper.jpg',
-  'cannelle':     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Cinnamon-other.jpg/320px-Cinnamon-other.jpg',
-  'muscade':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Cinnamon-other.jpg/320px-Cinnamon-other.jpg',
-  'thym':         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Thymus_vulgaris_1.jpg/320px-Thymus_vulgaris_1.jpg',
-  'romarin':      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Thymus_vulgaris_1.jpg/320px-Thymus_vulgaris_1.jpg',
-  'basilic':      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Basil-Basilico-Ocimum_basilicum-albahaca.jpg/320px-Basil-Basilico-Ocimum_basilicum-albahaca.jpg',
-  'persil':       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Basil-Basilico-Ocimum_basilicum-albahaca.jpg/320px-Basil-Basilico-Ocimum_basilicum-albahaca.jpg',
-  'coriandre':    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Basil-Basilico-Ocimum_basilicum-albahaca.jpg/320px-Basil-Basilico-Ocimum_basilicum-albahaca.jpg',
-  'ciboulette':   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Basil-Basilico-Ocimum_basilicum-albahaca.jpg/320px-Basil-Basilico-Ocimum_basilicum-albahaca.jpg',
-  'laurier':      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Basil-Basilico-Ocimum_basilicum-albahaca.jpg/320px-Basil-Basilico-Ocimum_basilicum-albahaca.jpg',
-  // Huiles & graisses
-  'huile':        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Olive_oil_from_Oneglia.jpg/320px-Olive_oil_from_Oneglia.jpg',
-  'huile d\'olive':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Olive_oil_from_Oneglia.jpg/320px-Olive_oil_from_Oneglia.jpg',
-  'vinaigre':     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Olive_oil_from_Oneglia.jpg/320px-Olive_oil_from_Oneglia.jpg',
-  // Légumes
-  'tomate':       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/320px-Tomato_je.jpg',
-  'tomates':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/320px-Tomato_je.jpg',
-  'oignon':       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Yellow_onion2.jpg/320px-Yellow_onion2.jpg',
-  'oignons':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Yellow_onion2.jpg/320px-Yellow_onion2.jpg',
-  'échalote':     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Yellow_onion2.jpg/320px-Yellow_onion2.jpg',
-  'ail':          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Garlic_bulb.jpg/320px-Garlic_bulb.jpg',
-  'carotte':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Vegetable-Carrot-Bundle-wShadow.jpg/320px-Vegetable-Carrot-Bundle-wShadow.jpg',
-  'carottes':     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Vegetable-Carrot-Bundle-wShadow.jpg/320px-Vegetable-Carrot-Bundle-wShadow.jpg',
-  'pomme de terre':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Patates.jpg/320px-Patates.jpg',
-  'patate':       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Patates.jpg/320px-Patates.jpg',
-  'poivron':      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bell_peppers_and_chilis.jpg/320px-Bell_peppers_and_chilis.jpg',
-  'courgette':    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Zucchini_flowers_and_fruit.jpg/320px-Zucchini_flowers_and_fruit.jpg',
-  'aubergine':    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Photo_of_eggplants.jpg/320px-Photo_of_eggplants.jpg',
-  'champignon':   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Agaricus_bisporus_-_enoki.jpg/320px-Agaricus_bisporus_-_enoki.jpg',
-  'champignons':  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Agaricus_bisporus_-_enoki.jpg/320px-Agaricus_bisporus_-_enoki.jpg',
-  'épinard':      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Spinach_leaves.jpg/320px-Spinach_leaves.jpg',
-  'épinards':     'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Spinach_leaves.jpg/320px-Spinach_leaves.jpg',
-  'salade':       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Spinach_leaves.jpg/320px-Spinach_leaves.jpg',
-  'laitue':       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Spinach_leaves.jpg/320px-Spinach_leaves.jpg',
-  'poireau':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'céleri':       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'radis':        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'betterave':    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'artichaut':    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'asperge':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'brocoli':      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/320px-Broccoli_and_cross_section_edit.jpg',
-  'chou':         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/320px-Broccoli_and_cross_section_edit.jpg',
-  'chou-fleur':   'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/320px-Broccoli_and_cross_section_edit.jpg',
-  'navet':        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'fenouil':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'courge':       'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG',
-  'potiron':      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG',
-  'citrouille':   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG',
-  'maïs':         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Corn_close_up.JPG/320px-Corn_close_up.JPG',
-  'petit pois':   'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'haricot':      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'lentille':     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'pois chiche':  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  'tofu':         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Leek_on_white.jpg/320px-Leek_on_white.jpg',
-  // Fruits
-  'citron':       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Lemon.jpg/320px-Above_Lemon.jpg',
-  'citron vert':  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Lemon.jpg/320px-Above_Lemon.jpg',
-  'orange':       'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Oranges_and_orange_juice.jpg/320px-Oranges_and_orange_juice.jpg',
-  'pomme':        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/320px-Red_Apple.jpg',
-  'poire':        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/320px-Red_Apple.jpg',
-  'banane':       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Banana-Platano.jpg/320px-Banana-Platano.jpg',
-  'fraise':       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'fraises':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'framboise':    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'myrtille':     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'cerise':       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'abricot':      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'pêche':        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'mangue':       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'ananas':       'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Pineapple_and_cross_section.jpg/320px-Pineapple_and_cross_section.jpg',
-  'raisin':       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'figue':        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/PerfectStrawberry.jpg/320px-PerfectStrawberry.jpg',
-  'noix de coco': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Coconut_and_oil.jpg/320px-Coconut_and_oil.jpg',
-  // Viandes
-  'poulet':       'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Poulet_cuisses.jpg/320px-Poulet_cuisses.jpg',
-  'bœuf':         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'boeuf':        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'veau':         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'agneau':       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'porc':         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'dinde':        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Poulet_cuisses.jpg/320px-Poulet_cuisses.jpg',
-  'canard':       'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Poulet_cuisses.jpg/320px-Poulet_cuisses.jpg',
-  'jambon':       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'lardons':      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'bacon':        'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'saucisse':     'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  'merguez':      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Roast_beef_800_600.jpg/320px-Roast_beef_800_600.jpg',
-  // Poissons & fruits de mer
-  'saumon':       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'thon':         'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'cabillaud':    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'bar':          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'sole':         'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'daurade':      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'crevette':     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'crevettes':    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'moule':        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'moules':       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'crabe':        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'calmar':       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'sardine':      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  'anchois':      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Salmon_sushi.jpg/320px-Salmon_sushi.jpg',
-  // Féculents
-  'riz':          'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Uncooked_rice.jpg/320px-Uncooked_rice.jpg',
-  'pâtes':        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'pasta':        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'spaghetti':    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'tagliatelle':  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'penne':        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'lasagne':      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'gnocchi':      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/PastaVariety.jpg/320px-PastaVariety.jpg',
-  'quinoa':       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Uncooked_rice.jpg/320px-Uncooked_rice.jpg',
-  'boulgour':     'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Uncooked_rice.jpg/320px-Uncooked_rice.jpg',
-  'pain':         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Fresh_made_bread_05.jpg/320px-Fresh_made_bread_05.jpg',
-  'brioche':      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Fresh_made_bread_05.jpg/320px-Fresh_made_bread_05.jpg',
-  'baguette':     'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Fresh_made_bread_05.jpg/320px-Fresh_made_bread_05.jpg',
-  // Chocolat & pâtisserie
-  'chocolat':     'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Chocolate_%28blue_background%29.jpg/320px-Chocolate_%28blue_background%29.jpg',
-  'cacao':        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Chocolate_%28blue_background%29.jpg/320px-Chocolate_%28blue_background%29.jpg',
-  'levure':       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'bicarbonate':  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'gélatine':     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/All_Purpose_Flour_%284107895947%29.jpg/320px-All_Purpose_Flour_%284107895947%29.jpg',
-  'amande':       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'noix':         'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'noisette':     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'pistache':     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'noix de cajou':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'raisin sec':   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  // Boissons & liquides
-  'vin':          'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Glas_Wein.jpg/320px-Glas_Wein.jpg',
-  'vin blanc':    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Glas_Wein.jpg/320px-Glas_Wein.jpg',
-  'vin rouge':    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Glas_Wein.jpg/320px-Glas_Wein.jpg',
-  'bouillon':     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/320px-Milk_glass.jpg',
-  'eau':          'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Milk_glass.jpg/320px-Milk_glass.jpg',
-  'café':         'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG',
-  'thé':          'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG',
-  'biscuit':      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'biscuits':     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  'biscuit à la cuillère': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Almond_nut.jpg/320px-Almond_nut.jpg',
-  // Défaut
-  'default':      'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=200&q=70'
+// ══ IMAGES INGRÉDIENTS — photos plus propres et mieux ciblées ══
+const INGR_PHOTOS={
+  'pomme de terre':'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=260&h=260&fit=crop&q=80',
+  'patate':'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=260&h=260&fit=crop&q=80',
+  'pois chiche':'https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?w=260&h=260&fit=crop&q=80',
+  'lait de coco':'https://images.unsplash.com/photo-1585375898991-39fd7a9bb40b?w=260&h=260&fit=crop&q=80',
+  'creme fraiche':'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=260&h=260&fit=crop&q=80',
+  'sucre vanille':'https://images.unsplash.com/photo-1601493700631-2d16326da3f4?w=260&h=260&fit=crop&q=80',
+  'noix de coco':'https://images.unsplash.com/photo-1585375898991-39fd7a9bb40b?w=260&h=260&fit=crop&q=80',
+  'chou-fleur':'https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=260&h=260&fit=crop&q=80',
+  'beurre':'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=260&h=260&fit=crop&q=80',
+  'lait':'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=260&h=260&fit=crop&q=80',
+  'creme':'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=260&h=260&fit=crop&q=80',
+  'fromage':'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=260&h=260&fit=crop&q=80',
+  'gruyere':'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=260&h=260&fit=crop&q=80',
+  'emmental':'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=260&h=260&fit=crop&q=80',
+  'parmesan':'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=260&h=260&fit=crop&q=80',
+  'mozzarella':'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=260&h=260&fit=crop&q=80',
+  'yaourt':'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=260&h=260&fit=crop&q=80',
+  'oeufs':'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=260&h=260&fit=crop&q=80',
+  'oeuf':'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=260&h=260&fit=crop&q=80',
+  'farine':'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=260&h=260&fit=crop&q=80',
+  'maizena':'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=260&h=260&fit=crop&q=80',
+  'semoule':'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=260&h=260&fit=crop&q=80',
+  'sucre':'https://images.unsplash.com/photo-1611048267451-e6ed903e9b55?w=260&h=260&fit=crop&q=80',
+  'miel':'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=260&h=260&fit=crop&q=80',
+  'vanille':'https://images.unsplash.com/photo-1601493700631-2d16326da3f4?w=260&h=260&fit=crop&q=80',
+  'sel':'https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=260&h=260&fit=crop&q=80',
+  'poivre':'https://images.unsplash.com/photo-1599909533731-bf6cf8ee43aa?w=260&h=260&fit=crop&q=80',
+  'paprika':'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=260&h=260&fit=crop&q=80',
+  'curry':'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=260&h=260&fit=crop&q=80',
+  'cannelle':'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=260&h=260&fit=crop&q=80',
+  'thym':'https://images.unsplash.com/photo-1550858880-ebfd41cf1d15?w=260&h=260&fit=crop&q=80',
+  'romarin':'https://images.unsplash.com/photo-1550858880-ebfd41cf1d15?w=260&h=260&fit=crop&q=80',
+  'basilic':'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=260&h=260&fit=crop&q=80',
+  'persil':'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=260&h=260&fit=crop&q=80',
+  'huile':'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=260&h=260&fit=crop&q=80',
+  'vinaigre':'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=260&h=260&fit=crop&q=80',
+  'tomates':'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=260&h=260&fit=crop&q=80',
+  'tomate':'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=260&h=260&fit=crop&q=80',
+  'oignons':'https://images.unsplash.com/photo-1580201092675-a0a6a6cafbb1?w=260&h=260&fit=crop&q=80',
+  'oignon':'https://images.unsplash.com/photo-1580201092675-a0a6a6cafbb1?w=260&h=260&fit=crop&q=80',
+  'ail':'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=260&h=260&fit=crop&q=80',
+  'carottes':'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=260&h=260&fit=crop&q=80',
+  'carotte':'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=260&h=260&fit=crop&q=80',
+  'poivron':'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=260&h=260&fit=crop&q=80',
+  'courgette':'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=260&h=260&fit=crop&q=80',
+  'aubergine':'https://images.unsplash.com/photo-1590868309235-ea34bed7bd7f?w=260&h=260&fit=crop&q=80',
+  'champignons':'https://images.unsplash.com/photo-1611945116754-d144c59b9498?w=260&h=260&fit=crop&q=80',
+  'champignon':'https://images.unsplash.com/photo-1611945116754-d144c59b9498?w=260&h=260&fit=crop&q=80',
+  'epinards':'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=260&h=260&fit=crop&q=80',
+  'epinard':'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=260&h=260&fit=crop&q=80',
+  'salade':'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=260&h=260&fit=crop&q=80',
+  'poireau':'https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=260&h=260&fit=crop&q=80',
+  'brocoli':'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=260&h=260&fit=crop&q=80',
+  'chou':'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=260&h=260&fit=crop&q=80',
+  'mais':'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=260&h=260&fit=crop&q=80',
+  'lentille':'https://images.unsplash.com/photo-1571680322279-a226e6a4cc2a?w=260&h=260&fit=crop&q=80',
+  'tofu':'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=260&h=260&fit=crop&q=80',
+  'citron':'https://images.unsplash.com/photo-1587486913049-53fc88980cfc?w=260&h=260&fit=crop&q=80',
+  'orange':'https://images.unsplash.com/photo-1557800636-894a64c1696f?w=260&h=260&fit=crop&q=80',
+  'pomme':'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=260&h=260&fit=crop&q=80',
+  'poire':'https://images.unsplash.com/photo-1514756331096-242fdeb70d4a?w=260&h=260&fit=crop&q=80',
+  'banane':'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=260&h=260&fit=crop&q=80',
+  'fraises':'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=260&h=260&fit=crop&q=80',
+  'fraise':'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=260&h=260&fit=crop&q=80',
+  'framboise':'https://images.unsplash.com/photo-1563746099882-a9e53a23c731?w=260&h=260&fit=crop&q=80',
+  'myrtille':'https://images.unsplash.com/photo-1457296898342-cdd24585d095?w=260&h=260&fit=crop&q=80',
+  'mangue':'https://images.unsplash.com/photo-1601493700631-2d16326da3f4?w=260&h=260&fit=crop&q=80',
+  'ananas':'https://images.unsplash.com/photo-1589820296156-2454bb8a6ad1?w=260&h=260&fit=crop&q=80',
+  'poulet':'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=260&h=260&fit=crop&q=80',
+  'boeuf':'https://images.unsplash.com/photo-1558030137-a56c1b002c87?w=260&h=260&fit=crop&q=80',
+  'porc':'https://images.unsplash.com/photo-1558030137-a56c1b002c87?w=260&h=260&fit=crop&q=80',
+  'jambon':'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=260&h=260&fit=crop&q=80',
+  'lardons':'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=260&h=260&fit=crop&q=80',
+  'bacon':'https://images.unsplash.com/photo-1528607929212-2636ec44253e?w=260&h=260&fit=crop&q=80',
+  'saumon':'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=260&h=260&fit=crop&q=80',
+  'thon':'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=260&h=260&fit=crop&q=80',
+  'cabillaud':'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=260&h=260&fit=crop&q=80',
+  'crevettes':'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=260&h=260&fit=crop&q=80',
+  'crevette':'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=260&h=260&fit=crop&q=80',
+  'riz':'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=260&h=260&fit=crop&q=80',
+  'pates':'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=260&h=260&fit=crop&q=80',
+  'spaghetti':'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=260&h=260&fit=crop&q=80',
+  'pain':'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=260&h=260&fit=crop&q=80',
+  'brioche':'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=260&h=260&fit=crop&q=80',
+  'chocolat':'https://images.unsplash.com/photo-1511381939415-e44015466834?w=260&h=260&fit=crop&q=80',
+  'cacao':'https://images.unsplash.com/photo-1511381939415-e44015466834?w=260&h=260&fit=crop&q=80',
+  'amande':'https://images.unsplash.com/photo-1563412580-aa4ec4d8e0f5?w=260&h=260&fit=crop&q=80',
+  'noix':'https://images.unsplash.com/photo-1563412580-aa4ec4d8e0f5?w=260&h=260&fit=crop&q=80',
+  'cafe':'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=260&h=260&fit=crop&q=80',
+  'vin':'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=260&h=260&fit=crop&q=80',
+  'eau':'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=260&h=260&fit=crop&q=80',
+  'default':'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=260&h=260&fit=crop&q=80'
 };
-
+const INGR_KEYS=Object.keys(INGR_PHOTOS).filter(k=>k!=='default').sort((a,b)=>b.length-a.length);
 function getIngrImg(name){
-  if(!name)return INGR_DB['default'];
-  const n=name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  // Correspondance directe
-  for(const[k,v] of Object.entries(INGR_DB)){
-    const kn=k.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    if(n.includes(kn))return v;
-  }
-  return INGR_DB['default'];
+  if(!name)return INGR_PHOTOS.default;
+  const n=name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const key=INGR_KEYS.find(k=>n.includes(k.normalize('NFD').replace(/[̀-ͯ]/g,'')));
+  return key?INGR_PHOTOS[key]:INGR_PHOTOS.default;
 }
 
 // ══ MOTS INTERDITS ══
-const BADWORDS=['bite','zizi','zob','teub','pine','penis','pénis','vagin','vulve','chatte','connasse','sperme','foutre','niquer','baise','couille','enculé','pute','salope','viol','merde','idiot','imbécile','crétin','abruti','salopard','ordure','enfoiré','nègre','youpin','bicot','nazi','génocide','tuer','meurtre','suicide','bombe','terroriste','cocaïne','héroïne','crystal','meth','crack','isis','daesh','fuck','shit','bitch','asshole','cunt','dick','cock','nigger','motherfucker','whore','slut','rape'];
+const BADWORDS=['bite','zizi','zob','teub','pine','penis','vagin','vulve','chatte','connasse','sperme','foutre','niquer','baise','couille','encule','pute','salope','viol','merde','idiot','imbecile','cretin','abruti','salopard','ordure','enfoire','negro','youpin','bicot','nazi','genocide','tuer','meurtre','suicide','bombe','terroriste','cocaine','heroine','crystal','meth','crack','isis','daesh','fuck','shit','bitch','asshole','cunt','dick','cock','nigger','motherfucker','whore','slut','rape'];
 function normTxt(t){return(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,' ');}
 function findBad(v){const n=' '+normTxt(v)+' ';for(const w of BADWORDS){const m=normTxt(w);if(n.includes(' '+m+' ')||n.includes(' '+m+'s ')||n.includes(' '+m+'e '))return w;}return null;}
 function banScreen(mot){
@@ -901,35 +893,26 @@ function banScreen(mot){
   document.body.style.overflow='hidden';
   const d=document.createElement('div');
   d.style.cssText='position:fixed;inset:0;z-index:9999;background:#060101;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;';
-  d.innerHTML=`<div style="font-size:4rem">🚫</div><h1 style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:#ff2222;margin:.8rem 0">Contenu interdit</h1><p style="color:#ff4444;margin-bottom:2rem">Le mot "<strong>${String(mot).replace(/</g,'&lt;')}</strong>" est interdit.</p><button onclick="location.reload()" style="background:transparent;color:#ff4444;border:1px solid rgba(255,50,50,.4);cursor:pointer;padding:1rem 2.8rem;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;border-radius:2px;font-family:sans-serif">← Retour</button>`;
+  d.innerHTML=`<div style="font-size:2rem;margin-bottom:1rem;">INTERDIT</div><h1 style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:#ff2222;margin:.8rem 0">Contenu interdit</h1><p style="color:#ff4444;margin-bottom:2rem">Le mot "<strong>${String(mot).replace(/</g,'&lt;')}</strong>" est interdit.</p><button onclick="location.reload()" style="background:transparent;color:#ff4444;border:1px solid rgba(255,50,50,.4);cursor:pointer;padding:1rem 2.8rem;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;border-radius:2px;font-family:sans-serif">Retour</button>`;
   document.body.appendChild(d);
 }
 
-// ══ CENSURE TEMPS RÉEL — Niveau 1 (frappe) + Niveau 2 (coller) ══
+// ══ CENSURE ══
 const CENS_FIELDS=['fNom','fAuteur','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegion','fUst'];
 function setupCensorship(){
   CENS_FIELDS.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el)return;
+    const el=document.getElementById(id);if(!el)return;
     const warnId='warn'+id.charAt(1).toUpperCase()+id.slice(2);
     const warn=document.getElementById(warnId);
-    // Niveau 1: frappe
     el.addEventListener('input',function(){
       const bad=findBad(this.value);
-      if(bad){
-        this.classList.add('bad');
-        if(warn){warn.textContent=`Mot interdit détecté : "${bad}"`;warn.classList.add('on');}
-        toast(`⚠️ Mot interdit : "${bad}"`);
-      }else{
-        this.classList.remove('bad');
-        if(warn)warn.classList.remove('on');
-      }
+      if(bad){this.classList.add('bad');if(warn){warn.textContent=`Mot interdit : "${bad}"`;warn.classList.add('on');}toast(`Mot interdit : "${bad}"`);}
+      else{this.classList.remove('bad');if(warn)warn.classList.remove('on');}
     });
-    // Niveau 2: coller
     el.addEventListener('paste',function(e){
       const pasted=(e.clipboardData||window.clipboardData).getData('text');
       const bad=findBad(pasted);
-      if(bad){e.preventDefault();toast(`🚫 Collage bloqué — mot interdit : "${bad}"`);banScreen(bad);}
+      if(bad){e.preventDefault();banScreen(bad);}
     });
   });
 }
@@ -945,12 +928,202 @@ const DRAFT_KEY='ldp_draft';
 // ══ UTILS ══
 let _toastTimer;
 const toast=msg=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),3200);};
-function togglePwd(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈';}
+function togglePwd(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'Voir':'Cacher';}
 
-// ══ BROUILLON (champs gardés si on ferme sans publier) ══
+// ══ IA — CHEF GUSTAVE / ANALYSE / MODÉRATION ══
+const AI_FUNCTION_URL=SB_URL+'/functions/v1/ask-deepseek';
+let chefMessages=[],chefRecipe=null,analyzedRecipe=null;
+function normalizeAiText(v){return String(v||'').replace(/\r/g,'').trim();}
+function ingredientToSiteFormat(v){return normalizeAiText(v).split('\n').map(l=>l.trim().replace(/^[-•]\s*/,'').replace(/\s+-\s+/g,' · ')).filter(Boolean).join('\n');}
+function extractJsonString(raw,key){
+  const marker='"'+key+'":"';
+  const start=raw.indexOf(marker);
+  if(start<0)return'';
+  let i=start+marker.length,out='',esc=false;
+  for(;i<raw.length;i++){
+    const ch=raw[i];
+    if(esc){out+=ch==='n'?'\n':ch;esc=false;continue;}
+    if(ch==='\\'){esc=true;continue;}
+    if(ch==='"')break;
+    out+=ch;
+  }
+  return out;
+}
+function repairRecipeFromRaw(raw){
+  const r={
+    nom:extractJsonString(raw,'nom'),
+    description:extractJsonString(raw,'description'),
+    ingredients:extractJsonString(raw,'ingredients'),
+    etapes:extractJsonString(raw,'etapes'),
+    temps:extractJsonString(raw,'temps'),
+    cuisson:extractJsonString(raw,'cuisson'),
+    difficulte:extractJsonString(raw,'difficulte')||'Facile',
+    categorie:extractJsonString(raw,'categorie'),
+    astuce:extractJsonString(raw,'astuce'),
+    ustensiles:extractJsonString(raw,'ustensiles'),
+    region:extractJsonString(raw,'region')
+  };
+  return (r.nom||r.ingredients||r.etapes)?r:null;
+}
+function parseAiPayload(data){
+  if(data?.raw||data?.reply){
+    let raw=normalizeAiText(data.raw||data.reply);
+    for(let i=0;i<2;i++){
+      try{
+        const parsed=JSON.parse(raw);
+        if(typeof parsed==='string'){raw=parsed;continue;}
+        return parsed;
+      }catch(e){}
+      break;
+    }
+    const reply=(raw.match(/"reply"\s*:\s*"([^"]+)/)||[])[1];
+    const recipeMatch=raw.match(/"recipe"\s*:\s*(\{[\s\S]*\})\s*$/);
+    let recipe=null;
+    if(recipeMatch){try{recipe=JSON.parse(recipeMatch[1]);}catch(e){}}
+    if(!recipe)recipe=repairRecipeFromRaw(raw);
+    return{reply:reply?reply.replace(/\\n/g,' '):raw.slice(0,500),ready:!!recipe,recipe};
+  }
+  return data||{};
+}
+async function callAi(payload){
+  const res=await fetch(AI_FUNCTION_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const data=await res.json().catch(()=>({error:'Réponse IA illisible.'}));
+  if(!res.ok)throw new Error(data.error||'Erreur IA.');
+  return parseAiPayload(data);
+}
+function looksLikeRecipeRequest(text){
+  const t=(text||'').toLowerCase();
+  if(/\bid[ée]e?s?\s+de\s+recette\b/.test(t))return false;
+  return /(fais|fait|prépare|prepare|génère|genere|crée|cree).{0,40}(recette|tarte|gateau|gâteau|plat|dessert)|\b(donne|envoie|montre).{0,30}(la\s+)?recette\b|\b(oui|ok|vas-y|vasy|va y)\b/i.test(t);
+}
+async function askChefForRecipe(messages,conversation,lastUser,firstReply){
+  const forceContent=[
+    'Voici la conversation complète:',
+    conversation,
+    '',
+    'Demande utilisateur: '+lastUser,
+    'Dernière réponse de Chef Gustave: '+(firstReply||''),
+    '',
+    'Instruction obligatoire:',
+    'Si une idée de recette a été proposée juste avant, utilise cette idée précise.',
+    'Retourne maintenant une vraie fiche recette complète en JSON.',
+    'Mets ready:true.',
+    'Remplis recipe avec nom, description, ingredients, etapes, temps, cuisson, difficulte, categorie, astuce, ustensiles, region.',
+    'ingredients doit avoir plusieurs lignes avec le format: quantite - unite - nom.',
+    'etapes doit avoir plusieurs lignes.',
+    'Interdit de répondre seulement "voici la recette".'
+  ].join('\n');
+  const forcedMessages=[{role:'user',content:forceContent}];
+  return callAi({task:'chef_chat',content:forceContent,messages:forcedMessages});
+}
+function fallbackChefRecipe(text){
+  const t=(text||'').toLowerCase();
+  if(t.includes('pizza'))return{
+    nom:'Pizza maison',
+    description:'Une pizza simple et gourmande, à vérifier puis personnaliser avant publication.',
+    ingredients:'250 - g - farine\n150 - ml - eau tiède\n1 - sachet - levure boulangère\n2 - cuillères à soupe - huile d olive\n1 - pincée - sel\n150 - g - sauce tomate\n120 - g - mozzarella\n1 - poignée - garniture au choix',
+    etapes:'Mélanger la farine, la levure, l eau tiède, l huile et le sel.\nPétrir jusqu à obtenir une pâte souple.\nLaisser lever la pâte environ 1 heure.\nÉtaler la pâte sur une plaque.\nAjouter la sauce tomate, la mozzarella et la garniture.\nCuire 12 à 15 minutes dans un four très chaud.',
+    temps:'1 h 30',
+    cuisson:'12 à 15 min',
+    difficulte:'Facile',
+    categorie:'Pizza & tartes salées',
+    astuce:'Préchauffer le four au maximum pour une pâte plus croustillante.',
+    ustensiles:'Saladier, plaque de cuisson, rouleau',
+    region:'Italie'
+  };
+  if(t.includes('chocolat'))return{
+    nom:'Gâteau au chocolat',
+    description:'Un gâteau au chocolat moelleux, facile à préparer.',
+    ingredients:'200 - g - chocolat noir\n120 - g - beurre\n100 - g - sucre\n3 - pièces - oeufs\n80 - g - farine\n1 - sachet - levure chimique',
+    etapes:'Préchauffer le four à 180°C.\nFaire fondre le chocolat avec le beurre.\nBattre les oeufs avec le sucre.\nAjouter le chocolat fondu puis la farine et la levure.\nVerser dans un moule beurré.\nCuire environ 25 minutes.',
+    temps:'35 min',
+    cuisson:'25 min',
+    difficulte:'Facile',
+    categorie:'Gâteaux & desserts',
+    astuce:'Laisser le centre légèrement fondant pour plus de moelleux.',
+    ustensiles:'Moule, saladier, fouet, casserole',
+    region:'France'
+  };
+  if(t.includes('pomme'))return{
+    nom:'Tarte aux pommes',
+    description:'Une tarte aux pommes classique, simple et familiale.',
+    ingredients:'1 - pièce - pâte brisée\n4 - pièces - pommes\n40 - g - sucre\n25 - g - beurre\n1 - cuillère à café - cannelle',
+    etapes:'Préchauffer le four à 180°C.\nÉtaler la pâte dans un moule à tarte.\nÉplucher et couper les pommes en fines lamelles.\nDisposer les pommes sur la pâte.\nSaupoudrer de sucre et de cannelle puis ajouter quelques noisettes de beurre.\nCuire 30 à 35 minutes.',
+    temps:'45 min',
+    cuisson:'30 à 35 min',
+    difficulte:'Facile',
+    categorie:'Gâteaux & desserts',
+    astuce:'Utiliser des pommes Golden ou Reine des reinettes.',
+    ustensiles:'Moule à tarte, couteau, économe',
+    region:'France'
+  };
+  return{
+    nom:'Recette proposée par Chef Gustave',
+    description:'Une fiche de recette à compléter et vérifier avant publication.',
+    ingredients:'1 - portion - ingrédient principal\n1 - portion - accompagnement\n1 - pincée - assaisonnement',
+    etapes:'Préparer les ingrédients.\nAssembler la recette.\nCuire ou dresser selon le plat.\nVérifier puis ajuster avant publication.',
+    temps:'À compléter',
+    cuisson:'À compléter',
+    difficulte:'Facile',
+    categorie:'',
+    astuce:'Vérifiez cette fiche avant de publier.',
+    ustensiles:'',
+    region:''
+  };
+}
+function recipePreview(r){
+  if(!r)return'';
+  return `<strong>${r.nom||'Recette proposée'}</strong><br><br>${r.description||''}<br><br><strong>Ingrédients</strong><br>${normalizeAiText(r.ingredients).replace(/\n/g,'<br>')}<br><br><strong>Étapes</strong><br>${normalizeAiText(r.etapes).replace(/\n/g,'<br>')}`;
+}
+function recipeFromAiObject(out){
+  if(!out)return null;
+  if(out.recipe)return out.recipe;
+  const raw=[out.warning,out.reply,out.raw,JSON.stringify(out)].filter(Boolean).join(' ');
+  return repairRecipeFromRaw(raw);
+}
+function fillRecipeForm(r){
+  if(!r){toast('Aucune recette à importer.');return;}
+  openForm();
+  document.getElementById('fNom').value=r.nom||'';
+  document.getElementById('fDesc').value=r.description||'';
+  document.getElementById('fIngr').value=ingredientToSiteFormat(r.ingredients||'');
+  document.getElementById('fEtapes').value=normalizeAiText(r.etapes||'').split('\n').map(l=>l.replace(/^\d+[\).\s-]*/,'').trim()).filter(Boolean).join('\n');
+  document.getElementById('fTemps').value=(r.temps||'').split('\n')[0]||'';
+  document.getElementById('fCuisson').value=r.cuisson||'';
+  document.getElementById('fDiff').value=['Facile','Intermédiaire','Avancé','Expert'].includes(r.difficulte)?r.difficulte:'Facile';
+  document.getElementById('fCategorie').value=[...document.getElementById('fCategorie').options].some(o=>o.value===r.categorie)?r.categorie:'';
+  document.getElementById('fUst').value=r.ustensiles||'';
+  document.getElementById('fAstuce').value=r.astuce||'';
+  document.getElementById('fRegion').value=r.region||'';
+  toast('Recette préremplie. Vérifiez avant de publier.');
+}
+function addChefMsg(kind,text){
+  const box=document.getElementById('chefChat');
+  const msg=document.createElement('div');
+  msg.className='chat-msg '+kind;
+  msg.textContent=text;
+  box.appendChild(msg);
+  box.scrollTop=box.scrollHeight;
+}
+async function moderateBeforePublish(payload){
+  try{
+    const verdict=await callAi({task:'moderate_recipe',recipe:payload});
+    if(verdict.ok===false){toast('Publication bloquée : '+(verdict.reason||'contenu inapproprié.'));return false;}
+    if(photoB64){
+      const mime=(photoB64.match(/^data:([^;]+);/)||[])[1]||'image/jpeg';
+      const imgVerdict=await callAi({task:'moderate_image',imageData:photoB64,mimeType:mime});
+      if(imgVerdict.ok===false){toast('Image refusée : '+(imgVerdict.reason||'image inappropriée.'));return false;}
+    }
+  }catch(e){
+    console.warn('Modération IA indisponible:',e);
+  }
+  return true;
+}
+
+// ══ BROUILLON ══
 const DRAFT_FIELDS=['fNom','fAuteur','fCouverts','fTemps','fCuisson','fDiff','fCategorie','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'];
 function saveDraft(){
-  if(editId)return; // ne pas sauvegarder en mode édition
+  if(editId)return;
   const d={};
   DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});
   d._photo=photoB64||'';
@@ -958,17 +1131,14 @@ function saveDraft(){
 }
 function loadDraft(){
   try{
-    const raw=localStorage.getItem(DRAFT_KEY);
-    if(!raw)return false;
-    const d=JSON.parse(raw);
-    let hasContent=false;
+    const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return false;
+    const d=JSON.parse(raw);let hasContent=false;
     DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]){el.value=d[id];if(d[id].trim())hasContent=true;}});
     if(d._photo){photoB64=d._photo;document.getElementById('photoPreview').src=d._photo;document.getElementById('photoZone').classList.add('has-photo');}
     return hasContent;
   }catch(e){return false;}
 }
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
-// Auto-save brouillon toutes les 3 secondes quand formulaire ouvert
 let _draftInterval=null;
 function startDraftSave(){_draftInterval=setInterval(saveDraft,3000);}
 function stopDraftSave(){clearInterval(_draftInterval);}
@@ -996,7 +1166,7 @@ document.getElementById('signupBtn').addEventListener('click',async()=>{
   if(p!==p2){err.textContent='Les mots de passe ne correspondent pas.';err.className='auth-err on';return;}
   const btn=document.getElementById('signupBtn');btn.disabled=true;btn.textContent='Création…';
   const{error}=await db.auth.signUp({email:e,password:p,options:{emailRedirectTo:SITE}});
-  btn.disabled=false;btn.textContent='Créer mon compte →';
+  btn.disabled=false;btn.textContent='Créer mon compte';
   if(error){err.textContent=error.message==='User already registered'?'Ce compte existe déjà.':error.message;err.className='auth-err on';return;}
   document.getElementById('signupSentEmail').textContent=e;authPane('pSignupSent');
 });
@@ -1006,7 +1176,7 @@ document.getElementById('loginBtn').addEventListener('click',async()=>{
   if(!e||!p){err.textContent='Email et mot de passe requis.';err.className='auth-err on';return;}
   const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Connexion…';
   const{error}=await db.auth.signInWithPassword({email:e,password:p});
-  btn.disabled=false;btn.textContent='Se connecter →';
+  btn.disabled=false;btn.textContent='Se connecter';
   if(error){err.textContent=error.message.includes('not confirmed')?'Email non vérifié.':'Email ou mot de passe incorrect.';err.className='auth-err on';}
 });
 document.getElementById('loginPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn').click();});
@@ -1046,7 +1216,7 @@ async function initAuth(){
       if(ev==='SIGNED_IN'&&!was){
         closeModal('authOverlay');
         if(!profile)setTimeout(()=>openModal('onboardOverlay'),400);
-        else{toast(`Bon retour ${profile.nom||''} ! 👋`);await loadData();renderGrid();}
+        else{toast(`Bon retour ${profile.nom||''} !`);await loadData();renderGrid();}
       }
     }else{profile=null;}
     updateAuthUI();renderGrid();
@@ -1066,11 +1236,11 @@ document.getElementById('onboardBtn').addEventListener('click',async()=>{
   if(age<1||age>120){err.textContent='Âge invalide.';err.className='auth-err on';return;}
   const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Enregistrement…';
   const{error}=await db.from('profils').upsert({id:user.id,nom,age,avatar:avatarB64||null,created_at:new Date().toISOString()});
-  btn.disabled=false;btn.textContent='Commencer ! 🍽';
+  btn.disabled=false;btn.textContent='Commencer !';
   if(error){err.textContent=error.message;err.className='auth-err on';return;}
   profile=await getProfile(user.id);closeModal('onboardOverlay');updateAuthUI();
   if(profile)document.getElementById('fAuteur').value=profile.nom;
-  toast(`Bienvenue ${nom} ! 🎉`);
+  toast(`Bienvenue ${nom} !`);
   avatarB64='';document.getElementById('avatarZone').classList.remove('has-img');document.getElementById('avatarPreview').src='';
   document.getElementById('onboardNom').value='';document.getElementById('onboardAge').value='';
   await loadData();renderGrid();updateMembersCount();
@@ -1089,7 +1259,7 @@ function openProfile(){
   document.getElementById('profStatR').textContent=mine.length;
   document.getElementById('profStatV').textContent=mine.reduce((s,r)=>s+(r.views||0),0);
   if(!mine.length){document.getElementById('profRecipes').innerHTML=`<div style="text-align:center;padding:2rem;color:var(--warm-gray);">Pas encore de recette publiée.<br><button class="btn btn-accent" style="margin-top:1rem;font-size:.78rem;" onclick="closeModal('profileOverlay');openForm()">+ Partager une recette</button></div>`;}
-  else{document.getElementById('profRecipes').innerHTML=mine.map(r=>`<div class="profile-rec-row" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><img class="profile-rec-thumb" src="${r.img||getDefaultImg(r.categorie)}" alt="${r.nom}" onerror="this.src='${getDefaultImg(r.categorie)}'"><div class="profile-rec-info"><div class="profile-rec-name">${r.nom}</div><div class="profile-rec-meta">${r.difficulte||''} · ${r.temps||''}</div></div><span style="font-size:.72rem;color:var(--accent);font-style:italic;">👁 ${r.views||0}</span></div>`).join('');}
+  else{document.getElementById('profRecipes').innerHTML=mine.map(r=>`<div class="profile-rec-row" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><img class="profile-rec-thumb" src="${r.img||getDefaultImg(r.categorie)}" alt="${r.nom}" onerror="this.src='${getDefaultImg(r.categorie)}'"><div class="profile-rec-info"><div class="profile-rec-name">${r.nom}</div><div class="profile-rec-meta">${r.difficulte||''} · ${r.temps||''}</div></div><span style="font-size:.72rem;color:var(--accent);font-style:italic;">vues : ${r.views||0}</span></div>`).join('');}
   openModal('profileOverlay');
 }
 document.getElementById('profileClose').addEventListener('click',()=>closeModal('profileOverlay'));
@@ -1167,28 +1337,27 @@ function renderGrid(){
   const cEl=document.getElementById('searchCount');
   if(q||activeTheme){cEl.textContent=list.length+' résultat'+(list.length!==1?'s':'');cEl.classList.add('on');}else{cEl.classList.remove('on');}
   const grid=document.getElementById('recipeGrid');
-  if(!list.length){grid.innerHTML=`<div class="no-results"><p style="font-size:2rem;margin-bottom:1rem;">🔍</p><p style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--dark)">Aucune recette trouvée</p><p style="font-size:.84rem;margin-top:.5rem"><a href="#" onclick="clearSearch();return false" style="color:var(--accent)">Effacer la recherche</a></p></div>`;return;}
+  if(!list.length){grid.innerHTML=`<div class="no-results"><p style="font-size:1.4rem;margin-bottom:1rem;">[?]</p><p style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--dark)">Aucune recette trouvée</p><p style="font-size:.84rem;margin-top:.5rem"><a href="#" onclick="clearSearch();return false" style="color:var(--accent)">Effacer la recherche</a></p></div>`;return;}
   grid.innerHTML=list.map(r=>{
     const pr=profiles[r.user_id];
     const auteur=r.auteur||(pr?pr.nom:null);
     const isOwner=user&&r.user_id===user.id;
-    // Image: photo uploadée OU image par catégorie
     const imgSrc=r.img||getDefaultImg(r.categorie);
     const avHTML=pr?.avatar?`<img class="card-author-img" src="${pr.avatar}" alt="">`:`<span class="card-author-init">${(auteur||'?')[0].toUpperCase()}</span>`;
     return`<article class="recipe-card" onclick="openRecipe('${r.id}')">
-      <div class="card-admin-btns ${isOwner&&!isAdmin?'owner':''}">
-        <button class="card-btn edit" onclick="event.stopPropagation();openForm('${r.id}')" title="Modifier">✏</button>
-        <button class="card-btn del" onclick="event.stopPropagation();deleteRecipe('${r.id}')" title="Supprimer">🗑</button>
+      <div class="card-admin-btns${isOwner&&!isAdmin?' owner':''}">
+        <button class="card-btn edit" onclick="event.stopPropagation();openForm('${r.id}')" title="Modifier">Mod.</button>
+        <button class="card-btn del" onclick="event.stopPropagation();deleteRecipe('${r.id}')" title="Supprimer">Supp.</button>
       </div>
       <div class="card-img"><img src="${imgSrc}" alt="${r.nom}" loading="lazy" onerror="this.src='${getDefaultImg(r.categorie)}'">
-      ${r.categorie?`<span class="card-badge">${r.categorie}</span>`:''}<span class="card-views">👁 ${r.views||0}</span></div>
+      ${r.categorie?`<span class="card-badge">${r.categorie}</span>`:''}<span class="card-views">vues : ${r.views||0}</span></div>
       <div class="card-body">
-        <div class="card-meta"><span>⏱ ${r.temps||'—'}</span><span>👥 ${r.couverts||4} pers.</span></div>
+        <div class="card-meta"><span>prep : ${r.temps||'—'}</span><span>pers : ${r.couverts||4}</span></div>
         <h3 class="card-title">${r.nom}</h3>
         <p class="card-desc">${r.description||''}</p>
         ${auteur?`<div class="card-author">${avHTML}<span class="card-author-name">Par ${auteur}</span></div>`:''}
       </div>
-      <div class="card-footer"><span class="card-diff">${r.difficulte||''}</span><span class="card-link">Voir la recette →</span></div>
+      <div class="card-footer"><span class="card-diff">${r.difficulte||''}</span><span class="card-link">Voir la recette</span></div>
     </article>`;
   }).join('');
   if(isAdmin){document.getElementById('aR').textContent=n;document.getElementById('aS').textContent=MAX-n;document.getElementById('aV').textContent=recipes.reduce((s,r)=>s+(r.views||0),0);}
@@ -1196,21 +1365,37 @@ function renderGrid(){
 function clearSearch(){searchQ='';document.getElementById('navSearch').value='';document.getElementById('secSearch').value='';document.getElementById('navSearchClear').classList.remove('visible');renderGrid();}
 
 // ══ RECIPE MODAL ══
-function parseIngr(raw,srv,base){
+// CORRECTION MAJEURE : parseIngr prend baseSrv depuis la recette, pas une variable globale
+function parseIngr(raw,newSrv,origSrv){
   return(raw||'').split('\n').filter(l=>l.trim()).map(l=>{
     const p=l.split('·').map(s=>s.trim());
-    if(p.length>=3){const q=parseFloat(p[0]);const adj=isNaN(q)?p[0]:+(q*srv/base).toFixed(1)+'';return{qty:adj,unit:p[1],name:p.slice(2).join(' ')};}
+    if(p.length>=3){
+      const q=parseFloat(p[0]);
+      // Ajuster la quantité selon le ratio couverts
+      let adj;
+      if(isNaN(q)||q===0){
+        adj=p[0]; // texte non-numérique, on garde tel quel
+      }else{
+        const ratio=newSrv/origSrv;
+        const res=q*ratio;
+        // Affichage propre : arrondi à 1 décimale si nécessaire
+        adj=Number.isInteger(res)?String(res):res.toFixed(1).replace(/\.0$/,'');
+      }
+      return{qty:adj,unit:p[1],name:p.slice(2).join(' ')};
+    }
     return{qty:'',unit:'',name:l};
   });
 }
+
 function renderIngr(r){
-  const ingrs=parseIngr(r.ingredients,curSrv,baseSrv);
+  const origSrv=parseInt(r.couverts)||4;
+  const ingrs=parseIngr(r.ingredients,curSrv,origSrv);
   // Mode liste
   document.getElementById('mIngr').innerHTML=ingrs.map(i=>`<li><span class="ingr-qty">${i.qty}${i.unit?' '+i.unit:''}</span>${i.name}</li>`).join('');
-  // Mode visuel avec vraies photos
+  // Mode visuel avec vraies photos Unsplash
   document.getElementById('mIngrVisual').innerHTML=ingrs.map(i=>`
     <div class="ingr-card">
-      <img class="ingr-card-img" src="${getIngrImg(i.name)}" alt="${i.name}" onerror="this.src='${INGR_DB['default']}'">
+      <img class="ingr-card-img" src="${getIngrImg(i.name)}" alt="${i.name}" loading="lazy" onerror="this.src='${INGR_PHOTOS['default']}'">
       <span class="ingr-card-qty">${i.qty}${i.unit?' '+i.unit:''}</span>
       <span class="ingr-card-name">${i.name}</span>
     </div>`).join('');
@@ -1219,9 +1404,11 @@ function renderIngr(r){
 const _viewedIds=new Set();
 async function openRecipe(id){
   const r=recipes.find(x=>x.id==id);if(!r)return;
-  currentRec=r;baseSrv=parseInt(r.couverts)||4;curSrv=baseSrv;
+  currentRec=r;
+  // Initialiser curSrv avec le nombre de couverts de la recette
+  baseSrv=parseInt(r.couverts)||4;
+  curSrv=baseSrv;
   if(!_viewedIds.has(id)){_viewedIds.add(id);const v=(r.views||0)+1;r.views=v;db.from('recettes').update({views:v}).eq('id',id).then(()=>{});}
-  // Image: photo uploadée OU image par catégorie (jamais vide)
   const mImg=document.getElementById('mImg');
   mImg.src=r.img||getDefaultImg(r.categorie);
   mImg.onerror=()=>{mImg.src=getDefaultImg(r.categorie);};
@@ -1247,8 +1434,20 @@ async function openRecipe(id){
   document.getElementById('mEditBtn').onclick=()=>{closeModal('recipeOverlay');openForm(id);};
   openModal('recipeOverlay');
 }
-document.getElementById('srvDown').addEventListener('click',()=>{if(curSrv>1){curSrv--;document.getElementById('srvN').textContent=curSrv;renderIngr(currentRec);}});
-document.getElementById('srvUp').addEventListener('click',()=>{if(curSrv<50){curSrv++;document.getElementById('srvN').textContent=curSrv;renderIngr(currentRec);}});
+document.getElementById('srvDown').addEventListener('click',()=>{
+  if(curSrv>1){
+    curSrv--;
+    document.getElementById('srvN').textContent=curSrv;
+    if(currentRec)renderIngr(currentRec);
+  }
+});
+document.getElementById('srvUp').addEventListener('click',()=>{
+  if(curSrv<50){
+    curSrv++;
+    document.getElementById('srvN').textContent=curSrv;
+    if(currentRec)renderIngr(currentRec);
+  }
+});
 document.getElementById('modeVisual').addEventListener('click',()=>{document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';});
 document.getElementById('modeList').addEventListener('click',()=>{document.getElementById('modeList').classList.add('active');document.getElementById('modeVisual').classList.remove('active');document.getElementById('ingrListWrap').style.display='block';document.getElementById('ingrVisualWrap').style.display='none';});
 document.getElementById('recipeClose').addEventListener('click',()=>closeModal('recipeOverlay'));
@@ -1260,6 +1459,9 @@ function openForm(editRecId){
   document.getElementById('formTitle').textContent=editId?'Modifier la recette':'Partager ma recette';
   document.getElementById('submitBtn').textContent=editId?'Enregistrer':'Publier ma recette';
   document.getElementById('formSuccess').style.display='none';
+  // Réinitialiser les warnings
+  document.querySelectorAll('.bad-warn').forEach(w=>{w.classList.remove('on');w.textContent='';});
+  document.querySelectorAll('.f-input.bad,.f-textarea.bad').forEach(el=>el.classList.remove('bad'));
   if(editId){
     const r=recipes.find(x=>x.id==editId);
     if(r){
@@ -1273,7 +1475,6 @@ function openForm(editRecId){
       if(r.img){photoB64=r.img;document.getElementById('photoPreview').src=r.img;document.getElementById('photoZone').classList.add('has-photo');}else{removePhoto();}
     }
   }else{
-    // Charger le brouillon si disponible
     const hasDraft=loadDraft();
     if(!hasDraft){
       ['fNom','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion','fCuisson'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
@@ -1299,36 +1500,133 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
   const desc=document.getElementById('fDesc').value.trim();
   const ingr=document.getElementById('fIngr').value.trim();
   const etapes=document.getElementById('fEtapes').value.trim();
-  if(!nom||!auteur||!temps||!desc||!ingr||!etapes){toast('Remplissez tous les champs obligatoires (*).'); return;}
-  // Niveau 3: vérification finale complète
+  if(!nom||!auteur||!temps||!desc||!ingr||!etapes){toast('Remplissez tous les champs obligatoires (*).');return;}
   const allText=[nom,auteur,desc,ingr,etapes,document.getElementById('fAstuce').value,document.getElementById('fGeste').value,document.getElementById('fRegion').value,document.getElementById('fUst').value].join(' ');
   const bad=findBad(allText);if(bad){banScreen(bad);return;}
   if(!editId&&recipes.length>=MAX){toast('Les 1000 places sont prises !');return;}
-  saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Publication…';
   const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,description:desc,ingredients:ingr,etapes:etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),img:photoB64||null,user_id:user?.id||null};
-  let error;
-  if(editId){({error}=await db.from('recettes').update(payload).eq('id',editId));}
-  else{payload.views=0;payload.created_at=new Date().toISOString();({error}=await db.from('recettes').insert([payload]));}
+  saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Vérification…';
+  const okModeration=await moderateBeforePublish(payload);
+  if(!okModeration){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';return;}
+  btn.textContent='Publication…';
+  let error,data;
+  if(editId){({error,data}=await db.from('recettes').update(payload).eq('id',editId).select().single());}
+  else{payload.views=0;payload.created_at=new Date().toISOString();({error,data}=await db.from('recettes').insert([payload]).select().single());}
   saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';
   if(error){toast('Erreur : '+error.message);return;}
+  if(data){
+    if(editId)recipes=recipes.map(r=>r.id===data.id?data:r);
+    else recipes=[data,...recipes];
+  }else{
+    await loadData();
+  }
   const s=document.getElementById('formSuccess');
-  s.textContent=editId?'✓ Recette modifiée !':'✓ Recette publiée ! Merci 🎉';
+  s.textContent=editId?'Recette modifiée !':'Recette publiée ! Merci';
   s.style.display='block';
   clearDraft();stopDraftSave();
   photoB64='';editId=null;
-  await loadData();renderGrid();
+  renderGrid();
   setTimeout(()=>closeModal('formOverlay'),1800);
 });
 
+// ══ SUPPRESSION — CORRECTION ══
+// La fonction deleteRecipe est déclarée globalement et correctement
 async function deleteRecipe(id){
   if(!confirm('Supprimer cette recette ?'))return;
   const r=recipes.find(x=>x.id==id);
   if(!isAdmin&&!(user&&r?.user_id===user.id)){toast('Vous ne pouvez supprimer que vos propres recettes.');return;}
-  const{error}=await db.from('recettes').delete().eq('id',id);
-  if(error){toast('Erreur : '+error.message);return;}
-  toast('Recette supprimée.');await loadData();renderGrid();
-  if(document.getElementById('adminOverlay').classList.contains('open'))populateAdmin();
+  try{
+    const{error}=await db.from('recettes').delete().eq('id',id);
+    if(error){toast('Erreur suppression : '+error.message);console.error(error);return;}
+    // Supprimer localement sans recharger la page
+    recipes=recipes.filter(x=>x.id!=id);
+    toast('Recette supprimée.');
+    renderGrid();
+    // Si le panel admin est ouvert, le mettre à jour
+    if(document.getElementById('adminOverlay').classList.contains('open'))populateAdmin();
+    // Si la modal recette est ouverte, la fermer
+    if(document.getElementById('recipeOverlay').classList.contains('open'))closeModal('recipeOverlay');
+  }catch(e){toast('Erreur : '+e.message);console.error(e);}
 }
+
+// ══ UI IA ══
+document.getElementById('chefLauncher').addEventListener('click',()=>{
+  closeModal('analyzeOverlay');
+  document.getElementById('chefPanel').classList.toggle('open');
+});
+document.getElementById('chefPanelClose').addEventListener('click',()=>document.getElementById('chefPanel').classList.remove('open'));
+document.getElementById('chefAnalyzeTool').addEventListener('click',()=>{
+  document.getElementById('chefPanel').classList.remove('open');
+  openModal('analyzeOverlay');
+});
+document.getElementById('chefResetTool').addEventListener('click',()=>{
+  chefMessages=[];chefRecipe=null;
+  document.getElementById('chefChat').innerHTML='<div class="chat-msg bot">Nouvelle discussion. Dis-moi ce que tu veux cuisiner.</div>';
+  document.getElementById('chefPreview').classList.remove('on');
+  document.getElementById('chefPreview').innerHTML='';
+  document.getElementById('chefFillBtn').style.display='none';
+});
+document.getElementById('analyzeClose').addEventListener('click',()=>closeModal('analyzeOverlay'));
+document.getElementById('chefSendBtn').addEventListener('click',async()=>{
+  const input=document.getElementById('chefInput');
+  const content=input.value.trim();
+  if(!content){toast('Écrivez votre demande à Chef Gustave.');return;}
+  input.value='';
+  addChefMsg('user',content);
+  chefMessages.push({role:'user',content});
+  const btn=document.getElementById('chefSendBtn');btn.disabled=true;btn.textContent='...';
+  try{
+    const conversation=chefMessages.map(m=>(m.role==='user'?'Utilisateur: ':'Chef Gustave: ')+m.content).join('\n');
+    let out=await callAi({task:'chef_chat',content:conversation,messages:chefMessages});
+    let reply=out.reply||'Voici une proposition.';
+    if(!out.recipe&&looksLikeRecipeRequest(content+' '+reply)){
+      addChefMsg('bot','Je prépare la fiche complète pour le formulaire...');
+      out=await askChefForRecipe(chefMessages,conversation,content,reply);
+      reply=out.reply||reply;
+      if(!out.recipe){
+        out={reply:'J’ai préparé une fiche de base. Vérifie-la avant de publier.',ready:true,recipe:fallbackChefRecipe(conversation+' '+reply+' '+content)};
+        reply=out.reply;
+      }
+    }
+    addChefMsg('bot',reply);
+    chefMessages.push({role:'assistant',content:reply});
+    if(out.recipe){
+      chefRecipe=out.recipe;
+      document.getElementById('chefPreview').innerHTML=recipePreview(chefRecipe);
+      document.getElementById('chefPreview').classList.add('on');
+      document.getElementById('chefFillBtn').style.display='inline-block';
+      toast('Recette prête : vous pouvez remplir le formulaire.');
+    }else{
+      document.getElementById('chefFillBtn').style.display='none';
+    }
+  }catch(e){toast(e.message);}
+  btn.disabled=false;btn.textContent='Envoyer';
+});
+document.getElementById('chefInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();document.getElementById('chefSendBtn').click();}});
+document.getElementById('chefFillBtn').addEventListener('click',()=>{document.getElementById('chefPanel').classList.remove('open');fillRecipeForm(chefRecipe);});
+document.getElementById('analyzeUrlBtn').addEventListener('click',async()=>{
+  const url=document.getElementById('aiUrl').value.trim();
+  if(!url){toast('Collez une URL à analyser.');return;}
+  const btn=document.getElementById('analyzeUrlBtn');btn.disabled=true;btn.textContent='Analyse...';
+  try{
+    const out=await callAi({task:'extract_from_url',url,content:'Analyse cette URL et extrais une recette structurée : '+url});
+    analyzedRecipe=recipeFromAiObject(out);
+    if(!analyzedRecipe){
+      document.getElementById('analyzePreview').innerHTML='<strong>Analyse incomplète.</strong><br>Je n’ai pas réussi à extraire une vraie fiche recette depuis cette URL. Essayez une autre vidéo ou copiez le texte de la recette.';
+      document.getElementById('analyzePreview').classList.add('on');
+      document.getElementById('analyzeFillBtn').style.display='none';
+      toast('Analyse incomplète.');
+      return;
+    }
+    const warning=out.warning&&!analyzedRecipe.nom?out.warning:'';
+    document.getElementById('analyzePreview').innerHTML=(warning?'<strong>Attention :</strong> '+warning+'<br><br>':'')+recipePreview(analyzedRecipe);
+    document.getElementById('analyzePreview').classList.add('on');
+    document.getElementById('analyzeFillBtn').style.display='inline-block';
+    toast('Analyse terminée. Vérifiez avant de remplir.');
+  }catch(e){toast(e.message);}
+  btn.disabled=false;btn.textContent='Analyser';
+});
+document.getElementById('analyzeFillBtn').addEventListener('click',()=>{closeModal('analyzeOverlay');fillRecipeForm(analyzedRecipe);});
 
 // ══ ADD BTN ══
 ['navAddBtn','heroAddBtn','bannerAddBtn','aboutAddBtn'].forEach(id=>{const e=document.getElementById(id);if(e)e.addEventListener('click',ev=>{ev.preventDefault();openForm();});});
@@ -1350,7 +1648,7 @@ document.getElementById('adminLoginBtn').addEventListener('click',()=>{
   if(document.getElementById('adminPwd').value===ADMIN_PWD){
     isAdmin=true;document.body.classList.add('admin-mode');document.getElementById('adminBar').classList.add('on');
     closeModal('loginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').style.display='none';
-    populateAdmin();openModal('adminOverlay');renderGrid();toast('Bienvenue Léonard 👋');
+    populateAdmin();openModal('adminOverlay');renderGrid();toast('Bienvenue Léonard');
   }else{document.getElementById('adminErr').style.display='block';document.getElementById('adminPwd').value='';}
 });
 document.getElementById('loginCancel').addEventListener('click',()=>closeModal('loginOverlay'));
@@ -1363,13 +1661,13 @@ async function populateAdmin(){
   const total=recipes.reduce((s,r)=>s+(r.views||0),0);
   document.getElementById('aR').textContent=recipes.length;document.getElementById('aV').textContent=total;document.getElementById('aS').textContent=MAX-recipes.length;
   await loadMembers();document.getElementById('aM').textContent=members.length;document.getElementById('aMembersCount').textContent=members.length;
-  document.getElementById('aRecent').innerHTML=recipes.slice(0,6).map(r=>`<div style="padding:.25rem 0;border-bottom:1px solid var(--border)">🍽 <strong>${r.nom}</strong>${r.auteur?' — '+r.auteur:''} <span style="color:var(--accent-light);font-size:.76rem;">(👁 ${r.views||0})</span></div>`).join('')||'<div>Aucune recette.</div>';
+  document.getElementById('aRecent').innerHTML=recipes.slice(0,6).map(r=>`<div style="padding:.25rem 0;border-bottom:1px solid var(--border)"><strong>${r.nom}</strong>${r.auteur?' — '+r.auteur:''} <span style="color:var(--accent-light);font-size:.76rem;">(vues : ${r.views||0})</span></div>`).join('')||'<div>Aucune recette.</div>';
   const tb=document.getElementById('aRecipesTbody');document.getElementById('aNoRecipes').style.display=recipes.length?'none':'block';
-  tb.innerHTML=recipes.map(r=>`<tr><td><strong>${r.nom}</strong></td><td>${r.auteur||'—'}</td><td>${r.region||'—'}</td><td>${r.views||0}</td><td style="font-size:.78rem">${r.created_at?new Date(r.created_at).toLocaleDateString('fr-FR'):'—'}</td><td><button class="t-edit" onclick="closeModal('adminOverlay');openForm('${r.id}')">✏ Modifier</button><button class="t-del" onclick="deleteRecipe('${r.id}')">Supprimer</button></td></tr>`).join('');
+  tb.innerHTML=recipes.map(r=>`<tr><td><strong>${r.nom}</strong></td><td>${r.auteur||'—'}</td><td>${r.region||'—'}</td><td>${r.views||0}</td><td style="font-size:.78rem">${r.created_at?new Date(r.created_at).toLocaleDateString('fr-FR'):'—'}</td><td><button class="t-edit" onclick="closeModal('adminOverlay');openForm('${r.id}')">Modifier</button><button class="t-del" onclick="deleteRecipe('${r.id}')">Supprimer</button></td></tr>`).join('');
   const mb=document.getElementById('aMembersTbody');document.getElementById('aNoMembers').style.display=members.length?'none':'block';
   mb.innerHTML=members.map(m=>`<tr><td>${m.avatar?`<img src="${m.avatar}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid var(--accent-light);vertical-align:middle;">`:`<span style="display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--accent-light);align-items:center;justify-content:center;color:white;font-size:.75rem;">${(m.nom||'?')[0].toUpperCase()}</span>`}</td><td><strong>${m.nom||'—'}</strong></td><td>${m.age||'—'}</td><td style="font-size:.78rem">${m.created_at?new Date(m.created_at).toLocaleDateString('fr-FR'):'—'}</td></tr>`).join('');
 }
-document.getElementById('deleteAllBtn').addEventListener('click',async()=>{if(!confirm('Supprimer TOUTES les recettes ?'))return;await db.from('recettes').delete().neq('id','00000000-0000-0000-0000-000000000000');toast('Toutes les recettes supprimées.');await loadData();renderGrid();populateAdmin();});
+document.getElementById('deleteAllBtn').addEventListener('click',async()=>{if(!confirm('Supprimer TOUTES les recettes ?'))return;const{error}=await db.from('recettes').delete().neq('id','00000000-0000-0000-0000-000000000000');if(error){toast('Erreur : '+error.message);return;}toast('Toutes les recettes supprimées.');await loadData();renderGrid();populateAdmin();});
 document.getElementById('emailSendBtn').addEventListener('click',async()=>{
   if(!members.length)await loadMembers();
   const emails=members.map(m=>m.id).filter(Boolean);
@@ -1378,7 +1676,7 @@ document.getElementById('emailSendBtn').addEventListener('click',async()=>{
   const b=encodeURIComponent(document.getElementById('emailBody').value||'');
   const BATCH=20;
   for(let i=0;i<emails.length;i+=BATCH)window.open(`mailto:?bcc=${encodeURIComponent(emails.slice(i,i+BATCH).join(','))}&subject=${s}&body=${b}`,'_blank');
-  toast(`📨 ${Math.ceil(emails.length/BATCH)} fenêtre(s) ouverte(s).`);
+  toast(`${Math.ceil(emails.length/BATCH)} fenêtre(s) ouverte(s).`);
 });
 
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>30),{passive:true});
