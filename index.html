@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -342,6 +342,9 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .chef-panel-sub{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-light);margin-top:.1rem;}
 .chef-panel-close{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);cursor:pointer;font-size:1rem;}
 .chef-panel-body{padding:1rem;}
+.chef-panel .ai-actions{order:3;}
+.chef-panel .chat-input-row{order:4;}
+.chef-panel-body{display:flex;flex-direction:column;overflow-y:auto;max-height:calc(min(680px,calc(100vh - 8rem)) - 70px);}
 .chef-tools{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem;}
 .chef-tool{background:var(--cream);border:1px solid var(--border);border-radius:50px;padding:.4rem .8rem;font-size:.68rem;color:var(--accent);cursor:pointer;font-family:'DM Sans',sans-serif;}
 .chef-tool:hover{background:var(--accent);color:white;border-color:var(--accent);}
@@ -349,6 +352,7 @@ footer{background:var(--dark);color:rgba(240,235,224,.45);padding:4rem 6vw 2rem;
 .chef-panel .chat-input-row textarea{min-height:48px;}
 .chef-panel .chat-input-row .btn{padding:.7rem 1rem;min-width:92px;}
 .chef-panel .ai-preview{max-height:150px;}
+.chef-panel #chefFillBtn{width:100%;margin-top:.35rem;}
 .toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--charcoal);color:var(--cream);padding:.9rem 1.6rem;border-radius:3px;font-size:.83rem;border-left:3px solid var(--accent);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1);pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
 /* Premium visual redesign */
@@ -436,6 +440,381 @@ body.dark .f-input,body.dark .f-textarea,body.dark .f-select,body.dark .photo-zo
   .chef-panel{left:1rem;right:1rem;bottom:5.5rem;width:auto;}
   .chef-launcher{left:1rem;bottom:1rem;}
 }
+
+/* === FIX contraste theme sombre + mobile === */
+:root{
+  color-scheme:light;
+  --text:var(--charcoal);
+  --text-soft:var(--warm-gray);
+  --panel-solid:#fff;
+  --panel-field:#FAF8F4;
+}
+body.dark{
+  color-scheme:dark;
+  --text:#F5F0E8;
+  --text-soft:#CFC5B8;
+  --panel-solid:#111;
+  --panel-field:#191919;
+}
+body,
+.sec-title,
+.card-title,
+.modal-title,
+.form-head h2,
+.auth-title,
+.profile-rec-name,
+.image-admin-name,
+.add-banner h3,
+.login-box h3{
+  color:var(--text);
+}
+.hero-title,
+.about-text .sec-title,
+.profile-name,
+.onboard-title,
+.ai-title,
+.admin-head h2{
+  color:#F5F0E8;
+}
+.hero-desc,
+.sec-sub,
+.card-desc,
+.card-meta span,
+.card-author-name,
+.card-diff,
+.comment-count,
+.f-hint,
+.auth-sub,
+.profile-rec-meta,
+.image-admin-state,
+.admin-tab,
+.footer-tagline{
+  color:var(--text-soft);
+}
+body.dark nav,
+body.dark .modal,
+body.dark .form-modal,
+body.dark .auth-modal,
+body.dark .onboard-modal,
+body.dark .profile-modal,
+body.dark .admin-panel,
+body.dark .ai-modal,
+body.dark .chef-panel,
+body.dark .add-banner,
+body.dark .recipe-card{
+  background:rgba(15,15,15,.96);
+  border-color:rgba(245,245,245,.16);
+}
+body.dark .form-head,
+body.dark .modal-topbar,
+body.dark .form-foot,
+body.dark .profile-stats,
+body.dark .profile-body,
+body.dark .auth-pane,
+body.dark .admin-tabs,
+body.dark .admin-pane,
+body.dark .chef-panel-body,
+body.dark .ai-body,
+body.dark .onboard-body{
+  background:#101010;
+  color:var(--text);
+}
+.f-input,
+.f-textarea,
+.f-select,
+.comment-form textarea,
+.compose-row input,
+.compose-body textarea,
+.search-wrap input,
+.section-search-wrap input,
+.chat-input-row textarea{
+  color:var(--text);
+  caret-color:var(--accent);
+}
+body.dark .f-input,
+body.dark .f-textarea,
+body.dark .f-select,
+body.dark .photo-zone,
+body.dark .comment-item,
+body.dark .srv-row,
+body.dark .tip-box,
+body.dark .compose-area,
+body.dark .a-stat,
+body.dark .login-box,
+body.dark .ingr-card,
+body.dark .tag-pill,
+body.dark .theme-pill,
+body.dark .mode-btn,
+body.dark .like-btn,
+body.dark .ai-btn,
+body.dark .image-mini-btn,
+body.dark .section-search-wrap,
+body.dark .search-wrap{
+  background:#191919;
+  color:var(--text);
+  border-color:rgba(245,245,245,.18);
+}
+body.dark .f-input::placeholder,
+body.dark .f-textarea::placeholder,
+body.dark .section-search-wrap input::placeholder,
+body.dark .search-wrap input::placeholder{
+  color:#9c9388;
+  opacity:1;
+}
+body.dark .f-select option{
+  background:#111;
+  color:#F5F0E8;
+}
+body.dark .photo-placeholder,
+body.dark .f-label,
+body.dark .ingr-card-name,
+body.dark .comment-text,
+body.dark .srv-label,
+body.dark .profile-stat .l,
+body.dark .admin-table td,
+body.dark .compose-lbl,
+body.dark .chat-msg.bot{
+  color:var(--text);
+}
+body.dark .chat-msg.bot{
+  background:#191919;
+  border-color:rgba(245,245,245,.18);
+}
+body.dark .admin-table th,
+body.dark .admin-table tr:hover td,
+body.dark .card-footer{
+  background:#181818;
+}
+.overlay{
+  background:rgba(5,5,5,.82);
+}
+.modal,
+.form-modal{
+  max-height:calc(100dvh - 3rem);
+}
+.form-foot{
+  position:sticky;
+  bottom:0;
+  z-index:2;
+  background:var(--panel-solid);
+}
+body.dark .form-foot{
+  background:#101010;
+}
+.chef-panel{
+  color:var(--text);
+}
+
+@media(max-width:768px){
+  body{
+    padding-left:78px;
+  }
+  nav{
+    top:0;
+    left:0;
+    right:auto;
+    bottom:0;
+    transform:none;
+    width:78px;
+    height:100dvh;
+    border-radius:0;
+    padding:.75rem .45rem;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:.75rem;
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
+  .nav-logo{
+    width:100%;
+    justify-content:center;
+    font-size:0;
+  }
+  .logo-circle{
+    width:44px;
+    height:44px;
+    font-size:.8rem;
+  }
+  .nav-right{
+    width:100%;
+    flex-direction:column;
+    gap:.55rem;
+  }
+  .nav-pill,
+  .theme-toggle,
+  .nav-user-btn{
+    width:48px;
+    min-width:48px;
+    height:48px;
+    padding:0;
+    border-radius:16px;
+    justify-content:center;
+    font-size:0;
+    letter-spacing:0;
+  }
+  #navAddBtn::before{content:"+";font-size:1.25rem;}
+  #navLoginBtn::before{content:"↪";font-size:1rem;}
+  #navLogout::before{content:"×";font-size:1.15rem;}
+  .theme-toggle{
+    font-size:1.1rem;
+  }
+  .nav-user-name,
+  .nav-user-area > div:first-child,
+  .nav-right .nav-pill:not(.nav-pill-accent):not(#navLoginBtn),
+  .search-wrap{
+    display:none!important;
+  }
+  .nav-user-area{
+    flex-direction:column;
+    gap:.55rem;
+  }
+  .nav-right .nav-pill[href="#communaute"],
+  .nav-right .nav-pill[href="#a-propos"],
+  #navLogout{
+    display:flex!important;
+  }
+  .nav-right .nav-pill[href="#communaute"]::before{content:"C";font-size:.8rem;}
+  .nav-right .nav-pill[href="#a-propos"]::before{content:"i";font-size:1rem;font-family:'Cormorant Garamond',serif;font-style:italic;}
+  .nav-user-btn{
+    display:flex;
+    padding:0;
+  }
+  .hero-left{
+    width:auto;
+    padding:6rem 6vw 7rem;
+  }
+  .hero-title{
+    font-size:clamp(3rem,15vw,5rem);
+  }
+  .hero-stats{
+    left:6vw;
+    right:6vw;
+    bottom:1.2rem;
+  }
+  .section,
+  .about-section{
+    padding:5rem 5vw;
+  }
+  .section-search-bar,
+  .add-banner,
+  .form-foot,
+  .comment-form,
+  .chat-input-row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .section-search-wrap{
+    min-width:0;
+    width:100%;
+  }
+  .recipe-grid{
+    grid-template-columns:1fr;
+  }
+  .recipe-card{
+    border-radius:18px;
+  }
+  .card-img{
+    height:220px;
+  }
+  .overlay{
+    left:78px;
+    padding:.6rem;
+    align-items:flex-start;
+  }
+  .modal,
+  .form-modal,
+  .auth-modal,
+  .onboard-modal,
+  .profile-modal,
+  .admin-panel,
+  .ai-modal{
+    width:100%;
+    max-height:calc(100dvh - 1.2rem);
+    border-radius:18px;
+  }
+  .form-head,
+  .form-body,
+  .form-foot,
+  .modal-body,
+  .auth-pane,
+  .ai-body,
+  .onboard-body,
+  .profile-body,
+  .admin-pane{
+    padding-left:1rem;
+    padding-right:1rem;
+  }
+  .f-grid,
+  .two-cols,
+  .about-section{
+    grid-template-columns:1fr;
+  }
+  .admin-tabs,
+  .themes-bar{
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding-bottom:.4rem;
+  }
+  .admin-tab,
+  .theme-pill{
+    flex:0 0 auto;
+  }
+  .chef-launcher{
+    left:auto;
+    right:1rem;
+    bottom:1rem;
+    width:58px;
+    height:58px;
+    z-index:470;
+  }
+  .chef-panel{
+    left:calc(78px + .6rem);
+    right:.6rem;
+    bottom:4.8rem;
+    width:auto;
+    max-height:calc(100dvh - 6rem);
+  }
+  .admin-bar{
+    left:78px;
+    padding:.65rem;
+  }
+  .toast{
+    left:calc(78px + .8rem);
+    right:.8rem;
+    bottom:.8rem;
+  }
+}
+
+@media(max-width:420px){
+  body{
+    padding-left:66px;
+  }
+  nav{
+    width:66px;
+  }
+  .nav-pill,
+  .theme-toggle,
+  .nav-user-btn{
+    width:42px;
+    min-width:42px;
+    height:42px;
+    border-radius:14px;
+  }
+  .logo-circle{
+    width:40px;
+    height:40px;
+  }
+  .chef-panel{
+    left:calc(66px + .5rem);
+  }
+  .admin-bar{
+    left:66px;
+  }
+  .overlay{
+    left:66px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1170,7 +1549,7 @@ function socialCounts(id){
 
 // ══ IA — CHEF GUSTAVE / ANALYSE / MODÉRATION ══
 const AI_FUNCTION_URL=SB_URL+'/functions/v1/ask-deepseek';
-let chefMessages=[],chefRecipe=null,analyzedRecipe=null;
+let chefMessages=[],chefRecipe=null,analyzedRecipe=null,chefSuggestions=[];
 function normalizeAiText(v){return String(v||'').replace(/\r/g,'').trim();}
 function ingredientToSiteFormat(v){return normalizeAiText(v).split('\n').map(l=>l.trim().replace(/^[-•]\s*/,'').replace(/\s+-\s+/g,' · ')).filter(Boolean).join('\n');}
 function extractJsonString(raw,key){
@@ -1255,63 +1634,187 @@ async function askChefForRecipe(messages,conversation,lastUser,firstReply){
   return callAi({task:'chef_chat',content:forceContent,messages:forcedMessages});
 }
 function fallbackChefRecipe(text){
-  const t=(text||'').toLowerCase();
-  if(t.includes('pizza'))return{
-    nom:'Pizza maison',
-    description:'Une pizza simple et gourmande, à vérifier puis personnaliser avant publication.',
-    ingredients:'250 - g - farine\n150 - ml - eau tiède\n1 - sachet - levure boulangère\n2 - cuillères à soupe - huile d olive\n1 - pincée - sel\n150 - g - sauce tomate\n120 - g - mozzarella\n1 - poignée - garniture au choix',
-    etapes:'Mélanger la farine, la levure, l eau tiède, l huile et le sel.\nPétrir jusqu à obtenir une pâte souple.\nLaisser lever la pâte environ 1 heure.\nÉtaler la pâte sur une plaque.\nAjouter la sauce tomate, la mozzarella et la garniture.\nCuire 12 à 15 minutes dans un four très chaud.',
-    temps:'1 h 30',
-    cuisson:'12 à 15 min',
+  const raw=String(text||'').trim();
+  const t=raw.toLowerCase();
+  const base={
     difficulte:'Facile',
-    categorie:'Pizza & tartes salées',
-    astuce:'Préchauffer le four au maximum pour une pâte plus croustillante.',
-    ustensiles:'Saladier, plaque de cuisson, rouleau',
-    region:'Italie'
-  };
-  if(t.includes('chocolat'))return{
-    nom:'Gâteau au chocolat',
-    description:'Un gâteau au chocolat moelleux, facile à préparer.',
-    ingredients:'200 - g - chocolat noir\n120 - g - beurre\n100 - g - sucre\n3 - pièces - oeufs\n80 - g - farine\n1 - sachet - levure chimique',
-    etapes:'Préchauffer le four à 180°C.\nFaire fondre le chocolat avec le beurre.\nBattre les oeufs avec le sucre.\nAjouter le chocolat fondu puis la farine et la levure.\nVerser dans un moule beurré.\nCuire environ 25 minutes.',
-    temps:'35 min',
-    cuisson:'25 min',
-    difficulte:'Facile',
-    categorie:'Gâteaux & desserts',
-    astuce:'Laisser le centre légèrement fondant pour plus de moelleux.',
-    ustensiles:'Moule, saladier, fouet, casserole',
-    region:'France'
-  };
-  if(t.includes('pomme'))return{
-    nom:'Tarte aux pommes',
-    description:'Une tarte aux pommes classique, simple et familiale.',
-    ingredients:'1 - pièce - pâte brisée\n4 - pièces - pommes\n40 - g - sucre\n25 - g - beurre\n1 - cuillère à café - cannelle',
-    etapes:'Préchauffer le four à 180°C.\nÉtaler la pâte dans un moule à tarte.\nÉplucher et couper les pommes en fines lamelles.\nDisposer les pommes sur la pâte.\nSaupoudrer de sucre et de cannelle puis ajouter quelques noisettes de beurre.\nCuire 30 à 35 minutes.',
-    temps:'45 min',
-    cuisson:'30 à 35 min',
-    difficulte:'Facile',
-    categorie:'Gâteaux & desserts',
-    astuce:'Utiliser des pommes Golden ou Reine des reinettes.',
-    ustensiles:'Moule à tarte, couteau, économe',
-    region:'France'
-  };
-  return{
-    nom:'Recette proposée par Chef Gustave',
-    description:'Une fiche de recette à compléter et vérifier avant publication.',
-    ingredients:'1 - portion - ingrédient principal\n1 - portion - accompagnement\n1 - pincée - assaisonnement',
-    etapes:'Préparer les ingrédients.\nAssembler la recette.\nCuire ou dresser selon le plat.\nVérifier puis ajuster avant publication.',
-    temps:'À compléter',
-    cuisson:'À compléter',
-    difficulte:'Facile',
-    categorie:'',
-    astuce:'Vérifiez cette fiche avant de publier.',
-    ustensiles:'',
+    astuce:'Goûter et ajuster l assaisonnement avant de servir.',
+    ustensiles:'Saladier, couteau, planche, poêle ou casserole',
     region:''
   };
+  if(t.includes('pizza'))return Object.assign({},base,{
+    nom:'Pizza maison',
+    description:'Une pizza maison simple avec une pâte moelleuse, une sauce tomate parfumée et une garniture fondante.',
+    ingredients:'250 - g - farine\n150 - ml - eau tiède\n1 - sachet - levure boulangère\n2 - cuillères à soupe - huile d olive\n1 - pincée - sel\n160 - g - sauce tomate\n140 - g - mozzarella\n1 - poignée - basilic',
+    etapes:'Mélanger la farine, la levure, l eau tiède, l huile et le sel.\nPétrir 8 minutes puis laisser lever 1 heure.\nÉtaler la pâte sur une plaque farinée.\nGarnir avec la sauce tomate, la mozzarella et le basilic.\nCuire 12 à 15 minutes dans un four préchauffé à 240°C.',
+    temps:'1 h 20',
+    cuisson:'12 à 15 min',
+    categorie:'Pizza & tartes salées',
+    region:'Italie'
+  });
+  if(t.includes('quiche'))return Object.assign({},base,{
+    nom:'Quiche lorraine',
+    description:'Une quiche salée généreuse avec une garniture fondante aux oeufs, à la crème et aux lardons.',
+    ingredients:'1 - pièce - pâte brisée\n3 - pièces - oeufs\n200 - ml - crème fraîche\n120 - g - lardons\n80 - g - emmental râpé\n1 - pincée - sel\n1 - pincée - poivre',
+    etapes:'Préchauffer le four à 180°C.\nDéposer la pâte dans un moule à tarte.\nFaire revenir les lardons quelques minutes.\nFouetter les oeufs avec la crème, le sel et le poivre.\nRépartir les lardons et l emmental sur la pâte.\nVerser l appareil puis cuire 30 à 35 minutes.',
+    temps:'45 min',
+    cuisson:'35 min',
+    categorie:'Pizza & tartes salées',
+    ustensiles:'Moule à tarte, poêle, saladier, fouet',
+    region:'Lorraine'
+  });
+  if(t.includes('risotto'))return Object.assign({},base,{
+    nom:'Risotto aux champignons',
+    description:'Un risotto crémeux et salé, parfumé aux champignons et au parmesan.',
+    ingredients:'280 - g - riz arborio\n250 - g - champignons\n1 - pièce - oignon\n900 - ml - bouillon de légumes\n80 - g - parmesan\n2 - cuillères à soupe - huile d olive\n1 - pincée - poivre',
+    etapes:'Émincer l oignon et les champignons.\nFaire revenir l oignon dans l huile d olive.\nAjouter le riz et mélanger jusqu à ce qu il devienne nacré.\nAjouter le bouillon chaud petit à petit en remuant.\nIncorporer les champignons à mi-cuisson.\nTerminer avec le parmesan et servir chaud.',
+    temps:'40 min',
+    cuisson:'25 min',
+    categorie:'Pâtes & riz',
+    ustensiles:'Casserole, poêle, louche, cuillère en bois',
+    region:'Italie'
+  });
+  if(t.includes('gratin'))return Object.assign({},base,{
+    nom:'Gratin de courgettes',
+    description:'Un gratin salé simple, fondant et doré, parfait avec une salade.',
+    ingredients:'4 - pièces - courgettes\n2 - pièces - oeufs\n180 - ml - crème fraîche\n90 - g - emmental râpé\n1 - gousse - ail\n1 - pincée - sel\n1 - pincée - poivre',
+    etapes:'Préchauffer le four à 190°C.\nCouper les courgettes en fines rondelles.\nFaire revenir les courgettes avec l ail quelques minutes.\nFouetter les oeufs avec la crème, le sel et le poivre.\nMettre les courgettes dans un plat à gratin.\nVerser la préparation, ajouter le fromage et cuire 25 à 30 minutes.',
+    temps:'45 min',
+    cuisson:'30 min',
+    categorie:'Végétarien',
+    ustensiles:'Plat à gratin, poêle, saladier, fouet',
+    region:'France'
+  });
+  if(t.includes('chocolat'))return Object.assign({},base,{
+    nom:'Gâteau moelleux au chocolat',
+    description:'Un gâteau au chocolat fondant et familial, prêt sans technique compliquée.',
+    ingredients:'200 - g - chocolat noir\n120 - g - beurre\n100 - g - sucre\n3 - pièces - oeufs\n80 - g - farine\n1 - pincée - sel',
+    etapes:'Préchauffer le four à 180°C.\nFaire fondre le chocolat avec le beurre.\nFouetter les oeufs avec le sucre.\nIncorporer le chocolat fondu puis la farine et le sel.\nVerser dans un moule beurré.\nCuire 22 à 25 minutes.',
+    temps:'35 min',
+    cuisson:'25 min',
+    categorie:'Gâteaux & desserts',
+    ustensiles:'Moule, saladier, fouet, casserole'
+  });
+  if(t.includes('pomme'))return Object.assign({},base,{
+    nom:'Tarte aux pommes simple',
+    description:'Une tarte aux pommes dorée, parfumée et facile à réussir.',
+    ingredients:'1 - pièce - pâte brisée\n4 - pièces - pommes\n40 - g - sucre\n25 - g - beurre\n1 - cuillère à café - cannelle',
+    etapes:'Préchauffer le four à 180°C.\nDéposer la pâte dans un moule à tarte.\nÉplucher les pommes et les couper en fines lamelles.\nDisposer les pommes sur la pâte.\nAjouter le sucre, la cannelle et quelques noisettes de beurre.\nCuire 30 à 35 minutes.',
+    temps:'45 min',
+    cuisson:'30 à 35 min',
+    categorie:'Gâteaux & desserts',
+    ustensiles:'Moule à tarte, couteau, économe'
+  });
+  if(t.includes('poulet'))return Object.assign({},base,{
+    nom:'Poulet rôti aux herbes',
+    description:'Un poulet tendre et parfumé, parfait pour un repas simple.',
+    ingredients:'4 - pièces - morceaux de poulet\n2 - cuillères à soupe - huile d olive\n2 - gousses - ail\n1 - cuillère à café - thym\n1 - cuillère à café - romarin\n1 - pincée - sel\n1 - pincée - poivre',
+    etapes:'Préchauffer le four à 200°C.\nMélanger l huile, l ail haché, le thym, le romarin, le sel et le poivre.\nBadigeonner le poulet avec ce mélange.\nDéposer dans un plat.\nCuire 35 à 45 minutes en arrosant à mi-cuisson.',
+    temps:'55 min',
+    cuisson:'40 min',
+    categorie:'Viandes',
+    ustensiles:'Plat à four, pinceau, couteau'
+  });
+  return null;
 }
+
+function isRealAiRecipe(r){
+  if(!r)return false;
+  const nom=normalizeAiText(r.nom);
+  const ingredients=normalizeAiText(r.ingredients).split('\n').filter(l=>l.trim());
+  const etapes=normalizeAiText(r.etapes).split('\n').filter(l=>l.trim());
+  const badTitle=/recette proposée par chef gustave|recette proposée|fiche de recette/i.test(nom);
+  const hasPlaceholder=/à compléter|ingredient principal|vérifier avant publication/i.test([r.description,r.ingredients,r.etapes,r.temps,r.cuisson,r.astuce].join(' '));
+  return nom.length>5&&!badTitle&&!hasPlaceholder&&ingredients.length>=4&&etapes.length>=4;
+}
+function cleanAiRecipe(r){
+  if(!r)return null;
+  const cleaned={...r};
+  cleaned.ingredients=ingredientToSiteFormat(cleaned.ingredients||'');
+  cleaned.etapes=normalizeAiText(cleaned.etapes||'').split('\n').map(l=>l.replace(/^\d+[\).\s-]*/,'').trim()).filter(Boolean).join('\n');
+  return isRealAiRecipe(cleaned)?cleaned:null;
+}
+
 function recipePreview(r){
   if(!r)return'';
   return `<strong>${r.nom||'Recette proposée'}</strong><br><br>${r.description||''}<br><br><strong>Ingrédients</strong><br>${normalizeAiText(r.ingredients).replace(/\n/g,'<br>')}<br><br><strong>Étapes</strong><br>${normalizeAiText(r.etapes).replace(/\n/g,'<br>')}`;
+}
+function recipeChatText(r){
+  if(!r)return'';
+  const ingredients=normalizeAiText(r.ingredients).split('\n').filter(Boolean).map(l=>'• '+l).join('\n');
+  const etapes=normalizeAiText(r.etapes).split('\n').filter(Boolean).map((l,i)=>(i+1)+'. '+l).join('\n');
+  return `${r.nom}\n\n${r.description||''}\n\nTemps : ${r.temps||'—'} · Cuisson : ${r.cuisson||'—'} · Difficulté : ${r.difficulte||'—'}\n\nIngrédients :\n${ingredients}\n\nÉtapes :\n${etapes}`;
+}
+function presentChefRecipe(r,message){
+  const cleaned=cleanAiRecipe(r);
+  if(!cleaned)return false;
+  chefRecipe=cleaned;
+  addChefMsg('bot',message||`J’ai préparé la fiche : ${cleaned.nom}.\n\n${recipeChatText(cleaned)}`);
+  chefMessages.push({role:'assistant',content:message||`Fiche préparée : ${cleaned.nom}`});
+  document.getElementById('chefPreview').innerHTML=recipePreview(cleaned);
+  document.getElementById('chefPreview').classList.add('on');
+  document.getElementById('chefFillBtn').style.display='inline-block';
+  setTimeout(()=>document.getElementById('chefFillBtn').scrollIntoView({block:'nearest',behavior:'smooth'}),60);
+  toast('Recette prête : vous pouvez remplir le formulaire.');
+  return true;
+}
+function chefSuggestionList(){
+  chefSuggestions=[
+    {label:'Quiche lorraine',query:'quiche lorraine'},
+    {label:'Risotto aux champignons',query:'risotto champignons'},
+    {label:'Gratin de courgettes',query:'gratin courgettes'}
+  ];
+  return 'Voici 3 recettes salées possibles :\n1. Quiche lorraine\n2. Risotto aux champignons\n3. Gratin de courgettes\n\nRéponds avec 1, 2 ou 3, ou donne-moi directement le nom de la recette que tu veux.';
+}
+function handleLocalChef(content){
+  const t=normTxt(content);
+  const wantsIdeas=/(propose|donne|idee|idée).*(3|trois).*(sale|salé|sales|salées|recette)/i.test(content)||/(3|trois).*(recette).*(sale|salé|sales|salées)/i.test(content);
+  if(wantsIdeas){
+    const reply=chefSuggestionList();
+    addChefMsg('bot',reply);
+    chefMessages.push({role:'assistant',content:reply});
+    document.getElementById('chefFillBtn').style.display='none';
+    return true;
+  }
+  if(chefRecipe&&(/^(\?|ok|oui|go|va y|vasy|vas y)$/i.test(t)||/\b(pret|prêt|formulaire|remplir)\b/.test(t))){
+    const reply=`La fiche prête est : ${chefRecipe.nom}. Tu peux cliquer sur “Remplir le formulaire”, ou me demander “donne la recette” pour la relire.`;
+    addChefMsg('bot',reply);
+    chefMessages.push({role:'assistant',content:reply});
+    document.getElementById('chefFillBtn').style.display='inline-block';
+    return true;
+  }
+  const n=parseInt((t.match(/\b([123])\b/)||[])[1],10);
+  if(n&&chefSuggestions[n-1]){
+    const chosen=chefSuggestions[n-1];
+    const r=fallbackChefRecipe(chosen.query);
+    return presentChefRecipe(r,`Très bien, je pars sur : ${chosen.label}.\n\n${recipeChatText(cleanAiRecipe(r))}`);
+  }
+  const directRecipe=fallbackChefRecipe(content);
+  if(directRecipe&&(/\b(recette|fait|fais|prepare|prépare|tarte|pizza|quiche|risotto|gratin|poulet|chocolat|pomme)\b/.test(t))){
+    chefSuggestions=[];
+    return presentChefRecipe(directRecipe,`Voilà la recette complète :\n\n${recipeChatText(cleanAiRecipe(directRecipe))}`);
+  }
+  if(/\b(va y|vasy|vas y|ok|oui|go)\b/.test(t)&&chefSuggestions.length&&!chefRecipe){
+    const reply='Choisis d’abord laquelle : 1 pour quiche lorraine, 2 pour risotto aux champignons, ou 3 pour gratin de courgettes.';
+    addChefMsg('bot',reply);
+    chefMessages.push({role:'assistant',content:reply});
+    return true;
+  }
+  if(/\b(quelle|quel|de quel|laquelle)\b/.test(t)&&/\b(recette|fiche)\b/.test(t)){
+    const reply=chefRecipe?`La fiche prête est : ${chefRecipe.nom}.`:'Je n’ai pas encore de fiche prête. Donne-moi le nom de la recette ou choisis une proposition.';
+    addChefMsg('bot',reply);
+    chefMessages.push({role:'assistant',content:reply});
+    return true;
+  }
+  if(/\b(donne|montre|affiche|envoie)\b/.test(t)&&/\brecette\b/.test(t)){
+    if(chefRecipe){
+      const reply=recipeChatText(chefRecipe);
+      addChefMsg('bot',reply);
+      chefMessages.push({role:'assistant',content:reply});
+      return true;
+    }
+  }
+  return false;
 }
 function recipeFromAiObject(out){
   if(!out)return null;
@@ -1320,12 +1823,16 @@ function recipeFromAiObject(out){
   return repairRecipeFromRaw(raw);
 }
 function fillRecipeForm(r){
-  if(!r){toast('Aucune recette à importer.');return;}
+  r=cleanAiRecipe(r);
+  if(!r){
+    toast('Chef Gustave doit générer une vraie recette avant de remplir le formulaire.');
+    return;
+  }
   openForm();
   document.getElementById('fNom').value=r.nom||'';
   document.getElementById('fDesc').value=r.description||'';
-  document.getElementById('fIngr').value=ingredientToSiteFormat(r.ingredients||'');
-  document.getElementById('fEtapes').value=normalizeAiText(r.etapes||'').split('\n').map(l=>l.replace(/^\d+[\).\s-]*/,'').trim()).filter(Boolean).join('\n');
+  document.getElementById('fIngr').value=r.ingredients||'';
+  document.getElementById('fEtapes').value=r.etapes||'';
   document.getElementById('fTemps').value=(r.temps||'').split('\n')[0]||'';
   document.getElementById('fCuisson').value=r.cuisson||'';
   document.getElementById('fDiff').value=['Facile','Intermédiaire','Avancé','Expert'].includes(r.difficulte)?r.difficulte:'Facile';
@@ -1851,7 +2358,7 @@ document.getElementById('chefAnalyzeTool').addEventListener('click',()=>{
   openModal('analyzeOverlay');
 });
 document.getElementById('chefResetTool').addEventListener('click',()=>{
-  chefMessages=[];chefRecipe=null;
+  chefMessages=[];chefRecipe=null;chefSuggestions=[];
   document.getElementById('chefChat').innerHTML='<div class="chat-msg bot">Nouvelle discussion. Dis-moi ce que tu veux cuisiner.</div>';
   document.getElementById('chefPreview').classList.remove('on');
   document.getElementById('chefPreview').innerHTML='';
@@ -1865,6 +2372,7 @@ document.getElementById('chefSendBtn').addEventListener('click',async()=>{
   input.value='';
   addChefMsg('user',content);
   chefMessages.push({role:'user',content});
+  if(handleLocalChef(content))return;
   const btn=document.getElementById('chefSendBtn');btn.disabled=true;btn.textContent='...';
   try{
     const conversation=chefMessages.map(m=>(m.role==='user'?'Utilisateur: ':'Chef Gustave: ')+m.content).join('\n');
@@ -1874,19 +2382,22 @@ document.getElementById('chefSendBtn').addEventListener('click',async()=>{
       addChefMsg('bot','Je prépare la fiche complète pour le formulaire...');
       out=await askChefForRecipe(chefMessages,conversation,content,reply);
       reply=out.reply||reply;
-      if(!out.recipe){
-        out={reply:'J’ai préparé une fiche de base. Vérifie-la avant de publier.',ready:true,recipe:fallbackChefRecipe(conversation+' '+reply+' '+content)};
-        reply=out.reply;
+      if(!cleanAiRecipe(out.recipe)){
+        const fb=fallbackChefRecipe(conversation+' '+reply+' '+content);
+        if(fb){
+          out={reply:'J’ai préparé une vraie fiche complète à partir de ta demande. Vérifie les quantités avant publication.',ready:true,recipe:fb};
+          reply=out.reply;
+        }else{
+          out={reply:'Je n’ai pas encore assez d’informations pour créer une vraie recette. Donne-moi au moins le plat ou 2-3 ingrédients, et je te fais une fiche complète.',ready:false,recipe:null};
+          reply=out.reply;
+        }
       }
     }
     addChefMsg('bot',reply);
     chefMessages.push({role:'assistant',content:reply});
-    if(out.recipe){
-      chefRecipe=out.recipe;
-      document.getElementById('chefPreview').innerHTML=recipePreview(chefRecipe);
-      document.getElementById('chefPreview').classList.add('on');
-      document.getElementById('chefFillBtn').style.display='inline-block';
-      toast('Recette prête : vous pouvez remplir le formulaire.');
+    const cleanedChefRecipe=cleanAiRecipe(out.recipe);
+    if(cleanedChefRecipe){
+      presentChefRecipe(cleanedChefRecipe,`J’ai préparé la fiche : ${cleanedChefRecipe.nom}.\n\n${recipeChatText(cleanedChefRecipe)}`);
     }else{
       document.getElementById('chefFillBtn').style.display='none';
     }
@@ -1901,7 +2412,7 @@ document.getElementById('analyzeUrlBtn').addEventListener('click',async()=>{
   const btn=document.getElementById('analyzeUrlBtn');btn.disabled=true;btn.textContent='Analyse...';
   try{
     const out=await callAi({task:'extract_from_url',url,content:'Analyse cette URL et extrais une recette structurée : '+url});
-    analyzedRecipe=recipeFromAiObject(out);
+    analyzedRecipe=cleanAiRecipe(recipeFromAiObject(out));
     if(!analyzedRecipe){
       document.getElementById('analyzePreview').innerHTML='<strong>Analyse incomplète.</strong><br>Je n’ai pas réussi à extraire une vraie fiche recette depuis cette URL. Essayez une autre vidéo ou copiez le texte de la recette.';
       document.getElementById('analyzePreview').classList.add('on');
