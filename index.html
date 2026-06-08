@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -1335,6 +1335,51 @@ function dataUrlToBlob(dataUrl){
   for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
   return new Blob([bytes],{type:mime});
 }
+async function uploadUserImage(kind,file,maxW=1200){
+  const{data:{session}}=await db.auth.getSession();
+  if(!session)throw new Error('Connectez-vous avant d envoyer une image.');
+  const b64=await compressImage(file,maxW,.82);
+  const blob=dataUrlToBlob(b64);
+  return uploadUserImageBlob(kind,blob,file.name||kind);
+}
+async function uploadUserImageBlob(kind,blob,name='image'){
+  const{data:{session}}=await db.auth.getSession();
+  if(!session)throw new Error('Connectez-vous avant d envoyer une image.');
+  const safeName=slugImageName((name||kind).replace(/\.[^.]+$/,''));
+  const path=kind+'/'+session.user.id+'/'+Date.now()+'-'+safeName+'.jpg';
+  const up=await db.storage.from('recipe-images').upload(path,blob,{contentType:blob.type||'image/jpeg',upsert:false});
+  if(up.error)throw up.error;
+  const{data:pub}=db.storage.from('recipe-images').getPublicUrl(path);
+  return pub.publicUrl;
+}
+async function resolveRecipeImageUrl(){
+  if(photoFile){
+    const url=await uploadUserImage('recipes',photoFile,1400);
+    photoFile=null;
+    photoB64=url;
+    return url;
+  }
+  if(photoB64&&photoB64.startsWith('data:')){
+    const url=await uploadUserImageBlob('recipes',dataUrlToBlob(photoB64),'ancienne-photo');
+    photoB64=url;
+    return url;
+  }
+  return photoB64&&!photoB64.startsWith('data:')?photoB64:null;
+}
+async function resolveAvatarImageUrl(){
+  if(avatarFile){
+    const url=await uploadUserImage('avatars',avatarFile,500);
+    avatarFile=null;
+    avatarB64=url;
+    return url;
+  }
+  if(avatarB64&&avatarB64.startsWith('data:')){
+    const url=await uploadUserImageBlob('avatars',dataUrlToBlob(avatarB64),'ancien-avatar');
+    avatarB64=url;
+    return url;
+  }
+  return avatarB64&&!avatarB64.startsWith('data:')?avatarB64:null;
+}
 async function loadRemoteImages(){
   try{
     const{data,error}=await db.from('site_images').select('type,name,image_url,storage_path');
@@ -1523,6 +1568,7 @@ let recipes=[],profiles={},members=[];
 let user=null,profile=null,isAdmin=false;
 let currentRec=null,baseSrv=4,curSrv=4;
 let photoB64='',avatarB64='',editId=null;
+let photoFile=null,avatarFile=null;
 let searchQ='',activeTheme='';
 const DRAFT_KEY='ldp_draft';
 const SOCIAL_KEY='ldp_recipe_social';
@@ -1854,7 +1900,7 @@ async function moderateBeforePublish(payload){
   try{
     const verdict=await callAi({task:'moderate_recipe',recipe:payload});
     if(verdict.ok===false){toast('Publication bloquée : '+(verdict.reason||'contenu inapproprié.'));return false;}
-    if(photoB64){
+    if(photoFile&&photoB64&&photoB64.startsWith('data:')){
       const mime=(photoB64.match(/^data:([^;]+);/)||[])[1]||'image/jpeg';
       const imgVerdict=await callAi({task:'moderate_image',imageData:photoB64,mimeType:mime});
       if(imgVerdict.ok===false){toast('Image refusée : '+(imgVerdict.reason||'image inappropriée.'));return false;}
@@ -1871,7 +1917,7 @@ function saveDraft(){
   if(editId)return;
   const d={};
   DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});
-  d._photo=photoB64||'';
+  d._photo=photoB64&&!photoB64.startsWith('data:')?photoB64:'';
   try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));}catch(e){}
 }
 function loadDraft(){
@@ -1879,7 +1925,7 @@ function loadDraft(){
     const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return false;
     const d=JSON.parse(raw);let hasContent=false;
     DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]){el.value=d[id];if(d[id].trim())hasContent=true;}});
-    if(d._photo){photoB64=d._photo;document.getElementById('photoPreview').src=d._photo;document.getElementById('photoZone').classList.add('has-photo');}
+    if(d._photo&&!d._photo.startsWith('data:')){photoB64=d._photo;document.getElementById('photoPreview').src=d._photo;document.getElementById('photoZone').classList.add('has-photo');}
     return hasContent;
   }catch(e){return false;}
 }
@@ -1972,21 +2018,24 @@ async function getProfile(uid){const{data}=await db.from('profils').select('*').
 // ══ ONBOARDING ══
 document.getElementById('avatarInput').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;
-  compressImage(f,400,.8).then(b64=>{avatarB64=b64;document.getElementById('avatarPreview').src=b64;document.getElementById('avatarZone').classList.add('has-img');});
+  avatarFile=f;compressImage(f,400,.8).then(b64=>{avatarB64=b64;document.getElementById('avatarPreview').src=b64;document.getElementById('avatarZone').classList.add('has-img');});
 });
 document.getElementById('onboardBtn').addEventListener('click',async()=>{
   const nom=document.getElementById('onboardNom').value.trim(),age=parseInt(document.getElementById('onboardAge').value)||0;
   const err=document.getElementById('onboardErr');err.className='auth-err';
   if(!nom){err.textContent='Prénom requis.';err.className='auth-err on';return;}
   if(age<1||age>120){err.textContent='Âge invalide.';err.className='auth-err on';return;}
-  const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Enregistrement…';
-  const{error}=await db.from('profils').upsert({id:user.id,nom,age,avatar:avatarB64||null,created_at:new Date().toISOString()});
+  const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Envoi photo…';
+  let avatarUrl=null;
+  try{avatarUrl=await resolveAvatarImageUrl();}catch(e){btn.disabled=false;btn.textContent='Commencer !';toast('Erreur image : '+e.message);return;}
+  btn.textContent='Enregistrement…';
+  const{error}=await db.from('profils').upsert({id:user.id,nom,age,avatar:avatarUrl,created_at:new Date().toISOString()});
   btn.disabled=false;btn.textContent='Commencer !';
   if(error){err.textContent=error.message;err.className='auth-err on';return;}
   profile=await getProfile(user.id);closeModal('onboardOverlay');updateAuthUI();
   if(profile)document.getElementById('fAuteur').value=profile.nom;
   toast(`Bienvenue ${nom} !`);
-  avatarB64='';document.getElementById('avatarZone').classList.remove('has-img');document.getElementById('avatarPreview').src='';
+  avatarB64='';avatarFile=null;document.getElementById('avatarZone').classList.remove('has-img');document.getElementById('avatarPreview').src='';
   document.getElementById('onboardNom').value='';document.getElementById('onboardAge').value='';
   await loadData();renderGrid();updateMembersCount();
 });
@@ -2045,11 +2094,12 @@ function compressImage(file,maxW=1200,q=0.82){
 document.getElementById('photoInput').addEventListener('change',async e=>{
   const f=e.target.files[0];if(!f)return;
   if(f.size>5*1024*1024){toast('Image trop lourde (max 5 Mo).');return;}
+  photoFile=f;
   photoB64=await compressImage(f,1200,.82);
   document.getElementById('photoPreview').src=photoB64;
   document.getElementById('photoZone').classList.add('has-photo');
 });
-function removePhoto(){photoB64='';document.getElementById('photoPreview').src='';document.getElementById('photoZone').classList.remove('has-photo');document.getElementById('photoInput').value='';}
+function removePhoto(){photoB64='';photoFile=null;document.getElementById('photoPreview').src='';document.getElementById('photoZone').classList.remove('has-photo');document.getElementById('photoInput').value='';}
 
 // ══ THÈMES ══
 const THEMES=[{l:'Tous',k:''},{l:'Gâteaux',k:'gateau'},{l:'Pâtes',k:'pates'},{l:'Viandes',k:'viande'},{l:'Poissons',k:'poisson'},{l:'Végétarien',k:'vegeta'},{l:'Soupes',k:'soupe'},{l:'Pizza & Tartes',k:'pizza'},{l:'Petit-déj',k:'petit'},{l:'Apéritifs',k:'apero'},{l:'Desserts',k:'dessert'},{l:'Pains',k:'pain'}];
@@ -2302,10 +2352,12 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
   const allText=[nom,auteur,desc,ingr,etapes,document.getElementById('fAstuce').value,document.getElementById('fGeste').value,document.getElementById('fRegion').value,document.getElementById('fUst').value].join(' ');
   const bad=findBad(allText);if(bad){banScreen(bad);return;}
   if(!editId&&recipes.length>=MAX){toast('Les 1000 places sont prises !');return;}
-  const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,description:desc,ingredients:ingr,etapes:etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),img:photoB64||null,user_id:user?.id||null};
+  const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,description:desc,ingredients:ingr,etapes:etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),img:photoB64&&!photoB64.startsWith('data:')?photoB64:null,user_id:user?.id||null};
   saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Vérification…';
   const okModeration=await moderateBeforePublish(payload);
   if(!okModeration){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';return;}
+  btn.textContent=photoFile?'Envoi image…':'Publication…';
+  try{payload.img=await resolveRecipeImageUrl();}catch(e){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';toast('Erreur image : '+e.message);return;}
   btn.textContent='Publication…';
   let error,data;
   if(editId){({error,data}=await db.from('recettes').update(payload).eq('id',editId).select().single());}
@@ -2322,7 +2374,7 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{
   s.textContent=editId?'Recette modifiée !':'Recette publiée ! Merci';
   s.style.display='block';
   clearDraft();stopDraftSave();
-  photoB64='';editId=null;
+  photoB64='';photoFile=null;editId=null;
   renderGrid();
   setTimeout(()=>closeModal('formOverlay'),1800);
 });
