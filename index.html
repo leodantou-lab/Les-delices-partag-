@@ -3,7 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Les Délices Partagées</title>
+<title>Les Délices Partagées - Partagez vos meilleures recettes</title>
+<meta name="description" content="Découvrez et partagez les meilleures recettes de la communauté. Un espace culinaire vivant et généreux.">
+<meta name="keywords" content="cuisine, recettes, partage, gastronomie, communauté">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://les-delices-partagees.example.com/">
+<meta property="og:title" content="Les Délices Partagées">
+<meta property="og:description" content="Un espace vivant où chaque recette raconte une histoire. Partagez vos créations.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://les-delices-partagees.example.com/">
+<meta property="twitter:title" content="Les Délices Partagées">
+<meta property="twitter:description" content="Un espace vivant où chaque recette raconte une histoire. Partagez vos créations.">
+<meta property="twitter:image" content="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍳</text></svg>">
+<link rel="manifest" href="manifest.json">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -24,6 +44,8 @@ body.dark{
 html{scroll-behavior:smooth;}
 body{background:var(--cream);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;transition:background .4s,color .4s;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--accent-light);border-radius:2px;}
+
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
 /* NAV */
 nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;width:min(94vw,1540px);height:66px;
@@ -123,6 +145,11 @@ body.dark .section-search-wrap{background:rgba(20,20,20,.7);border-color:rgba(25
   border-radius:50px;padding:.35rem .9rem;font-size:.7rem;color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap;}
 body.dark .theme-pill{background:rgba(20,20,20,.7);border-color:rgba(255,255,255,.12);}
 .theme-pill:hover,.theme-pill.active{background:var(--accent);color:white;border-color:var(--accent);}
+
+/* SKELETON */
+.skeleton{background:linear-gradient(90deg,var(--beige) 25%,var(--cream) 50%,var(--beige) 75%);background-size:200% 100%;animation:loading 1.5s infinite;}
+@keyframes loading{from{background-position:200% 0;}to{background-position:-200% 0;}}
+.skeleton-card{height:460px;border-radius:20px;background:var(--beige);opacity:.6;}
 
 /* GRID */
 .recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.8rem;max-width:1400px;margin:0 auto;}
@@ -474,16 +501,16 @@ body.dark .image-mini-btn{background:#252525;}
 <body>
 
 <nav id="nav">
-  <a href="#" class="nav-logo"><div class="logo-circle">LD</div>Les <em>Délices</em> Partagées</a>
+  <a href="#" class="nav-logo" aria-label="Accueil - Les Délices Partagées"><div class="logo-circle">LD</div>Les <em>Délices</em> Partagées</a>
   <div class="nav-right">
     <a href="#communaute" class="nav-pill">Communauté</a>
     <div class="search-wrap">
-      <span style="color:var(--text-soft);opacity:.5;font-size:.8rem;">⌕</span>
-      <input type="text" id="navSearch" placeholder="Rechercher…" autocomplete="off">
+      <span style="color:var(--text-soft);opacity:.5;font-size:.8rem;" aria-hidden="true">⌕</span>
+      <input type="text" id="navSearch" placeholder="Rechercher…" autocomplete="off" aria-label="Rechercher une recette">
     </div>
     <a href="#a-propos" class="nav-pill">À propos</a>
     <div class="nav-user-area" id="navUserArea">
-      <button class="nav-user-btn" id="navUserBtn">
+      <button class="nav-user-btn" id="navUserBtn" aria-label="Mon compte">
         <span id="navUserAvatar"></span>
         <span class="nav-user-name" id="navUserName"></span>
       </button>
@@ -497,7 +524,7 @@ body.dark .image-mini-btn{background:#252525;}
 
 <section class="hero">
   <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80" alt="Cuisine" loading="eager">
+    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=80" alt="Cuisine" loading="eager" decoding="async">
   </div>
   <div class="hero-left">
     <div class="hero-eyebrow">La table de tous · Depuis 2026</div>
@@ -527,9 +554,14 @@ body.dark .image-mini-btn{background:#252525;}
     </div>
     <div style="display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;">
       <div class="section-search-wrap">
-        <span style="color:var(--text-soft);opacity:.45;font-size:.85rem;">⌕</span>
-        <input type="text" id="secSearch" placeholder="Rechercher…" autocomplete="off">
+        <span style="color:var(--text-soft);opacity:.45;font-size:.85rem;" aria-hidden="true">⌕</span>
+        <input type="text" id="secSearch" placeholder="Rechercher…" autocomplete="off" aria-label="Rechercher parmi les recettes">
       </div>
+      <select class="f-select" id="sortSelect" style="width:auto;padding:.4rem .8rem;font-size:.75rem;border-radius:50px;" aria-label="Trier par">
+        <option value="recent">Plus récent</option>
+        <option value="views">Plus vu</option>
+        <option value="name">A-Z</option>
+      </select>
       <span class="search-count" id="searchCount" style="display:none;"></span>
     </div>
   </div>
@@ -539,11 +571,12 @@ body.dark .image-mini-btn{background:#252525;}
   <div class="recipe-grid" id="recipeGrid">
     <div style="grid-column:1/-1;text-align:center;padding:4rem;"><div class="spinner"></div></div>
   </div>
+  <div id="gridSentinel"></div>
 </section>
 
 <section class="about-section" id="a-propos">
   <div class="about-img-wrap">
-    <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=700&q=75" alt="Marché" class="about-img" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=800&q=75" alt="Marché" class="about-img" loading="lazy" decoding="async">
     <div class="about-badge"><span>1000</span><span>Recettes</span></div>
   </div>
   <div class="about-text">
@@ -578,8 +611,8 @@ body.dark .image-mini-btn{background:#252525;}
 
 <!-- MODAL RECETTE -->
 <div class="overlay" id="recipeOverlay">
-  <div class="modal">
-    <div class="modal-topbar"><button class="close-btn" id="recipeClose">✕</button></div>
+  <div class="modal" role="dialog" aria-labelledby="mTitle">
+    <div class="modal-topbar"><button class="close-btn" id="recipeClose" aria-label="Fermer la modal">✕</button></div>
     <img id="mImg" class="modal-hero-img" alt="" style="display:none">
     <div class="modal-body">
       <div class="modal-tag" id="mTag"></div>
@@ -591,9 +624,9 @@ body.dark .image-mini-btn{background:#252525;}
       <p class="modal-desc" id="mDesc"></p>
       <div class="srv-row">
         <span class="srv-label">Couverts</span>
-        <button class="srv-btn" id="srvDown">−</button>
+        <button class="srv-btn" id="srvDown" aria-label="Diminuer le nombre de couverts">−</button>
         <span class="srv-n" id="srvN">4</span>
-        <button class="srv-btn" id="srvUp">+</button>
+        <button class="srv-btn" id="srvUp" aria-label="Augmenter le nombre de couverts">+</button>
       </div>
       <div class="ingr-mode-btns">
         <button class="mode-btn active" id="modeVisual">Photos</button>
@@ -609,7 +642,8 @@ body.dark .image-mini-btn{background:#252525;}
       <div id="mGestBlock" style="display:none;margin-top:1.2rem;"><div class="col-title">Geste important</div><p style="font-size:.84rem;line-height:1.65;" id="mGestTxt"></p></div>
       <div class="social-box">
         <div class="social-head">
-          <button class="like-btn" id="mLikeBtn">❤ J'aime · <span id="mLikeCount">0</span></button>
+          <button class="like-btn" id="mLikeBtn" aria-label="Aimer cette recette">❤ J'aime · <span id="mLikeCount">0</span></button>
+          <button class="like-btn" id="mShareBtn" aria-label="Partager cette recette">🔗 Partager</button>
           <span class="comment-count" id="mCommentCount">0 commentaire</span>
         </div>
         <div class="comment-list" id="mCommentList"></div>
@@ -627,10 +661,10 @@ body.dark .image-mini-btn{background:#252525;}
 
 <!-- MODAL FORMULAIRE -->
 <div class="overlay" id="formOverlay">
-  <div class="modal form-modal">
+  <div class="modal form-modal" role="dialog" aria-labelledby="formTitle">
     <div class="form-head">
       <div><h2 id="formTitle">Partager ma recette</h2><p>Les champs <em>*</em> sont obligatoires.</p></div>
-      <button class="close-btn" id="formClose">✕</button>
+      <button class="close-btn" id="formClose" aria-label="Fermer le formulaire">✕</button>
     </div>
     <div class="form-success" id="formSuccess"></div>
     <div class="form-body">
@@ -676,8 +710,8 @@ body.dark .image-mini-btn{background:#252525;}
 
 <!-- AUTH -->
 <div class="overlay" id="authOverlay">
-  <div class="auth-modal modal">
-    <div class="modal-topbar"><button class="close-btn" id="authClose">✕</button></div>
+  <div class="auth-modal modal" role="dialog" aria-labelledby="tabSignup">
+    <div class="modal-topbar"><button class="close-btn" id="authClose" aria-label="Fermer l'authentification">✕</button></div>
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabSignup" onclick="authTab('signup')">Créer un compte</button>
       <button class="auth-tab" id="tabLogin" onclick="authTab('login')">Se connecter</button>
@@ -744,9 +778,9 @@ body.dark .image-mini-btn{background:#252525;}
 
 <!-- PROFIL -->
 <div class="overlay" id="profileOverlay">
-  <div class="modal profile-modal">
+  <div class="modal profile-modal" role="dialog" aria-labelledby="profName">
     <div class="modal-topbar" style="background:rgba(11,11,11,.9);border-radius:22px 22px 0 0;">
-      <button class="close-btn" id="profileClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);">✕</button>
+      <button class="close-btn" id="profileClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);" aria-label="Fermer le profil">✕</button>
     </div>
     <div class="profile-head" style="margin-top:-52px;padding-top:1rem;">
       <div id="profAvatarWrap" style="position:relative;z-index:1;"></div>
@@ -782,10 +816,10 @@ body.dark .image-mini-btn{background:#252525;}
 
 <!-- PANEL ADMIN -->
 <div class="overlay" id="adminOverlay">
-  <div class="admin-panel">
+  <div class="admin-panel" role="dialog" aria-labelledby="adminTitle">
     <div class="admin-head">
-      <div><h2>Espace Léonard</h2><p style="font-size:.76rem;color:rgba(240,235,224,.45);margin-top:.15rem;">Tableau de bord</p></div>
-      <button class="close-btn" id="adminClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);">✕</button>
+      <div><h2 id="adminTitle">Espace Léonard</h2><p style="font-size:.76rem;color:rgba(240,235,224,.45);margin-top:.15rem;">Tableau de bord</p></div>
+      <button class="close-btn" id="adminClose" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);" aria-label="Fermer le panel admin">✕</button>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab active" data-tab="stats">Vue d'ensemble</button>
@@ -873,7 +907,8 @@ const CUSTOM_IMG_KEY='ldp_imgs';
 // ══ STATE ══
 let recipes=[],profiles={},members=[],user=null,profile=null,isAdmin=false;
 let currentRec=null,curSrv=4,photoB64='',photoFile=null,avatarB64='',avatarFile=null,editId=null;
-let searchQ='',activeTheme='';
+let searchQ='',activeTheme='',currentPage=1,sortOrder='recent';
+const PER_PAGE=12;
 let customImages={ingredients:{},categories:{}};
 let customImagePaths={ingredients:{},categories:{}};
 let imageAdminMode='ingredients';
@@ -1019,30 +1054,38 @@ function matchTheme(r,k){if(!k)return true;const t=(r.nom+' '+(r.description||''
 function buildThemes(){const bar=document.getElementById('themesBar'),lbl=bar.firstElementChild;bar.innerHTML='';bar.appendChild(lbl);THEMES.forEach(th=>{const btn=document.createElement('button');btn.className='theme-pill'+(activeTheme===th.k?' active':'');btn.textContent=th.l;btn.addEventListener('click',()=>{activeTheme=th.k;buildThemes();renderGrid();});bar.appendChild(btn);});}
 
 // ══ RENDER ══
-function renderGrid(){
+function showSkeleton(){const grid=document.getElementById('recipeGrid');if(grid)grid.innerHTML='<div class="skeleton-card skeleton"></div>'.repeat(6);}
+
+function renderGrid(append=false){
+  if(!append) currentPage=1;
   const n=recipes.length;
   [document.getElementById('statCount'),document.getElementById('countTag'),document.getElementById('bannerCount')].forEach(el=>{if(el)el.textContent=n;});
   const q=searchQ.toLowerCase().trim();
-  const list=recipes.filter(r=>{if(activeTheme&&!matchTheme(r,activeTheme))return false;if(!q)return true;return(r.nom||'').toLowerCase().includes(q)||(r.description||'').toLowerCase().includes(q)||(r.auteur||'').toLowerCase().includes(q)||(r.region||'').toLowerCase().includes(q)||(r.categorie||'').toLowerCase().includes(q);});
+  let list=recipes.filter(r=>{if(activeTheme&&!matchTheme(r,activeTheme))return false;if(!q)return true;return(r.nom||'').toLowerCase().includes(q)||(r.description||'').toLowerCase().includes(q)||(r.auteur||'').toLowerCase().includes(q)||(r.region||'').toLowerCase().includes(q)||(r.categorie||'').toLowerCase().includes(q);});
+
+  if(sortOrder==='views') list.sort((a,b)=>(b.views||0)-(a.views||0));
+  else if(sortOrder==='name') list.sort((a,b)=>a.nom.localeCompare(b.nom));
+  else list.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
   const sc=document.getElementById('searchCount');
   if(q||activeTheme){sc.textContent=list.length+' résultat'+(list.length!==1?'s':'');sc.style.display='block';}else sc.style.display='none';
   const grid=document.getElementById('recipeGrid');
   if(!list.length){grid.innerHTML=`<div class="no-results"><p style="font-size:1.3rem;margin-bottom:.9rem;">🔍</p><p style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--text)">Aucune recette trouvée</p><p style="font-size:.82rem;margin-top:.45rem"><a href="#" onclick="clearSearch();return false" style="color:var(--accent)">Effacer la recherche</a></p></div>`;return;}
-  // Fragment pour perf
+
+  const paginated=list.slice(0, currentPage * PER_PAGE);
   const frag=document.createDocumentFragment();
   const tmp=document.createElement('div');
-  tmp.innerHTML=list.map(r=>{
+  tmp.innerHTML=paginated.map(r=>{
     const pr=profiles[r.user_id];const auteur=r.auteur||(pr?pr.nom:null);
     const isOwner=user&&r.user_id===user.id;
     const imgSrc=esc(r.img||getDefaultImg(r.categorie));
-    const avH=pr?.avatar?`<img class="card-author-img" src="${esc(pr.avatar)}" alt="">`:`<span class="card-author-init">${(auteur||'?')[0].toUpperCase()}</span>`;
+    const avH=pr?.avatar?`<img class="card-author-img" src="${esc(pr.avatar)}" alt="" loading="lazy" decoding="async">`:`<span class="card-author-init">${(auteur||'?')[0].toUpperCase()}</span>`;
     const sc2=socialCounts(r.id);
     return`<article class="recipe-card" onclick="openRecipe('${r.id}')">
       <div class="card-admin-btns${isOwner&&!isAdmin?' owner':''}">
         <button class="card-btn edit" onclick="event.stopPropagation();openForm('${r.id}')">Modifier</button>
         <button class="card-btn del" onclick="event.stopPropagation();deleteRecipe('${r.id}')">Suppr.</button>
       </div>
-      <div class="card-img"><img src="${imgSrc}" alt="${esc(r.nom)}" loading="lazy" onerror="this.src='${getDefaultImg(r.categorie)}'">
+      <div class="card-img"><img src="${imgSrc}" alt="${esc(r.nom)}" loading="lazy" decoding="async" onerror="this.src='${getDefaultImg(r.categorie)}'">
       ${r.categorie?`<span class="card-badge">${esc(r.categorie)}</span>`:''}<span class="card-views">👁 ${r.views||0}</span></div>
       <div class="card-body">
         <div class="card-meta"><span>prep : ${esc(r.temps||'—')}</span><span>pers : ${r.couverts||4}</span></div>
@@ -1056,6 +1099,23 @@ function renderGrid(){
   while(tmp.firstChild)frag.appendChild(tmp.firstChild);
   grid.innerHTML='';grid.appendChild(frag);
   if(isAdmin){document.getElementById('aR').textContent=n;document.getElementById('aS').textContent=MAX-n;document.getElementById('aV').textContent=recipes.reduce((s,r)=>s+(r.views||0),0);}
+
+  if(paginated.length < list.length) {
+    initInfiniteScroll();
+  }
+}
+
+let _observer;
+function initInfiniteScroll(){
+  if(_observer)_observer.disconnect();
+  _observer=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      currentPage++;
+      renderGrid(true);
+    }
+  }, {rootMargin: '200px'});
+  const sentinel=document.getElementById('gridSentinel');
+  if(sentinel)_observer.observe(sentinel);
 }
 function clearSearch(){searchQ='';document.getElementById('navSearch').value='';document.getElementById('secSearch').value='';renderGrid();}
 
@@ -1096,6 +1156,14 @@ document.getElementById('modeVisual').addEventListener('click',()=>{document.get
 document.getElementById('modeList').addEventListener('click',()=>{document.getElementById('modeList').classList.add('active');document.getElementById('modeVisual').classList.remove('active');document.getElementById('ingrListWrap').style.display='block';document.getElementById('ingrVisualWrap').style.display='none';});
 document.getElementById('recipeClose').addEventListener('click',()=>closeModal('recipeOverlay'));
 document.getElementById('mLikeBtn').addEventListener('click',()=>{if(!currentRec)return;const data=getSocial();const s=data[currentRec.id]||{liked:false,likes:0,comments:[]};s.liked=!s.liked;s.likes=Math.max(0,(s.likes||0)+(s.liked?1:-1));data[currentRec.id]=s;saveSocial(data);renderSocial(currentRec);renderGrid();});
+document.getElementById('mShareBtn').addEventListener('click',async()=>{
+  if(!currentRec)return;
+  const t=currentRec.nom;
+  const d=currentRec.description;
+  const u=window.location.href;
+  if(navigator.share){try{await navigator.share({title:t,text:d,url:u});}catch(e){}}
+  else{try{await navigator.clipboard.writeText(u);toast('Lien copié dans le presse-papier !');}catch(e){toast('Erreur lors du partage.');}}
+});
 document.getElementById('mCommentBtn').addEventListener('click',()=>{if(!currentRec)return;const input=document.getElementById('mCommentInput');const text=input.value.trim();if(!text){toast('Écrivez un commentaire.');return;}const bad=findBad(text);if(bad){toast(`Mot interdit.`);return;}const data=getSocial();const s=data[currentRec.id]||{liked:false,likes:0,comments:[]};const author=profile?.nom||user?.email?.split('@')[0]||'Anonyme';s.comments=s.comments||[];s.comments.push({author,text,date:new Date().toLocaleDateString('fr-FR')});data[currentRec.id]=s;saveSocial(data);renderSocial(currentRec);renderGrid();toast('Commentaire ajouté.');});
 
 // ══ FORM ══
@@ -1192,6 +1260,7 @@ let _st;
 function doSearch(v){clearTimeout(_st);_st=setTimeout(()=>{searchQ=v;renderGrid();},180);}
 document.getElementById('navSearch').addEventListener('input',e=>{document.getElementById('secSearch').value=e.target.value;doSearch(e.target.value);});
 document.getElementById('secSearch').addEventListener('input',e=>{document.getElementById('navSearch').value=e.target.value;doSearch(e.target.value);});
+document.getElementById('sortSelect').addEventListener('change',e=>{sortOrder=e.target.value;renderGrid();});
 
 // ══ ADD BTNs ══
 ['navAddBtn','heroAddBtn','bannerAddBtn','aboutAddBtn'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',e=>{e.preventDefault();openForm();});});
@@ -1200,6 +1269,10 @@ document.getElementById('footAddBtn').addEventListener('click',e=>{e.preventDefa
 // ══ NAV SCROLL ══
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>30),{passive:true});
 
+// ══ NETWORK ══
+window.addEventListener('online',()=>toast('Connexion rétablie ! 🟢'));
+window.addEventListener('offline',()=>toast('Connexion perdue... 🔴'));
+
 // ══ INIT ══
 (async()=>{
   initTheme();
@@ -1207,6 +1280,7 @@ window.addEventListener('scroll',()=>document.getElementById('nav').classList.to
   buildThemes();
   setupCensorship();
   await Promise.all([initAuth(),loadRemoteImages()]);
+  showSkeleton();
   await loadData();
   renderGrid();
   // Membres count en arrière-plan
