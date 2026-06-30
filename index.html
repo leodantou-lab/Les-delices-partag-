@@ -389,8 +389,13 @@ body.dark .onboard-modal{background:#0f0f0f;}
   border-radius:50px;padding:.35rem .9rem;font-size:.7rem;color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
 body.dark .avatar-src-btn{background:rgba(20,20,20,.9);}
 .avatar-src-btn:hover{border-color:var(--accent);color:var(--accent);}
+.avatar-helper{text-align:center;font-size:.66rem;color:var(--text-soft);margin-bottom:1.1rem;line-height:1.5;}
+.avatar-zone-wrap{position:relative;width:fit-content;margin:0 auto .6rem;}
+.avatar-cam-badge{position:absolute;bottom:2px;right:2px;width:26px;height:26px;border-radius:50%;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;color:white;border:2px solid white;pointer-events:none;}
+body.dark .avatar-cam-badge{border-color:#0f0f0f;}
 
-/* ── PROFILE ── */
+/* ── PROFIL ── */
 .profile-modal{background:white;max-width:640px;border-radius:var(--radius-lg);overflow:hidden;}
 body.dark .profile-modal{background:#0f0f0f;}
 .profile-head{background:linear-gradient(135deg,#0B0B0B,#1a1208);padding:2rem 2rem 3.2rem;text-align:center;}
@@ -421,9 +426,9 @@ body.dark .login-box{background:#0f0f0f;}
 body.dark .admin-panel{background:#0f0f0f;}
 .admin-head{background:linear-gradient(135deg,#0B0B0B,#1a1208);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1;}
 .admin-head h2{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:#F0EDE8;}
-.admin-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--beige);}
+.admin-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--beige);overflow-x:auto;}
 body.dark .admin-tabs{background:#141414;}
-.admin-tab{padding:.85rem 1.5rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--text-soft);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;transition:color .15s;}
+.admin-tab{padding:.85rem 1.5rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;color:var(--text-soft);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;transition:color .15s;flex:0 0 auto;}
 .admin-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
 .admin-pane{padding:1.7rem 2rem;display:none;}
 .admin-pane.active{display:block;}
@@ -496,40 +501,76 @@ body.dark .groupe-member-tag{background:rgba(28,28,28,.9);}
 .group-recette-card .gr-meta{font-size:.68rem;color:var(--text-soft);margin-top:.08rem;}
 .group-empty{text-align:center;color:var(--text-soft);padding:2.2rem 0;font-size:.82rem;}
 
-/* ── MEMBER VALIDATION (nouveau) ── */
-.pseudo-validation-row{display:flex;align-items:center;gap:.6rem;margin-top:.35rem;flex-wrap:wrap;}
-.pseudo-tag{display:inline-flex;align-items:center;gap:.4rem;border-radius:50px;padding:.28rem .7rem;font-size:.72rem;font-family:'DM Sans',sans-serif;}
-.pseudo-tag.found{background:rgba(90,138,90,.12);border:1px solid rgba(90,138,90,.3);color:var(--success);}
-.pseudo-tag.notfound{background:rgba(192,97,75,.08);border:1px solid rgba(192,97,75,.25);color:var(--danger);}
-.pseudo-tag.loading{background:var(--beige);border:1px solid var(--border);color:var(--text-soft);}
-.pseudo-tag svg{width:11px;height:11px;flex-shrink:0;}
+/* ── RECHERCHE DE PROFIL — style Instagram ── */
+.profile-search-wrap{position:relative;}
+.profile-search-input-row{display:flex;align-items:center;gap:.5rem;background:var(--cream);border:1px solid var(--border);
+  border-radius:50px;padding:.55rem .55rem .55rem 1rem;}
+body.dark .profile-search-input-row{background:rgba(20,20,20,.9);}
+.profile-search-input-row input{flex:1;border:none;background:transparent;outline:none;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);}
+.profile-search-results{margin-top:.5rem;background:white;border:1px solid var(--border);border-radius:var(--radius);
+  max-height:230px;overflow-y:auto;box-shadow:var(--shadow-sm);}
+body.dark .profile-search-results{background:rgba(20,20,20,.96);}
+.profile-search-results:empty{display:none;}
+.profile-result-row{display:flex;align-items:center;gap:.65rem;padding:.6rem .85rem;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;}
+.profile-result-row:last-child{border-bottom:none;}
+.profile-result-row:hover{background:var(--beige);}
+.profile-result-row img,.profile-result-row .pr-init{width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.profile-result-row .pr-init{background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:.72rem;}
+.profile-result-name{font-size:.82rem;color:var(--text);font-weight:500;}
+.profile-result-empty{padding:.85rem;font-size:.76rem;color:var(--text-soft);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;}
+.profile-result-invite{background:var(--accent);color:white;border:none;border-radius:50px;padding:.32rem .8rem;font-size:.66rem;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.selected-members-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem;}
+.selected-member-chip{display:inline-flex;align-items:center;gap:.35rem;background:var(--accent);color:white;border-radius:50px;
+  padding:.22rem .5rem .22rem .22rem;font-size:.72rem;}
+.selected-member-chip img,.selected-member-chip .sm-init{width:20px;height:20px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.3);display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0;}
+.selected-member-chip .sm-rm{cursor:pointer;background:rgba(255,255,255,.22);border-radius:50%;width:15px;height:15px;display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;}
 
-/* ── ADD MEMBER (nouveau) ── */
-.add-member-form{background:var(--beige);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;margin-top:1.2rem;}
-body.dark .add-member-form{background:rgba(22,22,22,.8);}
-.add-member-title{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:.65rem;}
-.add-member-row{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:stretch;}
+/* ── ADMIN — onglet GROUPES ── */
+.admin-group-card{background:var(--beige);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.85rem;}
+body.dark .admin-group-card{background:#191919;}
+.admin-group-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem;}
+.admin-group-head h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--text);}
+.admin-group-meta{font-size:.7rem;color:var(--text-soft);margin-bottom:.55rem;}
+.admin-group-members{display:flex;flex-wrap:wrap;gap:.35rem;}
 
-/* ── COOKIES ── */
+/* ── VALIDATION INSCRIPTION (pseudo unique) ── */
+.pseudo-check-row{display:flex;align-items:center;gap:.45rem;margin-top:.4rem;font-size:.72rem;min-height:18px;}
+.pseudo-check-row.ok{color:var(--success);}
+.pseudo-check-row.bad{color:var(--danger);}
+.pseudo-check-row svg{width:13px;height:13px;flex-shrink:0;}
+
+/* ── COOKIES — panneau détaillé ── */
 .cookie-bar{
-  position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(110px);
-  z-index:600;width:min(92vw,600px);
-  background:rgba(10,8,5,.95);backdrop-filter:blur(28px);
+  position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(140px);
+  z-index:600;width:min(94vw,640px);
+  background:rgba(10,8,5,.96);backdrop-filter:blur(28px);
   border:1px solid rgba(201,167,106,.22);border-radius:var(--radius-lg);
-  padding:1.4rem 1.7rem;
-  display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;
+  padding:1.5rem 1.7rem;
   box-shadow:0 20px 70px rgba(0,0,0,.42);
   transition:transform .5s var(--ease),opacity .5s;
   opacity:0;pointer-events:none;
 }
 .cookie-bar.on{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto;}
-.cookie-text{flex:1;min-width:180px;}
-.cookie-text strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:400;color:#F0EDE8;margin-bottom:.18rem;}
-.cookie-text p{font-size:.72rem;color:rgba(240,237,232,.46);line-height:1.5;}
-.cookie-actions{display:flex;gap:.45rem;flex-shrink:0;}
-.cookie-btn{height:34px;border-radius:50px;padding:0 1rem;font-family:'DM Sans',sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s;}
+.cookie-text strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;color:#F0EDE8;margin-bottom:.25rem;}
+.cookie-text p{font-size:.74rem;color:rgba(240,237,232,.5);line-height:1.55;}
+.cookie-cats{display:flex;flex-direction:column;gap:.55rem;margin:1.1rem 0;}
+.cookie-cat-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);border-radius:var(--radius-sm);padding:.6rem .85rem;}
+.cookie-cat-text strong{display:block;font-size:.74rem;color:#F0EDE8;font-weight:500;}
+.cookie-cat-text span{font-size:.66rem;color:rgba(240,237,232,.42);}
+.cookie-switch{position:relative;width:36px;height:20px;flex-shrink:0;}
+.cookie-switch input{opacity:0;width:0;height:0;}
+.cookie-switch-track{position:absolute;inset:0;background:rgba(255,255,255,.14);border-radius:20px;cursor:pointer;transition:background .2s;}
+.cookie-switch-track::before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:white;border-radius:50%;transition:transform .2s;}
+.cookie-switch input:checked + .cookie-switch-track{background:var(--accent);}
+.cookie-switch input:checked + .cookie-switch-track::before{transform:translateX(16px);}
+.cookie-switch input:disabled + .cookie-switch-track{opacity:.45;cursor:not-allowed;}
+.cookie-actions{display:flex;gap:.5rem;flex-wrap:wrap;}
+.cookie-btn{height:36px;border-radius:50px;padding:0 1.1rem;font-family:'DM Sans',sans-serif;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s;}
 .cookie-btn-accept{background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;}
 .cookie-btn-accept:hover{opacity:.88;}
+.cookie-btn-save{background:rgba(255,255,255,.1);color:#F0EDE8;border:1px solid rgba(255,255,255,.16);}
+.cookie-btn-save:hover{background:rgba(255,255,255,.16);}
 .cookie-btn-decline{background:rgba(255,255,255,.07);color:rgba(240,237,232,.5);border:1px solid rgba(255,255,255,.1);}
 .cookie-btn-decline:hover{background:rgba(255,255,255,.12);color:rgba(240,237,232,.75);}
 
@@ -613,7 +654,7 @@ svg.icon{display:block;}
   .recipes-toolbar,.add-banner,.form-foot,.comment-form{flex-direction:column;align-items:stretch;}
   .ingr-visual-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.55rem;}
   .ingr-card-img{width:56px;height:56px;}
-  .cookie-bar{bottom:calc(var(--mob-nav-h) + .6rem);width:calc(100vw - 1.6rem);border-radius:var(--radius);}
+  .cookie-bar{bottom:calc(var(--mob-nav-h) + .6rem);width:calc(100vw - 1.6rem);border-radius:var(--radius);padding:1.2rem 1.3rem;}
 }
 @media(min-width:500px) and (max-width:768px){
   .recipe-grid{grid-template-columns:repeat(2,1fr);}
@@ -696,15 +737,11 @@ svg.icon{display:block;}
   </div>
 </div>
 
-<!-- ── HERO ── -->
+<!-- ── HERO (vidéo uniquement) ── -->
 <section class="hero">
   <div class="hero-bg" id="heroBg">
-    <img id="heroImg" src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80" alt="Cuisine" loading="eager">
-    <video id="heroVideo" muted loop playsinline preload="none"
-      poster="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1400&q=80">
-      <!-- Pexels free videos — no CORS issues, reliably available -->
-      <source src="https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4" type="video/mp4">
-      <source src="https://videos.pexels.com/video-files/3209828/3209828-uhd_2560_1440_25fps.mp4" type="video/mp4">
+    <video id="heroVideo" muted loop playsinline preload="none">
+      <source src="https://videos.pexels.com/video-files/4253333/4253333-uhd_1440_2732_25fps.mp4" type="video/mp4">
     </video>
   </div>
   <div class="hero-content">
@@ -791,15 +828,30 @@ svg.icon{display:block;}
   </div>
 </footer>
 
-<!-- ── COOKIE BAR ── -->
+<!-- ── COOKIE BAR — détaillé ── -->
 <div class="cookie-bar" id="cookieBar">
   <div class="cookie-text">
     <strong>Cookies & confidentialité</strong>
-    <p>Nous utilisons des cookies pour mémoriser vos préférences et améliorer votre expérience.</p>
+    <p>Choisissez ce que Les Délices Partagées peut charger ou mémoriser sur votre appareil.</p>
+  </div>
+  <div class="cookie-cats">
+    <div class="cookie-cat-row">
+      <div class="cookie-cat-text"><strong>Essentiels</strong><span>Connexion, panier, préférences — toujours actifs</span></div>
+      <label class="cookie-switch"><input type="checkbox" checked disabled><span class="cookie-switch-track"></span></label>
+    </div>
+    <div class="cookie-cat-row">
+      <div class="cookie-cat-text"><strong>Vidéo d'accueil</strong><span>Charge la vidéo en arrière-plan de la page</span></div>
+      <label class="cookie-switch"><input type="checkbox" id="cookieVideoToggle" checked><span class="cookie-switch-track"></span></label>
+    </div>
+    <div class="cookie-cat-row">
+      <div class="cookie-cat-text"><strong>Photos & avatars</strong><span>Affiche les photos de recettes et avatars des membres</span></div>
+      <label class="cookie-switch"><input type="checkbox" id="cookieMediaToggle" checked><span class="cookie-switch-track"></span></label>
+    </div>
   </div>
   <div class="cookie-actions">
-    <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Accepter</button>
-    <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Refuser</button>
+    <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Tout accepter</button>
+    <button class="cookie-btn cookie-btn-save" id="cookieSave">Enregistrer mes choix</button>
+    <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Tout refuser</button>
   </div>
 </div>
 
@@ -948,10 +1000,16 @@ svg.icon{display:block;}
         <div class="f-group"><label class="f-label">Thème</label><input type="text" class="f-input" id="gTheme" placeholder="ex. Méditerranéen" maxlength="80"></div>
       </div>
       <div class="f-group">
-        <label class="f-label">Inviter des membres — pseudos séparés par des virgules</label>
-        <input type="text" class="f-input" id="gMembers" placeholder="marie, jean, sophie…" oninput="validatePseudos(this.value)">
-        <div id="pseudoValidation" class="pseudo-validation-row" style="min-height:24px;margin-top:.5rem;"></div>
-        <p class="f-hint">Tapez les pseudos des membres inscrits sur le site. Une coche verte confirme que le compte existe.</p>
+        <label class="f-label">Inviter des membres</label>
+        <div class="profile-search-wrap">
+          <div class="profile-search-input-row">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="gMemberSearch" placeholder="Tapez un prénom…" autocomplete="off" oninput="profileSearchInput(this.value,'gMemberResults','gSelected')">
+          </div>
+          <div class="profile-search-results" id="gMemberResults"></div>
+        </div>
+        <div class="selected-members-row" id="gSelectedRow"></div>
+        <p class="f-hint">Recherchez un profil par prénom, comme sur Instagram. Si la personne n'a pas de compte, vous pouvez lui envoyer une invitation par email.</p>
       </div>
       <div class="auth-err" id="groupErr"></div>
       <div style="margin-top:.9rem;"><button class="btn btn-accent" id="groupSaveBtn">Créer le groupe</button></div>
@@ -964,6 +1022,23 @@ svg.icon{display:block;}
   <div class="modal" style="max-width:700px;">
     <div class="modal-topbar"><button class="close-btn" id="groupDetailClose">✕</button></div>
     <div class="modal-body" id="groupDetailBody"></div>
+  </div>
+</div>
+
+<!-- ── MODAL INVITATION EMAIL ── -->
+<div class="overlay" id="inviteOverlay">
+  <div class="modal form-modal" style="max-width:430px;">
+    <div class="form-head">
+      <h2>Inviter par email</h2>
+      <button class="close-btn" id="inviteClose">✕</button>
+    </div>
+    <div class="form-body">
+      <p style="font-size:.8rem;color:var(--text-soft);margin-bottom:1.1rem;line-height:1.6;">Aucun profil ne correspond à <strong id="inviteSearchedName" style="color:var(--accent);"></strong>. Envoyez-lui une invitation par email pour rejoindre Les Délices Partagées.</p>
+      <div class="f-group"><label class="f-label">Adresse email <em>*</em></label><input type="email" class="f-input" id="inviteEmail" placeholder="prenom@email.com"></div>
+      <div class="auth-err" id="inviteErr"></div>
+      <div class="auth-ok" id="inviteOk">Invitation envoyée !</div>
+      <div style="margin-top:1rem;"><button class="btn btn-accent" style="width:100%" id="inviteSendBtn">Envoyer l'invitation</button></div>
+    </div>
   </div>
 </div>
 
@@ -1021,20 +1096,33 @@ svg.icon{display:block;}
       <h2 class="onboard-title">Quelques infos sur vous</h2>
     </div>
     <div class="onboard-body">
-      <div class="avatar-zone" id="avatarZone" onclick="triggerAvatarGallery()">
-        <img id="avatarPreview" alt="">
-        <div class="av-ph">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="opacity:.3"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Photo</span>
+      <div class="avatar-zone-wrap">
+        <div class="avatar-zone" id="avatarZone" onclick="triggerAvatarGallery()">
+          <img id="avatarPreview" alt="">
+          <div class="av-ph">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="opacity:.3"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Photo</span>
+          </div>
+        </div>
+        <div class="avatar-cam-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </div>
       </div>
+      <p class="avatar-helper">Créez votre avatar personnalisé à partir d'une photo prise sur le vif, ou choisissez une image depuis votre galerie.</p>
       <div class="avatar-source-btns">
-        <button class="avatar-src-btn" onclick="triggerAvatarCamera()">Appareil photo</button>
-        <button class="avatar-src-btn" onclick="triggerAvatarGallery()">Galerie</button>
+        <button class="avatar-src-btn" onclick="triggerAvatarCamera()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Prendre une photo
+        </button>
+        <button class="avatar-src-btn" onclick="triggerAvatarGallery()">Choisir dans la galerie</button>
       </div>
       <input type="file" id="avatarInputCamera" accept="image/*" capture="user" style="display:none">
       <input type="file" id="avatarInputGallery" accept="image/*" style="display:none">
-      <div class="f-group"><label class="f-label">Votre prénom <em style="color:var(--accent)">*</em></label><input type="text" class="f-input" id="onboardNom" placeholder="ex. Marie"></div>
+      <div class="f-group">
+        <label class="f-label">Votre pseudo <em style="color:var(--accent)">*</em></label>
+        <input type="text" class="f-input" id="onboardNom" placeholder="ex. marie" oninput="checkPseudoAvailable(this.value)">
+        <div class="pseudo-check-row" id="pseudoCheckRow"></div>
+      </div>
       <div class="f-group"><label class="f-label">Votre âge <em style="color:var(--accent)">*</em></label><input type="number" class="f-input" id="onboardAge" placeholder="ex. 34" min="1" max="120"></div>
       <div class="auth-err" id="onboardErr"></div>
       <div style="margin-top:1.2rem;"><button class="btn btn-accent" style="width:100%" id="onboardBtn">Commencer</button></div>
@@ -1091,6 +1179,7 @@ svg.icon{display:block;}
       <button class="admin-tab active" data-tab="stats">Vue d'ensemble</button>
       <button class="admin-tab" data-tab="recipes">Recettes</button>
       <button class="admin-tab" data-tab="members">Membres</button>
+      <button class="admin-tab" data-tab="groups">Groupes</button>
       <button class="admin-tab" data-tab="images">Images</button>
       <button class="admin-tab" data-tab="email">Email</button>
     </div>
@@ -1118,6 +1207,11 @@ svg.icon{display:block;}
       <div style="margin-bottom:.85rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);">Membres — <span id="aMembersCount">0</span></div>
       <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Avatar</th><th>Prénom</th><th>Âge</th><th>Inscrit le</th></tr></thead><tbody id="aMembersTbody"></tbody></table></div>
       <div id="aNoMembers" style="text-align:center;color:var(--text-soft);padding:3rem;font-size:.82rem;display:none;">Aucun membre.</div>
+    </div>
+    <div class="admin-pane" id="tab-groups">
+      <div style="margin-bottom:.85rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);">Tous les groupes — <span id="aGroupsCount">0</span></div>
+      <div id="aGroupsList"></div>
+      <div id="aNoGroups" style="text-align:center;color:var(--text-soft);padding:3rem;font-size:.82rem;display:none;">Aucun groupe.</div>
     </div>
     <div class="admin-pane" id="tab-images">
       <input type="file" id="adminImageInput" accept="image/*" style="display:none">
@@ -1164,7 +1258,7 @@ const MAX=1000;
 const SITE=location.origin+location.pathname;
 const db=supabase.createClient(SB_URL,SB_KEY);
 const THEME_KEY='ldp_theme';const DRAFT_KEY='ldp_draft';const SOCIAL_KEY='ldp_social';
-const CUSTOM_IMG_KEY='ldp_imgs';const OFFLINE_QUEUE_KEY='ldp_offline_queue';const COOKIE_KEY='ldp_cookie_choice';
+const CUSTOM_IMG_KEY='ldp_imgs';const OFFLINE_QUEUE_KEY='ldp_offline_queue';const COOKIE_KEY='ldp_cookie_choice_v2';
 
 let recipes=[],profiles={},members=[],user=null,profile=null,isAdmin=false;
 let groups=[],groupMembers=[],recipeGroups=[];
@@ -1174,6 +1268,9 @@ let customImages={ingredients:{},categories:{}};
 let customImagePaths={ingredients:{},categories:{}};
 let imageAdminMode='ingredients';
 let pendingImageTarget=null;
+let cookieChoice={essential:true,video:true,media:true};
+let gSelectedMembers=[];
+let inviteContext=null;
 const _viewedIds=new Set();
 
 // ── THEME ──
@@ -1194,30 +1291,16 @@ function closeModal(id){document.getElementById(id).classList.remove('open');if(
 document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id);}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=document.querySelector('.overlay.open');if(o&&o.id!=='loginOverlay')closeModal(o.id);}});
 
-// ── HERO VIDEO (Priority 1 — fixed) ──
+// ── HERO VIDEO (vidéo uniquement, plus de photo de secours) ──
 function initHeroVideo(){
   const video=document.getElementById('heroVideo');
-  const img=document.getElementById('heroImg');
   if(!video)return;
-  let resolved=false;
-  const useImage=()=>{if(resolved)return;resolved=true;video.style.display='none';img.style.display='block';};
-  const useVideo=()=>{if(resolved)return;resolved=true;video.classList.add('ready');img.style.opacity='0';};
-  video.addEventListener('error',()=>{
-    // try next source strategy: load video via preload=metadata then play
-    useImage();
-  });
-  video.addEventListener('canplaythrough',useVideo);
-  video.addEventListener('playing',useVideo);
-  // Start loading
+  if(!cookieChoice.video){return;} // catégorie refusée : on ne charge rien
   video.preload='auto';
   video.load();
-  video.play().catch(()=>{
-    // autoplay blocked — show video muted (browsers usually allow muted autoplay)
-    video.muted=true;
-    video.play().catch(useImage);
-  });
-  // Fallback timeout
-  setTimeout(()=>{if(!resolved){if(video.readyState>=3)useVideo();else useImage();}},6000);
+  const tryPlay=()=>{video.play().then(()=>video.classList.add('ready')).catch(()=>{video.muted=true;video.play().then(()=>video.classList.add('ready')).catch(()=>{});});};
+  video.addEventListener('canplay',()=>video.classList.add('ready'),{once:true});
+  tryPlay();
 }
 
 // ── MOBILE NAV ──
@@ -1259,8 +1342,8 @@ const CAT_IMAGES={'Gâteaux & desserts':'https://images.unsplash.com/photo-15586
 const INGR_PHOTOS={'pomme de terre':'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=75','pois chiche':'https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?w=200&q=75','beurre':'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=200&q=75','lait':'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=75','creme':'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200&q=75','fromage':'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=200&q=75','oeufs':'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=75','oeuf':'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=75','farine':'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=200&q=75','sucre':'https://images.unsplash.com/photo-1611048267451-e6ed903e9b55?w=200&q=75','miel':'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=200&q=75','sel':'https://images.unsplash.com/photo-1624454002302-36b824d7bd0a?w=200&q=75','poivre':'https://images.unsplash.com/photo-1599909533731-bf6cf8ee43aa?w=200&q=75','thym':'https://images.unsplash.com/photo-1550858880-ebfd41cf1d15?w=200&q=75','basilic':'https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=200&q=75','huile':'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=200&q=75','tomates':'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=200&q=75','tomate':'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=200&q=75','oignon':'https://images.unsplash.com/photo-1580201092675-a0a6a6cafbb1?w=200&q=75','ail':'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=200&q=75','carotte':'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=200&q=75','poivron':'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=200&q=75','courgette':'https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?w=200&q=75','aubergine':'https://images.unsplash.com/photo-1590868309235-ea34bed7bd7f?w=200&q=75','champignon':'https://images.unsplash.com/photo-1611945116754-d144c59b9498?w=200&q=75','epinard':'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=200&q=75','citron':'https://images.unsplash.com/photo-1587486913049-53fc88980cfc?w=200&q=75','pomme':'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=200&q=75','banane':'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=200&q=75','fraise':'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=200&q=75','poulet':'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=200&q=75','boeuf':'https://images.unsplash.com/photo-1558030137-a56c1b002c87?w=200&q=75','jambon':'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=200&q=75','saumon':'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200&q=75','crevette':'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=200&q=75','riz':'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&q=75','pates':'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=200&q=75','pain':'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&q=75','chocolat':'https://images.unsplash.com/photo-1511381939415-e44015466834?w=200&q=75','cafe':'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&q=75','default':'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=200&q=75'};
 const INGR_KEYS=Object.keys(INGR_PHOTOS).filter(k=>k!=='default').sort((a,b)=>b.length-a.length);
 function imgNorm(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
-function getIngrImg(name){if(!name)return INGR_PHOTOS.default;const n=imgNorm(name);const ck=Object.keys(customImages.ingredients).find(k=>customImages.ingredients[k]&&n.includes(imgNorm(k)));if(ck)return customImages.ingredients[ck];const k=INGR_KEYS.find(k=>n.includes(imgNorm(k)));return k?INGR_PHOTOS[k]:INGR_PHOTOS.default;}
-function getDefaultImg(cat){return customImages.categories[cat]||CAT_IMAGES[cat]||CAT_IMAGES['default'];}
+function getIngrImg(name){if(!cookieChoice.media)return'';if(!name)return INGR_PHOTOS.default;const n=imgNorm(name);const ck=Object.keys(customImages.ingredients).find(k=>customImages.ingredients[k]&&n.includes(imgNorm(k)));if(ck)return customImages.ingredients[ck];const k=INGR_KEYS.find(k=>n.includes(imgNorm(k)));return k?INGR_PHOTOS[k]:INGR_PHOTOS.default;}
+function getDefaultImg(cat){if(!cookieChoice.media)return'';return customImages.categories[cat]||CAT_IMAGES[cat]||CAT_IMAGES['default'];}
 function loadCustomImages(){try{const r=localStorage.getItem(CUSTOM_IMG_KEY);if(r)customImages=Object.assign({ingredients:{},categories:{}},JSON.parse(r));}catch(e){}}
 function saveCustomImages(){try{localStorage.setItem(CUSTOM_IMG_KEY,JSON.stringify(customImages));}catch(e){}}
 function imageDbType(t){return t==='ingredients'?'ingredient':'categorie';}
@@ -1334,8 +1417,53 @@ function handleAvatarFile(file){if(!file)return;avatarFile=file;compressImage(fi
 document.getElementById('avatarInputCamera').addEventListener('change',e=>handleAvatarFile(e.target.files[0]));
 document.getElementById('avatarInputGallery').addEventListener('change',e=>handleAvatarFile(e.target.files[0]));
 
+// ── PSEUDO UNIQUE (live check) ──
+let _pseudoCheckDebounce=null;
+function checkPseudoAvailable(val){
+  const row=document.getElementById('pseudoCheckRow');
+  const v=(val||'').trim();
+  if(!v){row.className='pseudo-check-row';row.innerHTML='';return;}
+  row.className='pseudo-check-row';
+  row.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg> Vérification…`;
+  clearTimeout(_pseudoCheckDebounce);
+  _pseudoCheckDebounce=setTimeout(async()=>{
+    try{
+      const{data}=await db.from('profils').select('id').ilike('nom',v).maybeSingle();
+      if(data){
+        row.className='pseudo-check-row bad';
+        row.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Ce pseudo est déjà pris.`;
+      }else{
+        row.className='pseudo-check-row ok';
+        row.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pseudo disponible.`;
+      }
+    }catch(e){row.className='pseudo-check-row';row.innerHTML='';}
+  },380);
+}
+
 // ── ONBOARDING ──
-document.getElementById('onboardBtn').addEventListener('click',async()=>{const nom=document.getElementById('onboardNom').value.trim(),age=parseInt(document.getElementById('onboardAge').value)||0,err=document.getElementById('onboardErr');err.className='auth-err';if(!nom){err.textContent='Prénom requis.';err.className='auth-err on';return;}if(age<1||age>120){err.textContent='Âge invalide.';err.className='auth-err on';return;}const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Envoi…';let av=null;try{av=await resolveAvatarImg();}catch(e){btn.disabled=false;btn.textContent='Commencer';toast('Erreur image : '+e.message);return;}try{const{error}=await db.from('profils').upsert({id:user.id,nom,age,avatar:av,email:user.email,created_at:new Date().toISOString()});btn.disabled=false;btn.textContent='Commencer';if(error){err.textContent=error.message;err.className='auth-err on';return;}profile=await getProfile(user.id);closeModal('onboardOverlay');updateAuthUI();if(profile)document.getElementById('fAuteur').value=profile.nom;toast(`Bienvenue ${nom} !`);avatarB64='';avatarFile=null;document.getElementById('avatarZone').classList.remove('has-img');document.getElementById('avatarPreview').src='';document.getElementById('onboardNom').value='';document.getElementById('onboardAge').value='';await loadData();renderGrid();await loadGroups();}catch(e2){btn.disabled=false;btn.textContent='Commencer';err.textContent='Erreur réseau.';err.className='auth-err on';}});
+document.getElementById('onboardBtn').addEventListener('click',async()=>{
+  const nom=document.getElementById('onboardNom').value.trim(),age=parseInt(document.getElementById('onboardAge').value)||0,err=document.getElementById('onboardErr');
+  err.className='auth-err';
+  if(!nom){err.textContent='Pseudo requis.';err.className='auth-err on';return;}
+  if(findBad(nom)){err.textContent='Ce pseudo contient un mot interdit.';err.className='auth-err on';return;}
+  if(age<1||age>120){err.textContent='Âge invalide.';err.className='auth-err on';return;}
+  const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Vérification…';
+  // double-check unicité juste avant l'envoi (contre les doublons concurrents)
+  try{
+    const{data:existing}=await db.from('profils').select('id').ilike('nom',nom).maybeSingle();
+    if(existing){btn.disabled=false;btn.textContent='Commencer';err.textContent='Ce pseudo est déjà pris, choisissez-en un autre.';err.className='auth-err on';return;}
+  }catch(e){}
+  btn.textContent='Envoi…';
+  let av=null;try{av=await resolveAvatarImg();}catch(e){btn.disabled=false;btn.textContent='Commencer';toast('Erreur image : '+e.message);return;}
+  try{
+    const{error}=await db.from('profils').insert({id:user.id,nom,age,avatar:av,email:user.email,created_at:new Date().toISOString()});
+    btn.disabled=false;btn.textContent='Commencer';
+    if(error){err.textContent=error.code==='23505'?'Ce pseudo vient d\'être pris, choisissez-en un autre.':error.message;err.className='auth-err on';return;}
+    profile=await getProfile(user.id);closeModal('onboardOverlay');updateAuthUI();if(profile)document.getElementById('fAuteur').value=profile.nom;toast(`Bienvenue ${nom} !`);
+    avatarB64='';avatarFile=null;document.getElementById('avatarZone').classList.remove('has-img');document.getElementById('avatarPreview').src='';document.getElementById('onboardNom').value='';document.getElementById('onboardAge').value='';document.getElementById('pseudoCheckRow').innerHTML='';
+    await loadData();renderGrid();await loadGroups();
+  }catch(e2){btn.disabled=false;btn.textContent='Commencer';err.textContent='Erreur réseau.';err.className='auth-err on';}
+});
 function openOnboarding(){openModal('onboardOverlay');}
 
 // ── PROFIL ──
@@ -1373,14 +1501,14 @@ function renderGrid(){
     const pr=profiles[r.user_id];const auteur=r.auteur||(pr?pr.nom:null);
     const isOwner=user&&r.user_id===user.id;
     const imgSrc=esc(r.img||getDefaultImg(r.categorie));
-    const avH=pr?.avatar?`<img class="card-author-img" src="${esc(pr.avatar)}" alt="">`:`<span class="card-author-init">${(auteur||'?')[0].toUpperCase()}</span>`;
+    const avH=pr?.avatar&&cookieChoice.media?`<img class="card-author-img" src="${esc(pr.avatar)}" alt="">`:`<span class="card-author-init">${(auteur||'?')[0].toUpperCase()}</span>`;
     const sc2=socialCounts(r.id);
     return`<article class="recipe-card" onclick="openRecipe('${r.id}')">
       <div class="card-admin-btns${isOwner&&!isAdmin?' owner':''}">
         <button class="card-btn edit" onclick="event.stopPropagation();openForm('${r.id}')">Modifier</button>
         <button class="card-btn del" onclick="event.stopPropagation();deleteRecipe('${r.id}')">Suppr.</button>
       </div>
-      <div class="card-img"><img src="${imgSrc}" alt="${esc(r.nom)}" loading="lazy" onerror="this.src='${getDefaultImg(r.categorie)}'">
+      <div class="card-img">${imgSrc?`<img src="${imgSrc}" alt="${esc(r.nom)}" loading="lazy" onerror="this.style.display='none'">`:''}
       ${r.categorie?`<span class="card-badge">${esc(r.categorie)}</span>`:''}<span class="card-views">${r.views||0} vues</span></div>
       <div class="card-body">
         <div class="card-meta"><span>${esc(r.temps||'—')}</span><span>${r.couverts||4} pers.</span></div>
@@ -1399,9 +1527,9 @@ function clearSearch(){searchQ='';document.getElementById('navSearch').value='';
 
 // ── RECETTE MODAL ──
 function parseIngr(raw,newSrv,origSrv){return(raw||'').split('\n').filter(l=>l.trim()).map(l=>{const p=l.split('·').map(s=>s.trim());if(p.length>=3){const q=parseFloat(p[0]);let adj;if(isNaN(q)||q===0){adj=p[0];}else{const r=q*(newSrv/origSrv);adj=Number.isInteger(r)?String(r):r.toFixed(1).replace(/\.0$/,'');}return{qty:adj,unit:p[1],name:p.slice(2).join(' ')};}return{qty:'',unit:'',name:l};});}
-function renderIngr(r){const orig=parseInt(r.couverts)||4;const ingrs=parseIngr(r.ingredients,curSrv,orig);document.getElementById('mIngr').innerHTML=ingrs.map(i=>`<li><span class="ingr-qty">${esc(i.qty)}${i.unit?' '+esc(i.unit):''}</span>${esc(i.name)}</li>`).join('');document.getElementById('mIngrVisual').innerHTML=ingrs.map(i=>`<div class="ingr-card"><img class="ingr-card-img" src="${getIngrImg(i.name)}" alt="${esc(i.name)}" loading="lazy" onerror="this.src='${INGR_PHOTOS['default']}'"><span class="ingr-card-qty">${esc(i.qty)}${i.unit?' '+esc(i.unit):''}</span><span class="ingr-card-name">${esc(i.name)}</span></div>`).join('');}
+function renderIngr(r){const orig=parseInt(r.couverts)||4;const ingrs=parseIngr(r.ingredients,curSrv,orig);document.getElementById('mIngr').innerHTML=ingrs.map(i=>`<li><span class="ingr-qty">${esc(i.qty)}${i.unit?' '+esc(i.unit):''}</span>${esc(i.name)}</li>`).join('');document.getElementById('mIngrVisual').innerHTML=ingrs.map(i=>{const src=getIngrImg(i.name);return`<div class="ingr-card">${src?`<img class="ingr-card-img" src="${src}" alt="${esc(i.name)}" loading="lazy" onerror="this.style.display='none'">`:''}<span class="ingr-card-qty">${esc(i.qty)}${i.unit?' '+esc(i.unit):''}</span><span class="ingr-card-name">${esc(i.name)}</span></div>`;}).join('');}
 function renderSocial(r){if(!r)return;const data=getSocial();const s=data[r.id]||{liked:false,likes:0,comments:[]};const comments=s.comments||[];const likeBtn=document.getElementById('mLikeBtn');likeBtn.classList.toggle('on',!!s.liked);document.getElementById('mLikeCount').textContent=s.likes||0;document.getElementById('mCommentCount').textContent=comments.length+' commentaire'+(comments.length>1?'s':'');document.getElementById('mCommentInput').value='';document.getElementById('mCommentList').innerHTML=comments.length?comments.map(c=>`<div class="comment-item"><div class="comment-meta">${esc(c.author||'Anonyme')} · ${esc(c.date||'')}</div><div class="comment-text">${esc(c.text)}</div></div>`).join(''):'<div style="color:var(--text-soft);font-size:.8rem;padding:.4rem 0;">Aucun commentaire pour le moment.</div>';}
-async function openRecipe(id){const r=recipes.find(x=>x.id==id);if(!r)return;currentRec=r;curSrv=parseInt(r.couverts)||4;if(!_viewedIds.has(id)){_viewedIds.add(id);const v=(r.views||0)+1;r.views=v;db.from('recettes').update({views:v}).eq('id',id).catch(()=>{});}const img=document.getElementById('mImg');const imgSrc=r.img||getDefaultImg(r.categorie);img.src=imgSrc;img.style.display='block';img.onerror=()=>{img.src=getDefaultImg(r.categorie);};document.getElementById('mTag').textContent=r.categorie||'';document.getElementById('mTitle').textContent=r.nom||'';document.getElementById('mDesc').textContent=r.description||'';const pr=profiles[r.user_id];const auteur=r.auteur||(pr?pr.nom:null);const ar=document.getElementById('mAuthorRow');if(auteur){ar.style.display='flex';document.getElementById('mAuthorAvatar').innerHTML=pr?.avatar?`<img src="${esc(pr.avatar)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="">`:`<span style="width:24px;height:24px;border-radius:50%;background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;font-size:.68rem;color:white;">${auteur[0].toUpperCase()}</span>`;document.getElementById('mAuthorName').textContent='Recette de '+auteur;}else ar.style.display='none';document.getElementById('srvN').textContent=curSrv;renderIngr(r);document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';document.getElementById('mSteps').innerHTML=(r.etapes||'').split('\n').filter(l=>l.trim()).map(s=>`<li>${esc(s)}</li>`).join('');renderSocial(r);const ub=document.getElementById('mUstBlock');if(r.ustensiles){ub.style.display='block';document.getElementById('mUst').innerHTML=r.ustensiles.split(',').map(u=>`<span class="tag-pill">${esc(u.trim())}</span>`).join('');}else ub.style.display='none';if(r.astuce){document.getElementById('mTip').style.display='block';document.getElementById('mTipTxt').textContent=r.astuce;}else document.getElementById('mTip').style.display='none';if(r.geste){document.getElementById('mGestBlock').style.display='block';document.getElementById('mGestTxt').textContent=r.geste;}else document.getElementById('mGestBlock').style.display='none';const gb=document.getElementById('mGroupBlock');if(r.groupe_id){const g=groups.find(x=>x.id===r.groupe_id);if(g){gb.style.display='block';const tag=document.getElementById('mGroupTag');tag.textContent='Groupe : '+g.name;tag.onclick=()=>{closeModal('recipeOverlay');openGroupDetail(g.id);};}else gb.style.display='none';}else gb.style.display='none';const canEdit=isAdmin||(user&&r.user_id===user.id);document.getElementById('mEditBar').style.display=canEdit?'block':'none';document.getElementById('mEditBtn').onclick=()=>{closeModal('recipeOverlay');openForm(id);};openModal('recipeOverlay');}
+async function openRecipe(id){const r=recipes.find(x=>x.id==id);if(!r)return;currentRec=r;curSrv=parseInt(r.couverts)||4;if(!_viewedIds.has(id)){_viewedIds.add(id);const v=(r.views||0)+1;r.views=v;db.from('recettes').update({views:v}).eq('id',id).catch(()=>{});}const img=document.getElementById('mImg');const imgSrc=r.img||getDefaultImg(r.categorie);if(imgSrc){img.src=imgSrc;img.style.display='block';img.onerror=()=>{img.style.display='none';};}else img.style.display='none';document.getElementById('mTag').textContent=r.categorie||'';document.getElementById('mTitle').textContent=r.nom||'';document.getElementById('mDesc').textContent=r.description||'';const pr=profiles[r.user_id];const auteur=r.auteur||(pr?pr.nom:null);const ar=document.getElementById('mAuthorRow');if(auteur){ar.style.display='flex';document.getElementById('mAuthorAvatar').innerHTML=pr?.avatar&&cookieChoice.media?`<img src="${esc(pr.avatar)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="">`:`<span style="width:24px;height:24px;border-radius:50%;background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;font-size:.68rem;color:white;">${auteur[0].toUpperCase()}</span>`;document.getElementById('mAuthorName').textContent='Recette de '+auteur;}else ar.style.display='none';document.getElementById('srvN').textContent=curSrv;renderIngr(r);document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';document.getElementById('mSteps').innerHTML=(r.etapes||'').split('\n').filter(l=>l.trim()).map(s=>`<li>${esc(s)}</li>`).join('');renderSocial(r);const ub=document.getElementById('mUstBlock');if(r.ustensiles){ub.style.display='block';document.getElementById('mUst').innerHTML=r.ustensiles.split(',').map(u=>`<span class="tag-pill">${esc(u.trim())}</span>`).join('');}else ub.style.display='none';if(r.astuce){document.getElementById('mTip').style.display='block';document.getElementById('mTipTxt').textContent=r.astuce;}else document.getElementById('mTip').style.display='none';if(r.geste){document.getElementById('mGestBlock').style.display='block';document.getElementById('mGestTxt').textContent=r.geste;}else document.getElementById('mGestBlock').style.display='none';const gb=document.getElementById('mGroupBlock');if(r.groupe_id){const g=groups.find(x=>x.id===r.groupe_id);if(g){gb.style.display='block';const tag=document.getElementById('mGroupTag');tag.textContent='Groupe : '+g.name;tag.onclick=()=>{closeModal('recipeOverlay');openGroupDetail(g.id);};}else gb.style.display='none';}else gb.style.display='none';const canEdit=isAdmin||(user&&r.user_id===user.id);document.getElementById('mEditBar').style.display=canEdit?'block':'none';document.getElementById('mEditBtn').onclick=()=>{closeModal('recipeOverlay');openForm(id);};openModal('recipeOverlay');}
 document.getElementById('srvDown').addEventListener('click',()=>{if(curSrv>1){curSrv--;document.getElementById('srvN').textContent=curSrv;if(currentRec)renderIngr(currentRec);}});
 document.getElementById('srvUp').addEventListener('click',()=>{if(curSrv<50){curSrv++;document.getElementById('srvN').textContent=curSrv;if(currentRec)renderIngr(currentRec);}});
 document.getElementById('modeVisual').addEventListener('click',()=>{document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';});
@@ -1421,10 +1549,80 @@ document.getElementById('submitBtn').addEventListener('click',async()=>{if(savin
 // ── DELETE ──
 async function deleteRecipe(id){if(!confirm('Supprimer cette recette ?'))return;const r=recipes.find(x=>x.id==id);if(!isAdmin&&!(user&&r?.user_id===user.id)){toast('Vous ne pouvez supprimer que vos propres recettes.');return;}try{const{error}=await db.from('recettes').delete().eq('id',id);if(error){toast('Erreur : '+error.message);return;}recipes=recipes.filter(x=>x.id!=id);toast('Recette supprimée.');renderGrid();if(document.getElementById('adminOverlay').classList.contains('open'))populateAdmin();if(document.getElementById('recipeOverlay').classList.contains('open'))closeModal('recipeOverlay');}catch(e){toast('Erreur : '+e.message);}}
 
-// ── GROUPES — Priority 3 (all fixes) ──
-async function loadGroups(){const loading=document.getElementById('groupsLoading');if(loading)loading.style.display='block';try{const{data:g,error:ge}=await db.from('groups').select('*').order('created_at',{ascending:false});if(ge)throw ge;groups=g||[];const ids=groups.map(x=>x.id);if(ids.length){const{data:gm}=await db.from('group_members').select('*, profils(nom,avatar)').in('group_id',ids);groupMembers=gm||[];const{data:rg}=await db.from('recipe_groups').select('*').in('group_id',ids).catch(()=>({data:[]}));recipeGroups=rg||[];}else{groupMembers=[];recipeGroups=[];}}catch(e){console.error('loadGroups:',e);groups=groups||[];groupMembers=groupMembers||[];recipeGroups=recipeGroups||[];}finally{if(loading)loading.style.display='none';populateGroupSelect();}}
+// ── RECHERCHE DE PROFIL — style Instagram (réutilisable) ──
+let _profileSearchDebounce=null;
+async function profileSearchInput(val,resultsId,selectedArrName){
+  const wrap=document.getElementById(resultsId);
+  const v=(val||'').trim();
+  if(!v){wrap.innerHTML='';return;}
+  clearTimeout(_profileSearchDebounce);
+  _profileSearchDebounce=setTimeout(async()=>{
+    try{
+      const{data,error}=await db.from('profils').select('id,nom,avatar').ilike('nom',v+'%').limit(8);
+      if(error)throw error;
+      const already=selectedArrName==='gSelected'?gSelectedMembers:[];
+      const results=(data||[]).filter(p=>p.id!==user?.id&&!already.some(m=>m.id===p.id));
+      if(!results.length){
+        wrap.innerHTML=`<div class="profile-result-empty"><span>Aucun profil "${esc(v)}"</span><button class="profile-result-invite" onclick="openInvite('${esc(v).replace(/'/g,"&#39;")}')">Inviter par email</button></div>`;
+        return;
+      }
+      wrap.innerHTML=results.map(p=>`<div class="profile-result-row" onclick='selectProfileResult(${JSON.stringify(p)},"${selectedArrName}")'>${p.avatar?`<img src="${esc(p.avatar)}" alt="">`:`<span class="pr-init">${esc(p.nom[0].toUpperCase())}</span>`}<span class="profile-result-name">${esc(p.nom)}</span></div>`).join('');
+    }catch(e){wrap.innerHTML='';}
+  },280);
+}
+function selectProfileResult(p,selectedArrName){
+  if(selectedArrName==='gSelected'){
+    if(!gSelectedMembers.some(m=>m.id===p.id))gSelectedMembers.push(p);
+    renderSelectedMembers();
+    document.getElementById('gMemberSearch').value='';
+    document.getElementById('gMemberResults').innerHTML='';
+  }
+}
+function renderSelectedMembers(){
+  const row=document.getElementById('gSelectedRow');
+  if(!row)return;
+  row.innerHTML=gSelectedMembers.map(p=>`<span class="selected-member-chip">${p.avatar?`<img src="${esc(p.avatar)}" alt="">`:`<span class="sm-init">${esc(p.nom[0].toUpperCase())}</span>`}${esc(p.nom)}<span class="sm-rm" onclick="removeSelectedMember('${p.id}')">✕</span></span>`).join('');
+}
+function removeSelectedMember(id){gSelectedMembers=gSelectedMembers.filter(m=>m.id!==id);renderSelectedMembers();}
 
-// FIX: member check uses user_id, not email
+// ── INVITATION EMAIL (Resend via Supabase Edge Function) ──
+function openInvite(searchedName){
+  inviteContext=searchedName;
+  document.getElementById('inviteSearchedName').textContent=searchedName;
+  document.getElementById('inviteEmail').value='';
+  document.getElementById('inviteErr').className='auth-err';
+  document.getElementById('inviteOk').className='auth-ok';
+  openModal('inviteOverlay');
+}
+document.getElementById('inviteClose').addEventListener('click',()=>closeModal('inviteOverlay'));
+document.getElementById('inviteSendBtn').addEventListener('click',async()=>{
+  const email=document.getElementById('inviteEmail').value.trim();
+  const err=document.getElementById('inviteErr'),ok=document.getElementById('inviteOk');
+  err.className='auth-err';ok.className='auth-ok';
+  if(!email||!email.includes('@')){err.textContent='Email invalide.';err.className='auth-err on';return;}
+  const btn=document.getElementById('inviteSendBtn');btn.disabled=true;btn.textContent='Envoi…';
+  try{
+    // Appelle une Supabase Edge Function "send-invite" qui utilise Resend côté serveur.
+    const{data:{session}}=await db.auth.getSession();
+    const res=await fetch(`${SB_URL}/functions/v1/send-invite`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${session?.access_token||SB_KEY}`,'apikey':SB_KEY},
+      body:JSON.stringify({to:email,inviterName:profile?.nom||'Un membre',siteUrl:SITE})
+    });
+    if(!res.ok)throw new Error('Edge Function indisponible');
+    btn.disabled=false;btn.textContent='Envoyer l\'invitation';
+    ok.className='auth-ok on';toast('Invitation envoyée à '+email);
+    setTimeout(()=>closeModal('inviteOverlay'),1400);
+  }catch(e){
+    btn.disabled=false;btn.textContent='Envoyer l\'invitation';
+    // Repli : ouvre le client email de l'utilisateur
+    window.open(`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Rejoignez Les Délices Partagées')}&body=${encodeURIComponent((profile?.nom||'Un ami')+' vous invite à rejoindre Les Délices Partagées : '+SITE)}`,'_blank');
+    err.textContent='Fonction d\'envoi automatique indisponible — votre client email s\'est ouvert à la place.';err.className='auth-err on';
+  }
+});
+
+// ── GROUPES — utilisateurs ──
+async function loadGroups(){const loading=document.getElementById('groupsLoading');if(loading)loading.style.display='block';try{const{data:g,error:ge}=await db.from('groups').select('*').order('created_at',{ascending:false});if(ge)throw ge;groups=g||[];const ids=groups.map(x=>x.id);if(ids.length){const{data:gm}=await db.from('group_members').select('*, profils(nom,avatar)').in('group_id',ids);groupMembers=gm||[];const{data:rg}=await db.from('recipe_groups').select('*').in('group_id',ids).catch(()=>({data:[]}));recipeGroups=rg||[];}else{groupMembers=[];recipeGroups=[];}}catch(e){console.error('loadGroups:',e);groups=groups||[];groupMembers=groupMembers||[];recipeGroups=recipeGroups||[];}finally{if(loading)loading.style.display='none';populateGroupSelect();}}
 function isUserMemberOf(gid){if(!user)return false;return groupMembers.some(m=>m.group_id===gid&&m.user_id===user.id);}
 
 function renderGroupsUI(){
@@ -1448,42 +1646,10 @@ function renderGroupsUI(){
   }).join('');
 }
 
-// FIX: real-time pseudo validation with checkmark/cross
-let _pseudoDebounce=null;
-async function validatePseudos(raw){
-  const wrap=document.getElementById('pseudoValidation');
-  if(!wrap)return;
-  const pseudos=raw.split(',').map(s=>s.trim()).filter(Boolean);
-  if(!pseudos.length){wrap.innerHTML='';return;}
-  // Show loading tags immediately
-  wrap.innerHTML=pseudos.map(p=>`<span class="pseudo-tag loading" data-pseudo="${esc(p)}">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-    ${esc(p)}
-  </span>`).join('');
-  clearTimeout(_pseudoDebounce);
-  _pseudoDebounce=setTimeout(async()=>{
-    for(const pseudo of pseudos){
-      try{
-        const{data}=await db.from('profils').select('id,nom').ilike('nom',pseudo).maybeSingle();
-        const tag=wrap.querySelector(`[data-pseudo="${esc(pseudo)}"]`);
-        if(!tag)continue;
-        if(data){
-          tag.className='pseudo-tag found';
-          tag.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${esc(pseudo)}`;
-        }else{
-          tag.className='pseudo-tag notfound';
-          tag.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>${esc(pseudo)}`;
-        }
-      }catch(e){console.warn('pseudo lookup:',e);}
-    }
-  },400);
-}
-
 async function openGroupDetail(gid){
   const g=groups.find(x=>x.id===gid);
   if(!g)return;
-  // FIX: block non-members
-  if(!isUserMemberOf(gid)){toast('Accès réservé aux membres de ce groupe.');return;}
+  if(!isUserMemberOf(gid)&&!isAdmin){toast('Accès réservé aux membres de ce groupe.');return;}
   const isCreator=user&&g.created_by===user.id;
   const membersOfGroup=groupMembers.filter(m=>m.group_id===gid);
   const groupRecipes=recipes.filter(r=>r.groupe_id===gid);
@@ -1498,81 +1664,66 @@ async function openGroupDetail(gid){
     </div>
     <div style="margin-bottom:1.2rem;">
       <div style="font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.55rem;">Membres</div>
-      <div style="display:flex;flex-wrap:wrap;gap:.4rem;">${membersOfGroup.length?membersOfGroup.map(m=>{const nom=m.pseudo||m.profils?.nom||'Anonyme';const av=m.profils?.avatar;return`<div class="groupe-member-tag">${av?`<img src="${esc(av)}" alt="">`:`<span class="gm-init">${nom[0].toUpperCase()}</span>`}<span class="gm-name">${esc(nom)}</span></div>`;}).join(''):'<span style="color:var(--text-soft);font-size:.8rem;">Aucun membre.</span>'}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem;">${membersOfGroup.length?membersOfGroup.map(m=>{const nom=m.pseudo||m.profils?.nom||'Anonyme';const av=m.profils?.avatar;return`<div class="groupe-member-tag">${av?`<img src="${esc(av)}" alt="">`:`<span class="gm-init">${esc(nom[0].toUpperCase())}</span>`}<span class="gm-name">${esc(nom)}</span></div>`;}).join(''):'<span style="color:var(--text-soft);font-size:.8rem;">Aucun membre.</span>'}</div>
     </div>
     <div style="margin-bottom:1.2rem;">
       <div style="font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.55rem;">Recettes du groupe</div>
-      ${groupRecipes.length?groupRecipes.map(r=>`<div class="group-recette-card" onclick="closeModal('groupDetailOverlay');openRecipe('${r.id}')"><img src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.src='${getDefaultImg(r.categorie)}'"><div><div class="gr-name">${esc(r.nom)}</div><div class="gr-meta">${esc(r.auteur||'')} · ${r.views||0} vues</div></div></div>`).join(''):'<div class="group-empty">Aucune recette associée à ce groupe.</div>'}
+      ${groupRecipes.length?groupRecipes.map(r=>`<div class="group-recette-card" onclick="closeModal('groupDetailOverlay');openRecipe('${r.id}')"><img src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.style.display='none'"><div><div class="gr-name">${esc(r.nom)}</div><div class="gr-meta">${esc(r.auteur||'')} · ${r.views||0} vues</div></div></div>`).join(''):'<div class="group-empty">Aucune recette associée à ce groupe.</div>'}
     </div>
     ${isCreator?`
-    <div class="add-member-form">
-      <div class="add-member-title">Ajouter un membre</div>
-      <div class="add-member-row">
-        <input type="text" class="f-input" id="addMemberInput" placeholder="Pseudo du membre…" oninput="validateAddMember(this.value)">
-        <button class="btn btn-accent" style="font-size:.7rem;padding:.55rem 1rem;" onclick="addMemberToGroup('${g.id}')">Ajouter</button>
+    <div class="add-member-form" style="background:var(--beige);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;">
+      <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:.65rem;">Ajouter un membre</div>
+      <div class="profile-search-wrap">
+        <div class="profile-search-input-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="addMemberSearch" placeholder="Tapez un prénom…" autocomplete="off" oninput="profileSearchForGroup(this.value,'${g.id}')">
+        </div>
+        <div class="profile-search-results" id="addMemberResults"></div>
       </div>
-      <div id="addMemberValidation" style="margin-top:.45rem;min-height:22px;"></div>
     </div>`:''}
   `;
   openModal('groupDetailOverlay');
 }
 
-// Inline validation for add-member in existing group
 let _addMemberDebounce=null;
-async function validateAddMember(pseudo){
-  const wrap=document.getElementById('addMemberValidation');
-  if(!wrap||!pseudo.trim())return;
-  wrap.innerHTML=`<span class="pseudo-tag loading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>${esc(pseudo)}</span>`;
+async function profileSearchForGroup(val,gid){
+  const wrap=document.getElementById('addMemberResults');
+  const v=(val||'').trim();
+  if(!v){wrap.innerHTML='';return;}
   clearTimeout(_addMemberDebounce);
   _addMemberDebounce=setTimeout(async()=>{
     try{
-      const{data}=await db.from('profils').select('id,nom').ilike('nom',pseudo.trim()).maybeSingle();
-      if(data){
-        wrap.innerHTML=`<span class="pseudo-tag found"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${esc(data.nom)}</span>`;
-      }else{
-        wrap.innerHTML=`<span class="pseudo-tag notfound"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Aucun compte avec ce pseudo</span>`;
+      const{data}=await db.from('profils').select('id,nom,avatar').ilike('nom',v+'%').limit(8);
+      const existingIds=groupMembers.filter(m=>m.group_id===gid).map(m=>m.user_id);
+      const results=(data||[]).filter(p=>!existingIds.includes(p.id));
+      if(!results.length){
+        wrap.innerHTML=`<div class="profile-result-empty"><span>Aucun profil "${esc(v)}"</span><button class="profile-result-invite" onclick="openInvite('${esc(v).replace(/'/g,"&#39;")}')">Inviter par email</button></div>`;
+        return;
       }
+      wrap.innerHTML=results.map(p=>`<div class="profile-result-row" onclick="addMemberToGroup('${gid}','${p.id}','${esc(p.nom).replace(/'/g,"&#39;")}')">${p.avatar?`<img src="${esc(p.avatar)}" alt="">`:`<span class="pr-init">${esc(p.nom[0].toUpperCase())}</span>`}<span class="profile-result-name">${esc(p.nom)}</span></div>`).join('');
     }catch(e){wrap.innerHTML='';}
-  },350);
+  },280);
 }
-
-// FIX: add member to existing group
-async function addMemberToGroup(gid){
-  const input=document.getElementById('addMemberInput');
-  const pseudo=(input?.value||'').trim();
-  if(!pseudo){toast('Entrez un pseudo.');return;}
+async function addMemberToGroup(gid,uid,nom){
   try{
-    const{data:prof}=await db.from('profils').select('id,nom').ilike('nom',pseudo).maybeSingle();
-    if(!prof){toast('Aucun compte trouvé avec ce pseudo.');return;}
-    // Check already member
-    const already=groupMembers.some(m=>m.group_id===gid&&m.user_id===prof.id);
-    if(already){toast('Cette personne est déjà membre du groupe.');return;}
-    const{error}=await db.from('group_members').insert({group_id:gid,user_id:prof.id,pseudo:prof.nom});
+    const{error}=await db.from('group_members').insert({group_id:gid,user_id:uid,pseudo:nom});
     if(error)throw error;
-    toast(`${prof.nom} ajouté(e) au groupe !`);
+    toast(`${nom} ajouté(e) au groupe !`);
     await loadGroups();
-    // Refresh detail view
     openGroupDetail(gid);
   }catch(e){toast('Erreur : '+(e.message||e));}
 }
 
-async function createGroup(name,description,lieu,theme,pseudosRaw){
+async function createGroup(name,description,lieu,theme){
   if(!user){toast('Connectez-vous pour créer un groupe.');return false;}
   try{
     const{data,error}=await db.from('groups').insert({name,description:description||null,lieu:lieu||null,theme:theme||null,created_by:user.id,created_at:new Date().toISOString()}).select().single();
     if(error)throw error;
     const gid=data.id;
-    const pseudos=(pseudosRaw||'').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
     const toAdd=[{group_id:gid,user_id:user.id,pseudo:profile?.nom||user.email.split('@')[0]}];
-    const notFound=[];
-    for(const pseudo of pseudos){
-      if(pseudo===(profile?.nom||'').toLowerCase())continue;
-      const{data:prof}=await db.from('profils').select('id,nom').ilike('nom',pseudo).maybeSingle();
-      if(prof)toAdd.push({group_id:gid,user_id:prof.id,pseudo:prof.nom});
-      else notFound.push(pseudo);
-    }
+    gSelectedMembers.forEach(p=>{if(p.id!==user.id)toAdd.push({group_id:gid,user_id:p.id,pseudo:p.nom});});
     if(toAdd.length)await db.from('group_members').insert(toAdd);
-    toast(notFound.length?`Groupe créé. Pseudos introuvables : ${notFound.join(', ')}`:'Groupe créé !');
+    toast('Groupe créé !');
     await loadGroups();renderGroupsUI();
     return true;
   }catch(e){
@@ -1585,20 +1736,20 @@ async function createGroup(name,description,lieu,theme,pseudosRaw){
 document.getElementById('navGroupsBtn').addEventListener('click',async()=>{if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour accéder aux groupes.');return;}openModal('groupsOverlay');await loadGroups();renderGroupsUI();});
 document.getElementById('footGroupsBtn').addEventListener('click',e=>{e.preventDefault();document.getElementById('navGroupsBtn').click();});
 document.getElementById('groupsClose').addEventListener('click',()=>closeModal('groupsOverlay'));
-document.getElementById('groupCreateBtn').addEventListener('click',()=>{document.getElementById('gName').value='';document.getElementById('gDesc').value='';document.getElementById('gLieu').value='';document.getElementById('gTheme').value='';document.getElementById('gMembers').value='';document.getElementById('pseudoValidation').innerHTML='';document.getElementById('groupErr').className='auth-err';openModal('groupCreateOverlay');});
+document.getElementById('groupCreateBtn').addEventListener('click',()=>{document.getElementById('gName').value='';document.getElementById('gDesc').value='';document.getElementById('gLieu').value='';document.getElementById('gTheme').value='';document.getElementById('gMemberSearch').value='';document.getElementById('gMemberResults').innerHTML='';gSelectedMembers=[];renderSelectedMembers();document.getElementById('groupErr').className='auth-err';openModal('groupCreateOverlay');});
 document.getElementById('groupCreateClose').addEventListener('click',()=>closeModal('groupCreateOverlay'));
-document.getElementById('groupSaveBtn').addEventListener('click',async()=>{const name=document.getElementById('gName').value.trim();const errEl=document.getElementById('groupErr');errEl.className='auth-err';if(!name){errEl.textContent='Le nom du groupe est requis.';errEl.className='auth-err on';return;}const bad=findBad([name,document.getElementById('gDesc').value,document.getElementById('gLieu').value,document.getElementById('gTheme').value].join(' '));if(bad){banScreen(bad);return;}const btn=document.getElementById('groupSaveBtn');btn.disabled=true;btn.textContent='Création…';const ok=await createGroup(name,document.getElementById('gDesc').value.trim(),document.getElementById('gLieu').value.trim(),document.getElementById('gTheme').value.trim(),document.getElementById('gMembers').value.trim());btn.disabled=false;btn.textContent='Créer le groupe';if(ok)closeModal('groupCreateOverlay');});
+document.getElementById('groupSaveBtn').addEventListener('click',async()=>{const name=document.getElementById('gName').value.trim();const errEl=document.getElementById('groupErr');errEl.className='auth-err';if(!name){errEl.textContent='Le nom du groupe est requis.';errEl.className='auth-err on';return;}const bad=findBad([name,document.getElementById('gDesc').value,document.getElementById('gLieu').value,document.getElementById('gTheme').value].join(' '));if(bad){banScreen(bad);return;}const btn=document.getElementById('groupSaveBtn');btn.disabled=true;btn.textContent='Création…';const ok=await createGroup(name,document.getElementById('gDesc').value.trim(),document.getElementById('gLieu').value.trim(),document.getElementById('gTheme').value.trim());btn.disabled=false;btn.textContent='Créer le groupe';if(ok)closeModal('groupCreateOverlay');});
 document.getElementById('groupDetailClose').addEventListener('click',()=>closeModal('groupDetailOverlay'));
 
-// ── ADMIN ──
+// ── ADMIN ── (gestion + onglet Groupes)
 document.getElementById('adminTrigger').addEventListener('click',()=>{if(isAdmin){populateAdmin();openModal('adminOverlay');}else{openModal('loginOverlay');setTimeout(()=>document.getElementById('adminPwd').focus(),100);}});
 document.getElementById('adminPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('adminLoginBtn').click();});
 document.getElementById('adminLoginBtn').addEventListener('click',()=>{if(document.getElementById('adminPwd').value===ADMIN_PWD){isAdmin=true;document.body.classList.add('admin-mode');document.getElementById('adminBar').classList.add('on');closeModal('loginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').style.display='none';populateAdmin();openModal('adminOverlay');renderGrid();toast('Bienvenue Léonard.');}else{document.getElementById('adminErr').style.display='block';document.getElementById('adminPwd').value='';}});
 document.getElementById('loginCancel').addEventListener('click',()=>closeModal('loginOverlay'));
 document.getElementById('adminClose').addEventListener('click',()=>closeModal('adminOverlay'));
-document.getElementById('adminPanelBtn').addEventListener('click',async()=>{await loadData();await loadMembers();populateAdmin();openModal('adminOverlay');});
+document.getElementById('adminPanelBtn').addEventListener('click',async()=>{await loadData();await loadMembers();await loadGroups();populateAdmin();openModal('adminOverlay');});
 document.getElementById('adminQuitBtn').addEventListener('click',()=>{isAdmin=false;document.body.classList.remove('admin-mode');document.getElementById('adminBar').classList.remove('on');renderGrid();toast('Mode admin désactivé.');});
-document.querySelectorAll('.admin-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-'+btn.dataset.tab).classList.add('active');if(btn.dataset.tab==='images')renderImageAdmin();});});
+document.querySelectorAll('.admin-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-'+btn.dataset.tab).classList.add('active');if(btn.dataset.tab==='images')renderImageAdmin();if(btn.dataset.tab==='groups')renderAdminGroups();});});
 
 function ingredientAdminKeys(){const s=new Set(Object.keys(INGR_PHOTOS).filter(k=>k!=='default'));Object.keys(customImages.ingredients||{}).forEach(k=>s.add(k));recipes.forEach(r=>String(r.ingredients||'').split('\n').forEach(l=>{const p=l.split('·').map(x=>x.trim());const name=p.length>=3?p.slice(2).join(' '):l.replace(/^[\d,.\/\s]+/,'').trim();if(name&&name.length<70)s.add(name.toLowerCase());}));return Array.from(s).sort((a,b)=>a.localeCompare(b,'fr')).slice(0,400);}
 function renderImageAdmin(){const grid=document.getElementById('imageAdminGrid');if(!grid)return;const isIngr=imageAdminMode==='ingredients';document.getElementById('imgTabIngredients').classList.toggle('active',isIngr);document.getElementById('imgTabCategories').classList.toggle('active',!isIngr);document.getElementById('ingredientAddRow').style.display=isIngr?'flex':'none';const q=imgNorm(document.getElementById('imageAdminSearch').value);const keys=(isIngr?ingredientAdminKeys():Object.keys(CAT_IMAGES)).filter(k=>!q||imgNorm(k).includes(q));if(!keys.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--text-soft);padding:2rem;">Aucune image trouvée.</div>';return;}grid.innerHTML=keys.map(key=>{const custom=isIngr?customImages.ingredients[key]:customImages.categories[key];const src=esc(custom||(isIngr?(INGR_PHOTOS[key]||INGR_PHOTOS.default):(CAT_IMAGES[key]||CAT_IMAGES.default)));const type=isIngr?'ingredients':'categories';return`<div class="image-admin-card"><img src="${src}" alt="${esc(key)}" loading="lazy"><div><div class="image-admin-name">${esc(key)}</div><div class="image-admin-state">${custom?'Personnalisée':'Automatique'}</div><div class="image-admin-actions"><button class="image-mini-btn" data-img-action="upload" data-img-type="${type}" data-img-key="${esc(key)}">Modifier</button>${custom?`<button class="image-mini-btn red" data-img-action="reset" data-img-type="${type}" data-img-key="${esc(key)}">Réinitialiser</button>`:''}</div></div></div>`;}).join('');}
@@ -1609,7 +1760,30 @@ document.getElementById('addIngredientImageBtn').addEventListener('click',()=>{c
 document.getElementById('imageAdminGrid').addEventListener('click',e=>{const btn=e.target.closest('[data-img-action]');if(!btn)return;const type=btn.dataset.imgType,key=btn.dataset.imgKey,action=btn.dataset.imgAction;if(action==='upload'){pendingImageTarget={type,key};document.getElementById('adminImageInput').click();}else if(action==='reset'){deleteSiteImage(type,key).then(()=>{renderImageAdmin();renderGrid();if(currentRec)renderIngr(currentRec);toast('Image réinitialisée.');});}});
 document.getElementById('adminImageInput').addEventListener('change',async e=>{const file=e.target.files[0];if(!file||!pendingImageTarget)return;try{await uploadSiteImage(pendingImageTarget.type,pendingImageTarget.key,file);renderImageAdmin();renderGrid();if(currentRec)renderIngr(currentRec);toast('Image mise à jour.');}catch(err){toast('Erreur upload : '+(err.message||err));}e.target.value='';pendingImageTarget=null;});
 
-async function populateAdmin(){const total=recipes.reduce((s,r)=>s+(r.views||0),0);document.getElementById('aR').textContent=recipes.length;document.getElementById('aV').textContent=total;document.getElementById('aS').textContent=MAX-recipes.length;await loadMembers();document.getElementById('aM').textContent=members.length;document.getElementById('aMembersCount').textContent=members.length;document.getElementById('aRecent').innerHTML=recipes.slice(0,6).map(r=>`<div style="padding:.2rem 0;border-bottom:1px solid var(--border)"><strong>${esc(r.nom)}</strong>${r.auteur?' — '+esc(r.auteur):''} <span style="color:var(--accent-light);font-size:.72rem;">(${r.views||0} vues)</span></div>`).join('')||'<div>Aucune recette.</div>';document.getElementById('aNoRecipes').style.display=recipes.length?'none':'block';document.getElementById('aRecipesTbody').innerHTML=recipes.map(r=>`<tr><td><strong>${esc(r.nom)}</strong></td><td>${esc(r.auteur||'—')}</td><td>${esc(r.region||'—')}</td><td>${r.views||0}</td><td style="font-size:.74rem">${r.created_at?new Date(r.created_at).toLocaleDateString('fr-FR'):'—'}</td><td><button class="t-edit" onclick="closeModal('adminOverlay');openForm('${r.id}')">Modifier</button><button class="t-del" onclick="deleteRecipe('${r.id}')">Supprimer</button></td></tr>`).join('');document.getElementById('aNoMembers').style.display=members.length?'none':'block';document.getElementById('aMembersTbody').innerHTML=members.map(m=>`<tr><td>${m.avatar?`<img src="${esc(m.avatar)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">`:`<span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent-light);align-items:center;justify-content:center;color:white;font-size:.68rem;">${(m.nom||'?')[0].toUpperCase()}</span>`}</td><td><strong>${esc(m.nom||'—')}</strong></td><td>${m.age||'—'}</td><td style="font-size:.74rem">${m.created_at?new Date(m.created_at).toLocaleDateString('fr-FR'):'—'}</td></tr>`).join('');renderImageAdmin();}
+// ── ADMIN — Onglet GROUPES (supervision globale) ──
+async function deleteGroupAdmin(gid){if(!confirm('Supprimer ce groupe et tous ses membres ?'))return;try{await db.from('group_members').delete().eq('group_id',gid);await db.from('recettes').update({groupe_id:null}).eq('groupe_id',gid);const{error}=await db.from('groups').delete().eq('id',gid);if(error)throw error;toast('Groupe supprimé.');await loadGroups();renderAdminGroups();renderGroupsUI();}catch(e){toast('Erreur : '+(e.message||e));}}
+async function removeMemberAdmin(gid,uid){try{const{error}=await db.from('group_members').delete().eq('group_id',gid).eq('user_id',uid);if(error)throw error;toast('Membre retiré.');await loadGroups();renderAdminGroups();}catch(e){toast('Erreur : '+(e.message||e));}}
+function renderAdminGroups(){
+  const list=document.getElementById('aGroupsList');
+  const no=document.getElementById('aNoGroups');
+  document.getElementById('aGroupsCount').textContent=groups.length;
+  if(!groups.length){list.innerHTML='';no.style.display='block';return;}
+  no.style.display='none';
+  list.innerHTML=groups.map(g=>{
+    const mList=groupMembers.filter(m=>m.group_id===g.id);
+    const creator=profiles[g.created_by]?.nom||mList.find(m=>m.user_id===g.created_by)?.pseudo||'—';
+    return`<div class="admin-group-card">
+      <div class="admin-group-head">
+        <h4>${esc(g.name)}</h4>
+        <button class="t-del" onclick="deleteGroupAdmin('${g.id}')">Supprimer le groupe</button>
+      </div>
+      <div class="admin-group-meta">Créé par ${esc(creator)} · ${[g.lieu,g.theme].filter(Boolean).map(esc).join(' · ')||'—'} · ${mList.length} membre${mList.length!==1?'s':''}</div>
+      <div class="admin-group-members">${mList.map(m=>`<span class="groupe-member-tag">${m.profils?.avatar?`<img src="${esc(m.profils.avatar)}" alt="">`:`<span class="gm-init">${esc((m.pseudo||'?')[0].toUpperCase())}</span>`}<span class="gm-name">${esc(m.pseudo||m.profils?.nom||'—')}</span><span class="sm-rm" style="margin-left:.3rem;background:rgba(192,97,75,.5);" onclick="removeMemberAdmin('${g.id}','${m.user_id}')">✕</span></span>`).join('')||'<span style="color:var(--text-soft);font-size:.78rem;">Aucun membre.</span>'}</div>
+    </div>`;
+  }).join('');
+}
+
+async function populateAdmin(){const total=recipes.reduce((s,r)=>s+(r.views||0),0);document.getElementById('aR').textContent=recipes.length;document.getElementById('aV').textContent=total;document.getElementById('aS').textContent=MAX-recipes.length;await loadMembers();document.getElementById('aM').textContent=members.length;document.getElementById('aMembersCount').textContent=members.length;document.getElementById('aRecent').innerHTML=recipes.slice(0,6).map(r=>`<div style="padding:.2rem 0;border-bottom:1px solid var(--border)"><strong>${esc(r.nom)}</strong>${r.auteur?' — '+esc(r.auteur):''} <span style="color:var(--accent-light);font-size:.72rem;">(${r.views||0} vues)</span></div>`).join('')||'<div>Aucune recette.</div>';document.getElementById('aNoRecipes').style.display=recipes.length?'none':'block';document.getElementById('aRecipesTbody').innerHTML=recipes.map(r=>`<tr><td><strong>${esc(r.nom)}</strong></td><td>${esc(r.auteur||'—')}</td><td>${esc(r.region||'—')}</td><td>${r.views||0}</td><td style="font-size:.74rem">${r.created_at?new Date(r.created_at).toLocaleDateString('fr-FR'):'—'}</td><td><button class="t-edit" onclick="closeModal('adminOverlay');openForm('${r.id}')">Modifier</button><button class="t-del" onclick="deleteRecipe('${r.id}')">Supprimer</button></td></tr>`).join('');document.getElementById('aNoMembers').style.display=members.length?'none':'block';document.getElementById('aMembersTbody').innerHTML=members.map(m=>`<tr><td>${m.avatar?`<img src="${esc(m.avatar)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">`:`<span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent-light);align-items:center;justify-content:center;color:white;font-size:.68rem;">${(m.nom||'?')[0].toUpperCase()}</span>`}</td><td><strong>${esc(m.nom||'—')}</strong></td><td>${m.age||'—'}</td><td style="font-size:.74rem">${m.created_at?new Date(m.created_at).toLocaleDateString('fr-FR'):'—'}</td></tr>`).join('');renderImageAdmin();renderAdminGroups();}
 document.getElementById('deleteAllBtn').addEventListener('click',async()=>{if(!confirm('Supprimer TOUTES les recettes ?'))return;const{error}=await db.from('recettes').delete().neq('id','00000000-0000-0000-0000-000000000000');if(error){toast('Erreur : '+error.message);return;}toast('Toutes les recettes supprimées.');await loadData();renderGrid();populateAdmin();});
 document.getElementById('emailSendBtn').addEventListener('click',async()=>{if(!members.length)await loadMembers();const emails=members.map(m=>m.email||m.id).filter(Boolean);if(!emails.length){toast('Aucun membre.');return;}const s=encodeURIComponent(document.getElementById('emailSubject').value||'Les Délices Partagées');const b=encodeURIComponent(document.getElementById('emailBody').value||'');for(let i=0;i<emails.length;i+=20)window.open(`mailto:?bcc=${encodeURIComponent(emails.slice(i,i+20).join(','))}&subject=${s}&body=${b}`,'_blank');toast('Email(s) ouvert(s).');});
 
@@ -1626,19 +1800,30 @@ document.getElementById('footAddBtn').addEventListener('click',e=>{e.preventDefa
 // ── NAV SCROLL ──
 window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>30);},{ passive:true});
 
-// ── COOKIES ──
-function initCookieBar(){try{if(localStorage.getItem(COOKIE_KEY))return;}catch(e){}setTimeout(()=>document.getElementById('cookieBar')?.classList.add('on'),1600);}
-document.getElementById('cookieAccept')?.addEventListener('click',()=>{try{localStorage.setItem(COOKIE_KEY,'accepted');}catch(e){}document.getElementById('cookieBar').classList.remove('on');toast('Préférences enregistrées.');});
-document.getElementById('cookieDecline')?.addEventListener('click',()=>{try{localStorage.setItem(COOKIE_KEY,'declined');}catch(e){}document.getElementById('cookieBar').classList.remove('on');});
+// ── COOKIES — panneau détaillé ──
+function loadCookieChoice(){try{const raw=localStorage.getItem(COOKIE_KEY);if(raw)cookieChoice=Object.assign({essential:true,video:true,media:true},JSON.parse(raw));}catch(e){}}
+function saveCookieChoice(){try{localStorage.setItem(COOKIE_KEY,JSON.stringify(cookieChoice));}catch(e){}}
+function initCookieBar(){
+  let hasChoice=false;try{hasChoice=!!localStorage.getItem(COOKIE_KEY);}catch(e){}
+  document.getElementById('cookieVideoToggle').checked=cookieChoice.video;
+  document.getElementById('cookieMediaToggle').checked=cookieChoice.media;
+  if(hasChoice)return;
+  setTimeout(()=>document.getElementById('cookieBar')?.classList.add('on'),1600);
+}
+function applyCookieChoiceAndRerender(){renderGrid();if(currentRec)renderIngr(currentRec);if(cookieChoice.video)initHeroVideo();else{const v=document.getElementById('heroVideo');if(v){v.pause();v.classList.remove('ready');v.removeAttribute('src');v.load();}}}
+document.getElementById('cookieAccept')?.addEventListener('click',()=>{cookieChoice={essential:true,video:true,media:true};saveCookieChoice();document.getElementById('cookieVideoToggle').checked=true;document.getElementById('cookieMediaToggle').checked=true;document.getElementById('cookieBar').classList.remove('on');toast('Préférences enregistrées.');applyCookieChoiceAndRerender();});
+document.getElementById('cookieSave')?.addEventListener('click',()=>{cookieChoice.video=document.getElementById('cookieVideoToggle').checked;cookieChoice.media=document.getElementById('cookieMediaToggle').checked;saveCookieChoice();document.getElementById('cookieBar').classList.remove('on');toast('Préférences enregistrées.');applyCookieChoiceAndRerender();});
+document.getElementById('cookieDecline')?.addEventListener('click',()=>{cookieChoice={essential:true,video:false,media:false};saveCookieChoice();document.getElementById('cookieVideoToggle').checked=false;document.getElementById('cookieMediaToggle').checked=false;document.getElementById('cookieBar').classList.remove('on');applyCookieChoiceAndRerender();});
 
 // ── INIT ──
 (async()=>{
   try{initTheme();}catch(e){}
   try{loadCustomImages();}catch(e){}
+  try{loadCookieChoice();}catch(e){}
   try{buildThemes();}catch(e){}
   try{setupCensorship();}catch(e){}
-  try{initHeroVideo();}catch(e){console.error('video:',e);}
   try{initCookieBar();}catch(e){}
+  if(cookieChoice.video){try{initHeroVideo();}catch(e){console.error('video:',e);}}
   updateOfflineBadge();
   await Promise.allSettled([initAuth(),loadRemoteImages()]);
   await loadData();
@@ -1650,5 +1835,3 @@ document.getElementById('cookieDecline')?.addEventListener('click',()=>{try{loca
 </script>
 </body>
 </html>
-
-
