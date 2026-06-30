@@ -105,6 +105,7 @@ body.dark .nav-user-btn{background:rgba(255,255,255,.07);}
 .btn-accent{background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;box-shadow:0 10px 28px rgba(155,123,69,.24);}
 .btn-accent:hover{box-shadow:0 16px 40px rgba(155,123,69,.34);}
 .btn-dark{background:var(--charcoal);color:white;}
+.btn-ghost{background:transparent;color:var(--text-soft);border:none;text-decoration:underline;padding:.5rem .2rem;}
 .hero-stats{
   position:absolute;bottom:4.5vh;left:6vw;z-index:2;
   display:flex;border-radius:var(--radius-lg);overflow:hidden;
@@ -125,8 +126,27 @@ body.dark .nav-user-btn{background:rgba(255,255,255,.07);}
 .sec-sub{font-size:.86rem;color:var(--text-soft);line-height:1.82;max-width:440px;margin:.7rem auto 0;}
 .sec-line{width:36px;height:1px;background:var(--accent-light);margin:1.1rem auto 0;}
 
+/* ── SEMAINE / IDÉES (mise en avant) ── */
+.spot-wrap{max-width:1400px;margin:0 auto 3rem;}
+.spot-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.1rem;flex-wrap:wrap;}
+.spot-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--text);}
+.spot-title em{color:var(--accent);font-style:italic;}
+.spot-sub{font-size:.74rem;color:var(--text-soft);}
+.spot-scroll{display:flex;gap:1.1rem;overflow-x:auto;padding-bottom:.6rem;scroll-snap-type:x proximity;}
+.spot-scroll::-webkit-scrollbar{height:4px;}
+.spot-card{flex:0 0 auto;width:280px;scroll-snap-align:start;background:var(--dark);border-radius:var(--radius-lg);
+  overflow:hidden;cursor:pointer;position:relative;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease);}
+.spot-card:hover{transform:translateY(-4px);}
+.spot-card-img{height:170px;position:relative;overflow:hidden;}
+.spot-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.spot-card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,5,3,.7),transparent 60%);}
+.spot-card-tag{position:absolute;bottom:.6rem;left:.8rem;color:rgba(255,255,255,.9);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;z-index:1;}
+.spot-card-body{padding:.85rem 1rem 1.05rem;}
+.spot-card-body h4{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:#F0EDE8;line-height:1.2;}
+.spot-card-body span{font-size:.68rem;color:rgba(240,237,232,.45);display:block;margin-top:.25rem;}
+
 /* ── SEARCH / FILTER BAR ── */
-.recipes-toolbar{max-width:1400px;margin:0 auto 2rem;display:flex;align-items:stretch;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.recipes-toolbar{max-width:1400px;margin:0 auto 1.2rem;display:flex;align-items:stretch;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .add-banner{
   background:white;border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:1.6rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex:1;
@@ -141,11 +161,36 @@ body.dark .search-field{background:rgba(22,22,22,.9);border-color:var(--border);
 .search-field input{border:none;background:transparent;outline:none;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--text);width:100%;}
 .search-field input::placeholder{color:var(--text-soft);opacity:.55;}
 .search-count{font-size:.62rem;color:var(--text-soft);}
-.themes-bar{max-width:1400px;margin:0 auto 2rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;}
+.themes-bar{max-width:1400px;margin:0 auto .9rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;}
 .theme-pill{display:inline-flex;align-items:center;background:white;border:1px solid var(--border);
   border-radius:50px;padding:.32rem .85rem;font-size:.68rem;color:var(--text);cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:var(--shadow-sm);}
 body.dark .theme-pill{background:rgba(22,22,22,.9);}
 .theme-pill:hover,.theme-pill.active{background:var(--accent);color:white;border-color:var(--accent);box-shadow:0 4px 14px rgba(155,123,69,.28);}
+
+.filters-bar{max-width:1400px;margin:0 auto 2rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+.filter-toggle-btn{display:inline-flex;align-items:center;gap:.4rem;background:white;border:1px solid var(--border);
+  border-radius:50px;padding:.4rem .95rem;font-size:.68rem;letter-spacing:.06em;color:var(--text);cursor:pointer;box-shadow:var(--shadow-sm);}
+body.dark .filter-toggle-btn{background:rgba(22,22,22,.9);}
+.filter-toggle-btn.active{background:var(--charcoal);color:var(--cream);border-color:var(--charcoal);}
+.filters-panel{display:none;max-width:1400px;margin:0 auto 1.6rem;background:white;border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:1.3rem 1.5rem;box-shadow:var(--shadow-sm);}
+body.dark .filters-panel{background:rgba(22,22,22,.9);}
+.filters-panel.open{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.1rem;}
+.filter-group{display:flex;flex-direction:column;gap:.5rem;}
+.filter-group-label{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+.filter-chip-row{display:flex;gap:.35rem;flex-wrap:wrap;}
+.filter-chip{background:var(--beige);border:1px solid var(--border);border-radius:50px;padding:.28rem .7rem;
+  font-size:.66rem;color:var(--text);cursor:pointer;transition:all .15s;}
+body.dark .filter-chip{background:#191919;}
+.filter-chip.active{background:var(--accent);color:white;border-color:var(--accent);}
+.filters-clear{grid-column:1/-1;display:flex;justify-content:flex-end;}
+.filters-clear button{background:none;border:none;color:var(--text-soft);font-size:.68rem;text-decoration:underline;cursor:pointer;}
+.ingr-search-row{display:flex;gap:.5rem;align-items:center;margin-top:.2rem;}
+.ingr-search-row input{flex:1;background:var(--beige);border:1px solid var(--border);border-radius:50px;padding:.4rem .9rem;font-size:.74rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;}
+body.dark .ingr-search-row input{background:#191919;}
+.ingr-chip-list{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.5rem;}
+.ingr-chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--accent);color:white;border-radius:50px;padding:.2rem .55rem .2rem .65rem;font-size:.65rem;}
+.ingr-chip span{cursor:pointer;opacity:.8;}
 
 /* ── RECIPE GRID : 2 columns minimum on desktop ── */
 .recipe-grid{
@@ -370,7 +415,34 @@ body.dark .auth-modal{background:#0f0f0f;}
 .magic-sent{text-align:center;padding:.7rem 0;}
 .magic-back{font-size:.68rem;color:var(--text-soft);cursor:pointer;text-decoration:underline;margin-top:.85rem;display:inline-block;}
 
-/* ── ONBOARDING ── */
+/* ── ONBOARDING — 3 écrans plein écran (DA originale) ── */
+.intro-overlay{position:fixed;inset:0;z-index:500;background:var(--cream);display:none;flex-direction:column;}
+.intro-overlay.open{display:flex;}
+body.dark .intro-overlay{background:var(--dark);}
+.intro-topbar{display:flex;align-items:center;justify-content:center;padding:1.4rem 1.4rem .4rem;position:relative;}
+.intro-logo{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--accent);}
+.intro-logo .logo-mark{width:28px;height:28px;font-size:.62rem;}
+.intro-skip{position:absolute;right:1.4rem;top:1.4rem;background:none;border:none;color:var(--text-soft);font-size:.68rem;letter-spacing:.08em;cursor:pointer;text-decoration:underline;}
+.intro-slides{flex:1;position:relative;overflow:hidden;}
+.intro-slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;text-align:center;
+  padding:1.2rem 7vw 1rem;animation:fadeUp .32s var(--ease);}
+.intro-slide.active{display:flex;}
+.intro-slide h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,4vw,2.3rem);font-weight:500;color:var(--text);margin:1.1rem 0 .7rem;}
+.intro-slide p{font-size:.86rem;color:var(--text-soft);line-height:1.8;max-width:380px;}
+.intro-slide p strong{color:var(--accent);font-weight:500;}
+.intro-illus{width:min(320px,72vw);height:min(320px,40vh);margin-top:1rem;}
+.intro-illus svg{width:100%;height:100%;}
+.intro-actions-final{display:flex;flex-direction:column;gap:.6rem;width:min(320px,80vw);margin-top:1.6rem;}
+.intro-actions-final .btn{justify-content:center;}
+.intro-bottombar{padding:1.2rem 1.4rem 2.2rem;display:flex;align-items:center;justify-content:space-between;}
+.intro-back{background:none;border:none;color:var(--text-soft);font-size:.74rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;}
+.intro-back:disabled{visibility:hidden;}
+.intro-next{background:none;border:none;color:var(--accent);font-size:.74rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;font-weight:500;}
+.intro-dots{display:flex;gap:.4rem;}
+.intro-dot{width:7px;height:7px;border-radius:50%;background:var(--border-strong);transition:all .25s;}
+.intro-dot.active{background:var(--accent);width:18px;border-radius:4px;}
+
+/* ── ONBOARDING (profil obligatoire post-inscription) ── */
 .onboard-modal{background:white;max-width:470px;border-radius:var(--radius-lg);overflow:hidden;}
 body.dark .onboard-modal{background:#0f0f0f;}
 .onboard-head{background:linear-gradient(135deg,#0B0B0B,#1a1208);padding:2rem 2rem 1.7rem;}
@@ -396,7 +468,7 @@ body.dark .avatar-src-btn{background:rgba(20,20,20,.9);}
 body.dark .avatar-cam-badge{border-color:#0f0f0f;}
 
 /* ── PROFIL ── */
-.profile-modal{background:white;max-width:640px;border-radius:var(--radius-lg);overflow:hidden;}
+.profile-modal{background:white;max-width:680px;border-radius:var(--radius-lg);overflow:hidden;}
 body.dark .profile-modal{background:#0f0f0f;}
 .profile-head{background:linear-gradient(135deg,#0B0B0B,#1a1208);padding:2rem 2rem 3.2rem;text-align:center;}
 .profile-avatar{width:78px;height:78px;border-radius:50%;object-fit:cover;border:3px solid var(--accent-light);display:block;margin:0 auto;}
@@ -410,13 +482,40 @@ body.dark .profile-stats{background:#0f0f0f;}
 .profile-stat:last-child{border-right:none;}
 .profile-stat .n{font-family:'Cormorant Garamond',serif;font-size:1.55rem;color:var(--accent);}
 .profile-stat .l{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);margin-top:.12rem;}
+.profile-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--beige);}
+body.dark .profile-tabs{background:#141414;}
+.profile-tab{flex:0 0 auto;padding:.75rem 1.1rem;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  color:var(--text-soft);border:none;background:none;border-bottom:2px solid transparent;font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.profile-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
 .profile-body{padding:1.6rem 2rem;background:white;}
 body.dark .profile-body{background:#0f0f0f;}
+.profile-pane{display:none;}
+.profile-pane.active{display:block;}
 .profile-rec-row{display:flex;align-items:center;gap:.85rem;padding:.75rem 0;border-bottom:1px solid rgba(226,217,200,.3);cursor:pointer;}
 .profile-rec-thumb{width:42px;height:42px;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0;}
 .profile-rec-info{flex:1;}
 .profile-rec-name{font-size:.86rem;font-weight:500;color:var(--text);}
 .profile-rec-meta{font-size:.68rem;color:var(--text-soft);margin-top:.1rem;}
+.pref-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--border);}
+.pref-toggle-row:last-child{border-bottom:none;}
+.pref-toggle-row .pt-label{font-size:.82rem;color:var(--text);}
+.pref-toggle-row .pt-sub{font-size:.66rem;color:var(--text-soft);margin-top:.1rem;}
+.pswitch{position:relative;width:38px;height:21px;flex-shrink:0;}
+.pswitch input{opacity:0;width:0;height:0;}
+.pswitch-track{position:absolute;inset:0;background:var(--border-strong);border-radius:20px;cursor:pointer;transition:background .2s;}
+.pswitch-track::before{content:'';position:absolute;width:15px;height:15px;left:3px;top:3px;background:white;border-radius:50%;transition:transform .2s;}
+.pswitch input:checked + .pswitch-track{background:var(--accent);}
+.pswitch input:checked + .pswitch-track::before{transform:translateX(17px);}
+.equip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;}
+.equip-chip{display:flex;flex-direction:column;align-items:center;gap:.4rem;background:var(--beige);border:1px solid var(--border);
+  border-radius:var(--radius);padding:.85rem .5rem;cursor:pointer;text-align:center;transition:all .15s;}
+body.dark .equip-chip{background:#191919;}
+.equip-chip.active{background:var(--accent);border-color:var(--accent);color:white;}
+.equip-chip svg{width:22px;height:22px;}
+.equip-chip span{font-size:.66rem;}
+.profile-section-title{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:.55rem;margin-bottom:.9rem;}
+.danger-zone{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--border);}
+.danger-zone .btn-danger-link{background:none;border:none;color:var(--danger);font-size:.74rem;text-decoration:underline;cursor:pointer;}
 
 /* ── ADMIN ── */
 .login-box{background:white;max-width:350px;border-radius:var(--radius-lg);padding:2rem;text-align:center;}
@@ -655,6 +754,7 @@ svg.icon{display:block;}
   .ingr-visual-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.55rem;}
   .ingr-card-img{width:56px;height:56px;}
   .cookie-bar{bottom:calc(var(--mob-nav-h) + .6rem);width:calc(100vw - 1.6rem);border-radius:var(--radius);padding:1.2rem 1.3rem;}
+  .spot-card{width:240px;}
 }
 @media(min-width:500px) and (max-width:768px){
   .recipe-grid{grid-template-columns:repeat(2,1fr);}
@@ -767,6 +867,25 @@ svg.icon{display:block;}
     <p class="sec-sub">Mille places à table. Chaque recette est un cadeau fait à tous.</p>
     <div class="sec-line"></div>
   </div>
+
+  <!-- Recettes de la semaine -->
+  <div class="spot-wrap" id="weekSpotWrap" style="display:none;">
+    <div class="spot-head">
+      <div class="spot-title">La sélection de la <em>semaine</em></div>
+      <div class="spot-sub">Mise en avant · renouvelée régulièrement</div>
+    </div>
+    <div class="spot-scroll" id="weekSpotScroll"></div>
+  </div>
+
+  <!-- Le plein d'idées -->
+  <div class="spot-wrap" id="ideaSpotWrap" style="display:none;">
+    <div class="spot-head">
+      <div class="spot-title">Le plein <em>d'idées</em></div>
+      <div class="spot-sub" id="ideaSpotSub"></div>
+    </div>
+    <div class="spot-scroll" id="ideaSpotScroll"></div>
+  </div>
+
   <div class="recipes-toolbar">
     <div class="add-banner">
       <div>
@@ -785,6 +904,60 @@ svg.icon{display:block;}
   </div>
   <div class="themes-bar" id="themesBar">
     <span style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-soft);margin-right:.2rem;">Thèmes :</span>
+  </div>
+  <div class="filters-bar">
+    <button class="filter-toggle-btn" id="filtersToggleBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+      Filtres avancés
+    </button>
+    <button class="filter-toggle-btn" id="ingrFilterToggleBtn">Recherche par ingrédients</button>
+  </div>
+  <div class="filters-panel" id="filtersPanel">
+    <div class="filter-group">
+      <span class="filter-group-label">Temps de préparation</span>
+      <div class="filter-chip-row" data-filter="temps">
+        <span class="filter-chip" data-val="rapide">- de 20 min</span>
+        <span class="filter-chip" data-val="moyen">20 - 45 min</span>
+        <span class="filter-chip" data-val="long">+ de 45 min</span>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Difficulté</span>
+      <div class="filter-chip-row" data-filter="difficulte">
+        <span class="filter-chip" data-val="Facile">Facile</span>
+        <span class="filter-chip" data-val="Intermédiaire">Intermédiaire</span>
+        <span class="filter-chip" data-val="Avancé">Avancé</span>
+        <span class="filter-chip" data-val="Expert">Expert</span>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Saison</span>
+      <div class="filter-chip-row" data-filter="saison">
+        <span class="filter-chip" data-val="printemps">Printemps</span>
+        <span class="filter-chip" data-val="ete">Été</span>
+        <span class="filter-chip" data-val="automne">Automne</span>
+        <span class="filter-chip" data-val="hiver">Hiver</span>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-group-label">Budget estimé</span>
+      <div class="filter-chip-row" data-filter="budget">
+        <span class="filter-chip" data-val="eco">Économique</span>
+        <span class="filter-chip" data-val="moyen">Modéré</span>
+        <span class="filter-chip" data-val="genereux">Généreux</span>
+      </div>
+    </div>
+    <div class="filters-clear"><button id="filtersClearBtn">Réinitialiser les filtres</button></div>
+  </div>
+  <div class="filters-panel" id="ingrFilterPanel">
+    <div class="filter-group" style="grid-column:1/-1;">
+      <span class="filter-group-label">Ingrédients que vous avez sous la main</span>
+      <div class="ingr-search-row">
+        <input type="text" id="ingrFilterInput" placeholder="ex. tomates, ail, basilic…" autocomplete="off">
+        <button class="btn btn-accent" id="ingrFilterAddBtn" style="font-size:.66rem;padding:.5rem .9rem;">Ajouter</button>
+      </div>
+      <div class="ingr-chip-list" id="ingrChipList"></div>
+    </div>
   </div>
   <div class="recipe-grid" id="recipeGrid">
     <div style="grid-column:1/-1;text-align:center;padding:4rem;"><div class="spinner"></div></div>
@@ -852,6 +1025,123 @@ svg.icon{display:block;}
     <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Tout accepter</button>
     <button class="cookie-btn cookie-btn-save" id="cookieSave">Enregistrer mes choix</button>
     <button class="cookie-btn cookie-btn-decline" id="cookieDecline">Tout refuser</button>
+  </div>
+</div>
+
+<!-- ── ONBOARDING 3 ÉCRANS (DA originale, non liée à Marmiton) ── -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-topbar">
+    <div class="intro-logo"><div class="logo-mark">LD</div>Les Délices Partagées</div>
+    <button class="intro-skip" id="introSkip">Passer</button>
+  </div>
+  <div class="intro-slides">
+
+    <!-- Slide 1 : Le plein d'idées -->
+    <div class="intro-slide active" data-slide="0">
+      <div class="intro-illus">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="160" cy="168" r="128" fill="#F2EDE4"/>
+          <ellipse cx="160" cy="270" rx="92" ry="10" fill="#E4D9C4" opacity=".5"/>
+          <!-- livre de recettes ouvert -->
+          <g transform="translate(70,118)">
+            <path d="M10 12 Q90 -8 90 18 L90 132 Q10 110 10 132 Z" fill="#fff" stroke="#C9A76A" stroke-width="2"/>
+            <path d="M170 12 Q90 -8 90 18 L90 132 Q170 110 170 132 Z" fill="#fff" stroke="#C9A76A" stroke-width="2"/>
+            <line x1="28" y1="34" x2="74" y2="26" stroke="#E4D9C4" stroke-width="4" stroke-linecap="round"/>
+            <line x1="28" y1="50" x2="74" y2="42" stroke="#E4D9C4" stroke-width="4" stroke-linecap="round"/>
+            <line x1="28" y1="66" x2="74" y2="58" stroke="#E4D9C4" stroke-width="4" stroke-linecap="round"/>
+            <line x1="106" y1="26" x2="152" y2="34" stroke="#E4D9C4" stroke-width="4" stroke-linecap="round"/>
+            <line x1="106" y1="42" x2="152" y2="50" stroke="#E4D9C4" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="130" cy="80" r="22" fill="#FBF1DE" stroke="#C9A76A" stroke-width="2"/>
+            <path d="M118 80 a12 12 0 0 1 24 0" fill="none" stroke="#9b7b45" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <!-- étoiles flottantes -->
+          <g fill="#C9A76A">
+            <path d="M244 90 l4 9 9 1 -7 6 2 9 -8-5 -8 5 2-9 -7-6 9-1z"/>
+            <path d="M70 70 l3 7 7 1 -5 5 1 7 -6-4 -6 4 1-7 -5-5 7-1z" opacity=".7"/>
+          </g>
+          <g stroke="#9b7b45" stroke-width="2.4" stroke-linecap="round" fill="none">
+            <path d="M252 190 q14 8 6 24"/>
+            <path d="M60 200 q-14 6 -8 22"/>
+          </g>
+        </svg>
+      </div>
+      <h2>Le plein d'<em style="font-style:italic;color:var(--accent)">idées</em></h2>
+      <p>Parcourez des recettes pour toutes les envies — <strong>du quotidien comme des grandes occasions</strong>, classées par thème et par saison.</p>
+    </div>
+
+    <!-- Slide 2 : Gagnez du temps -->
+    <div class="intro-slide" data-slide="1">
+      <div class="intro-illus">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="160" cy="168" r="128" fill="#F2EDE4"/>
+          <ellipse cx="160" cy="270" rx="92" ry="10" fill="#E4D9C4" opacity=".5"/>
+          <!-- panier de courses stylisé -->
+          <g transform="translate(95,110)">
+            <path d="M10 40 L120 40 L108 130 Q65 142 22 130 Z" fill="#fff" stroke="#C9A76A" stroke-width="2.5"/>
+            <path d="M30 40 L48 6" stroke="#9b7b45" stroke-width="3" stroke-linecap="round"/>
+            <path d="M100 40 L82 6" stroke="#9b7b45" stroke-width="3" stroke-linecap="round"/>
+            <line x1="34" y1="58" x2="42" y2="116" stroke="#E4D9C4" stroke-width="3"/>
+            <line x1="65" y1="58" x2="65" y2="118" stroke="#E4D9C4" stroke-width="3"/>
+            <line x1="96" y1="58" x2="88" y2="116" stroke="#E4D9C4" stroke-width="3"/>
+            <circle cx="44" cy="30" r="9" fill="#C9A76A"/>
+            <circle cx="62" cy="22" r="11" fill="#9b7b45"/>
+            <circle cx="82" cy="30" r="9" fill="#D6C2A8"/>
+          </g>
+          <!-- horloge -->
+          <g transform="translate(208,84)">
+            <circle r="30" fill="#fff" stroke="#9b7b45" stroke-width="2.5"/>
+            <line x1="0" y1="0" x2="0" y2="-17" stroke="#9b7b45" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="0" y1="0" x2="12" y2="6" stroke="#9b7b45" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <g stroke="#C9A76A" stroke-width="2" stroke-linecap="round">
+            <path d="M40 70 q-10 10 0 20"/>
+            <path d="M270 200 q12 8 4 22"/>
+          </g>
+        </svg>
+      </div>
+      <h2>Gagnez du <em style="font-style:italic;color:var(--accent)">temps</em></h2>
+      <p>Composez votre <strong>liste de courses</strong> en un instant à partir des recettes que vous aimez, et organisez votre semaine sans y penser.</p>
+    </div>
+
+    <!-- Slide 3 : Rejoignez la communauté -->
+    <div class="intro-slide" data-slide="2">
+      <div class="intro-illus">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="160" cy="168" r="128" fill="#F2EDE4"/>
+          <ellipse cx="160" cy="270" rx="92" ry="10" fill="#E4D9C4" opacity=".5"/>
+          <!-- table partagée avec assiettes -->
+          <ellipse cx="160" cy="186" rx="86" ry="30" fill="#fff" stroke="#C9A76A" stroke-width="2.5"/>
+          <circle cx="116" cy="172" r="16" fill="#FBF1DE" stroke="#C9A76A" stroke-width="2"/>
+          <circle cx="160" cy="166" r="20" fill="#FBF1DE" stroke="#9b7b45" stroke-width="2.5"/>
+          <circle cx="204" cy="172" r="16" fill="#FBF1DE" stroke="#C9A76A" stroke-width="2"/>
+          <path d="M152 158 a8 6 0 0 1 16 0" fill="none" stroke="#C9A76A" stroke-width="2"/>
+          <!-- mains qui se rejoignent -->
+          <path d="M70 220 Q100 196 140 206" fill="none" stroke="#9b7b45" stroke-width="6" stroke-linecap="round"/>
+          <path d="M250 220 Q220 196 180 206" fill="none" stroke="#C9A76A" stroke-width="6" stroke-linecap="round"/>
+          <g fill="#9b7b45">
+            <path d="M96 96 c0 -14 22 -14 22 0 c0 12 -22 24 -22 24 s-22 -12 -22 -24 c0 -14 22 -14 22 0z" opacity=".85"/>
+          </g>
+          <g fill="#C9A76A">
+            <path d="M236 110 c0 -10 16 -10 16 0 c0 9 -16 17 -16 17 s-16 -8 -16 -17 c0 -10 16 -10 16 0z" opacity=".75"/>
+          </g>
+        </svg>
+      </div>
+      <h2>Rejoignez la <em style="font-style:italic;color:var(--accent)">communauté</em></h2>
+      <p>Créez votre carnet pour <strong>conserver vos recettes favorites</strong> et partager les vôtres avec tous les membres.</p>
+      <div class="intro-actions-final">
+        <button class="btn btn-accent" id="introCreateBtn">Créer un compte</button>
+        <button class="btn btn-outline" id="introLoginBtn" style="color:var(--text);border-color:var(--border);background:transparent;">Se connecter</button>
+        <button class="btn-ghost" id="introSkipFinal">Continuer sans compte</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="intro-bottombar" id="introBottombar">
+    <button class="intro-back" id="introBack" disabled>← Précédent</button>
+    <div class="intro-dots" id="introDots">
+      <span class="intro-dot active"></span><span class="intro-dot"></span><span class="intro-dot"></span>
+    </div>
+    <button class="intro-next" id="introNext">Suivant →</button>
   </div>
 </div>
 
@@ -946,6 +1236,10 @@ svg.icon{display:block;}
       <div class="f-grid">
         <div class="f-group"><label class="f-label">Temps de cuisson</label><input type="text" class="f-input" id="fCuisson" placeholder="ex. 30 min" maxlength="30"></div>
         <div class="f-group"><label class="f-label">Difficulté</label><select class="f-select" id="fDiff"><option>Facile</option><option selected>Intermédiaire</option><option>Avancé</option><option>Expert</option></select></div>
+      </div>
+      <div class="f-grid">
+        <div class="f-group"><label class="f-label">Saison</label><select class="f-select" id="fSaison"><option value="">— Choisir —</option><option value="printemps">Printemps</option><option value="ete">Été</option><option value="automne">Automne</option><option value="hiver">Hiver</option><option value="toute">Toute l'année</option></select></div>
+        <div class="f-group"><label class="f-label">Budget estimé</label><select class="f-select" id="fBudget"><option value="">— Choisir —</option><option value="eco">Économique</option><option value="moyen">Modéré</option><option value="genereux">Généreux</option></select></div>
       </div>
       <div class="f-group"><label class="f-label">Catégorie</label><select class="f-select" id="fCategorie"><option value="">— Choisir —</option><option>Gâteaux &amp; desserts</option><option>Pâtes &amp; riz</option><option>Viandes</option><option>Poissons &amp; fruits de mer</option><option>Soupes &amp; veloutés</option><option>Salades</option><option>Entrées</option><option>Pizza &amp; tartes salées</option><option>Végétarien</option><option>Apéritifs</option><option>Petit-déjeuner</option><option>Sauces &amp; condiments</option><option>Pains &amp; viennoiseries</option><option>Plats du monde</option></select></div>
       <div class="f-group"><label class="f-label">Description <em>*</em></label><textarea class="f-textarea" id="fDesc" rows="2" placeholder="Quelques mots pour présenter votre recette…" maxlength="500"></textarea><div class="bad-warn" id="warnDesc"></div></div>
@@ -1088,7 +1382,7 @@ svg.icon{display:block;}
   </div>
 </div>
 
-<!-- ── ONBOARDING ── -->
+<!-- ── ONBOARDING (finalisation profil après inscription) ── -->
 <div class="overlay" id="onboardOverlay">
   <div class="onboard-modal modal">
     <div class="onboard-head">
@@ -1146,9 +1440,73 @@ svg.icon{display:block;}
       <div class="profile-stat"><div class="n" id="profStatV">0</div><div class="l">Vues</div></div>
       <div class="profile-stat"><div class="n" id="profStatA">—</div><div class="l">Ans</div></div>
     </div>
+    <div class="profile-tabs" id="profileTabs">
+      <button class="profile-tab active" data-ptab="recettes">Mes recettes</button>
+      <button class="profile-tab" data-ptab="infos">Mes informations</button>
+      <button class="profile-tab" data-ptab="foyer">Mon foyer</button>
+      <button class="profile-tab" data-ptab="prefs">Préférences alimentaires</button>
+      <button class="profile-tab" data-ptab="cuisine">Ma cuisine</button>
+      <button class="profile-tab" data-ptab="params">Paramètres</button>
+    </div>
     <div class="profile-body">
-      <div style="font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:.55rem;margin-bottom:.9rem;">Mes recettes publiées</div>
-      <div id="profRecipes"></div>
+      <div class="profile-pane active" id="ptab-recettes">
+        <div id="profRecipes"></div>
+      </div>
+      <div class="profile-pane" id="ptab-infos">
+        <div class="profile-section-title">Mes informations</div>
+        <div class="f-group"><label class="f-label">Pseudo</label><input type="text" class="f-input" id="pfNom"></div>
+        <div class="f-group"><label class="f-label">Email</label><input type="email" class="f-input" id="pfEmail" disabled style="opacity:.6;"></div>
+        <div class="f-group"><label class="f-label">Âge</label><input type="number" class="f-input" id="pfAge" min="1" max="120"></div>
+        <div class="auth-err" id="pfInfosErr"></div>
+        <button class="btn btn-accent" id="pfInfosSave" style="font-size:.7rem;">Enregistrer</button>
+        <div class="danger-zone">
+          <span style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);display:block;margin-bottom:.5rem;">Mot de passe</span>
+          <span class="magic-back" onclick="closeModal('profileOverlay');authTab('login');authPane('pReset');openModal('authOverlay');document.getElementById('resetEmail').value=pfEmailVal();">Changer mon mot de passe</span>
+          <div class="danger-zone" style="margin-top:1.3rem;">
+            <span style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--danger);display:block;margin-bottom:.5rem;">Zone sensible</span>
+            <button class="btn-danger-link" id="pfDeleteAccount">Supprimer mon compte</button>
+          </div>
+        </div>
+      </div>
+      <div class="profile-pane" id="ptab-foyer">
+        <div class="profile-section-title">Mon foyer</div>
+        <div class="f-grid">
+          <div class="f-group"><label class="f-label">Adultes</label><input type="number" class="f-input" id="pfAdultes" min="1" max="20" value="2"></div>
+          <div class="f-group"><label class="f-label">Enfants</label><input type="number" class="f-input" id="pfEnfants" min="0" max="20" value="0"></div>
+        </div>
+        <p class="f-hint">Cette information nous permet de vous suggérer des quantités d'ingrédients adaptées quand vous ouvrez une recette.</p>
+        <button class="btn btn-accent" id="pfFoyerSave" style="font-size:.7rem;margin-top:.6rem;">Enregistrer</button>
+      </div>
+      <div class="profile-pane" id="ptab-prefs">
+        <div class="profile-section-title">Préférences alimentaires</div>
+        <div id="prefTogglesWrap"></div>
+        <button class="btn btn-accent" id="pfPrefsSave" style="font-size:.7rem;margin-top:1rem;">Enregistrer</button>
+      </div>
+      <div class="profile-pane" id="ptab-cuisine">
+        <div class="profile-section-title">Mes équipements</div>
+        <div class="equip-grid" id="equipGrid"></div>
+        <button class="btn btn-accent" id="pfEquipSave" style="font-size:.7rem;margin-top:1.1rem;">Enregistrer</button>
+      </div>
+      <div class="profile-pane" id="ptab-params">
+        <div class="profile-section-title">Paramètres de l'application</div>
+        <div class="pref-toggle-row">
+          <div><div class="pt-label">Newsletter</div><div class="pt-sub">Recevez nos nouveautés et inspirations</div></div>
+          <label class="pswitch"><input type="checkbox" id="pfNewsletter"><span class="pswitch-track"></span></label>
+        </div>
+        <div class="pref-toggle-row">
+          <div><div class="pt-label">Notifications</div><div class="pt-sub">Likes, commentaires et invitations de groupe</div></div>
+          <label class="pswitch"><input type="checkbox" id="pfNotifs" checked><span class="pswitch-track"></span></label>
+        </div>
+        <div class="pref-toggle-row">
+          <div><div class="pt-label">Thème sombre</div><div class="pt-sub">Confort visuel en soirée</div></div>
+          <label class="pswitch"><input type="checkbox" id="pfDarkSwitch"><span class="pswitch-track"></span></label>
+        </div>
+        <button class="btn btn-accent" id="pfParamsSave" style="font-size:.7rem;margin-top:1rem;">Enregistrer</button>
+        <div class="danger-zone">
+          <span style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);display:block;margin-bottom:.6rem;">Informations légales</span>
+          <p style="font-size:.76rem;color:var(--text-soft);line-height:1.7;">Conditions générales d'utilisation, politique de protection des données personnelles et mentions légales de Les Délices Partagées.</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1259,6 +1617,7 @@ const SITE=location.origin+location.pathname;
 const db=supabase.createClient(SB_URL,SB_KEY);
 const THEME_KEY='ldp_theme';const DRAFT_KEY='ldp_draft';const SOCIAL_KEY='ldp_social';
 const CUSTOM_IMG_KEY='ldp_imgs';const OFFLINE_QUEUE_KEY='ldp_offline_queue';const COOKIE_KEY='ldp_cookie_choice_v2';
+const INTRO_KEY='ldp_intro_seen_v1';const PREFS_KEY='ldp_prefs_local';
 
 let recipes=[],profiles={},members=[],user=null,profile=null,isAdmin=false;
 let groups=[],groupMembers=[],recipeGroups=[];
@@ -1272,12 +1631,16 @@ let cookieChoice={essential:true,video:true,media:true};
 let gSelectedMembers=[];
 let inviteContext=null;
 const _viewedIds=new Set();
+let activeFilters={temps:null,difficulte:null,saison:null,budget:null};
+let filterIngredients=[];
+let localPrefs={diet:{},equip:{},foyer:{adultes:2,enfants:0},newsletter:false,notifs:true};
 
 // ── THEME ──
 function applyTheme(t){
   document.body.classList.toggle('dark',t==='dark');
   document.getElementById('iconMoon').style.display=t==='dark'?'none':'block';
   document.getElementById('iconSun').style.display=t==='dark'?'block':'none';
+  const dsw=document.getElementById('pfDarkSwitch');if(dsw)dsw.checked=(t==='dark');
 }
 function initTheme(){let s='light';try{s=localStorage.getItem(THEME_KEY)||'light';}catch(e){}applyTheme(s);document.getElementById('themeToggle').addEventListener('click',()=>{const n=document.body.classList.contains('dark')?'light':'dark';try{localStorage.setItem(THEME_KEY,n);}catch(e){}applyTheme(n);});}
 
@@ -1290,6 +1653,7 @@ function openModal(id){document.getElementById(id).classList.add('open');documen
 function closeModal(id){document.getElementById(id).classList.remove('open');if(!document.querySelector('.overlay.open'))document.body.style.overflow='';}
 document.querySelectorAll('.overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id);}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=document.querySelector('.overlay.open');if(o&&o.id!=='loginOverlay')closeModal(o.id);}});
+function pfEmailVal(){return user?.email||'';}
 
 // ── HERO VIDEO (vidéo uniquement, plus de photo de secours) ──
 function initHeroVideo(){
@@ -1302,6 +1666,31 @@ function initHeroVideo(){
   video.addEventListener('canplay',()=>video.classList.add('ready'),{once:true});
   tryPlay();
 }
+
+/* ───────────────────── ONBOARDING — 3 ÉCRANS ───────────────────── */
+let introIndex=0;
+const introSlideCount=3;
+function introHasSeen(){try{return !!localStorage.getItem(INTRO_KEY);}catch(e){return true;}}
+function introMarkSeen(){try{localStorage.setItem(INTRO_KEY,'1');}catch(e){}}
+function showIntro(){
+  if(user)return; // utilisateur déjà connecté : pas d'onboarding
+  introIndex=0;updateIntroUI();
+  openModal('introOverlay');
+}
+function closeIntro(){introMarkSeen();closeModal('introOverlay');}
+function updateIntroUI(){
+  document.querySelectorAll('.intro-slide').forEach((el,i)=>el.classList.toggle('active',i===introIndex));
+  document.querySelectorAll('.intro-dot').forEach((el,i)=>el.classList.toggle('active',i===introIndex));
+  document.getElementById('introBack').disabled=(introIndex===0);
+  const bottombar=document.getElementById('introBottombar');
+  bottombar.style.display=(introIndex===introSlideCount-1)?'none':'flex';
+}
+document.getElementById('introSkip').addEventListener('click',closeIntro);
+document.getElementById('introSkipFinal').addEventListener('click',closeIntro);
+document.getElementById('introBack').addEventListener('click',()=>{if(introIndex>0){introIndex--;updateIntroUI();}});
+document.getElementById('introNext').addEventListener('click',()=>{if(introIndex<introSlideCount-1){introIndex++;updateIntroUI();}});
+document.getElementById('introCreateBtn').addEventListener('click',()=>{introMarkSeen();closeModal('introOverlay');authTab('signup');openModal('authOverlay');});
+document.getElementById('introLoginBtn').addEventListener('click',()=>{introMarkSeen();closeModal('introOverlay');authTab('login');openModal('authOverlay');});
 
 // ── MOBILE NAV ──
 function scrollToTop(){window.scrollTo({top:0,behavior:'smooth'});setMobActive('mobHome');}
@@ -1370,7 +1759,7 @@ const CENS=['fNom','fAuteur','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegi
 function setupCensorship(){CENS.forEach(id=>{const el=document.getElementById(id);if(!el)return;const wid='warn'+id.charAt(1).toUpperCase()+id.slice(2);const warn=document.getElementById(wid);el.addEventListener('input',function(){const bad=findBad(this.value);if(bad){this.classList.add('bad');if(warn){warn.textContent=`Mot interdit : "${bad}"`;warn.classList.add('on');}}else{this.classList.remove('bad');if(warn)warn.classList.remove('on');}});el.addEventListener('paste',function(e){const p=(e.clipboardData||window.clipboardData).getData('text');const bad=findBad(p);if(bad){e.preventDefault();banScreen(bad);}});});}
 
 // ── DRAFT ──
-const DRAFT_FIELDS=['fNom','fAuteur','fCouverts','fTemps','fCuisson','fDiff','fCategorie','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion','fGroupe'];
+const DRAFT_FIELDS=['fNom','fAuteur','fCouverts','fTemps','fCuisson','fDiff','fCategorie','fSaison','fBudget','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion','fGroupe'];
 function saveDraft(){if(editId)return;const d={};DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});if(photoB64&&photoB64.startsWith('data:'))d.__photo=photoB64;try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));}catch(e){}}
 function loadDraft(){try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return false;const d=JSON.parse(raw);let ok=false;DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]){el.value=d[id];if(d[id].trim())ok=true;}});if(d.__photo){photoB64=d.__photo;document.getElementById('photoPreview').src=d.__photo;document.getElementById('photoZone').classList.add('has-photo');ok=true;}return ok;}catch(e){return false;}}
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
@@ -1387,6 +1776,10 @@ window.addEventListener('online',()=>{updateOfflineBadge();processOfflineQueue()
 window.addEventListener('offline',updateOfflineBadge);
 setInterval(()=>{if(navigator.onLine&&getOfflineQueue().length)processOfflineQueue();},15000);
 
+// ── PREFS LOCALES (foyer / régime / équipements) ──
+function loadLocalPrefs(){try{const r=localStorage.getItem(PREFS_KEY);if(r)localPrefs=Object.assign(localPrefs,JSON.parse(r));}catch(e){}}
+function saveLocalPrefs(){try{localStorage.setItem(PREFS_KEY,JSON.stringify(localPrefs));}catch(e){}}
+
 // ── AUTH ──
 function authTab(t){document.querySelectorAll('.auth-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.auth-pane').forEach(x=>x.classList.remove('active'));document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');document.getElementById('p'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');}
 function authPane(id){document.querySelectorAll('.auth-pane').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');}
@@ -1399,7 +1792,7 @@ function updateAuthUI(){
   document.getElementById('mobProfileLabel').textContent=user?(profile?.nom||'Profil'):'Profil';
 }
 async function getProfile(uid){try{const{data,error}=await db.from('profils').select('*').eq('id',uid).single();if(error)return null;return data||null;}catch(e){return null;}}
-async function initAuth(){try{const{data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){profile=await getProfile(user.id);if(!profile)setTimeout(()=>openOnboarding(),600);}updateAuthUI();db.auth.onAuthStateChange(async(ev,sess)=>{try{const was=!!user;user=sess?.user||null;if(user){profile=await getProfile(user.id);if(ev==='SIGNED_IN'&&!was){closeModal('authOverlay');if(!profile)setTimeout(()=>openOnboarding(),400);else{toast('Bon retour !');await loadData();renderGrid();await loadGroups();}}}else profile=null;updateAuthUI();renderGrid();}catch(e){console.error('onAuthStateChange:',e);}});}catch(e){user=null;profile=null;updateAuthUI();}}
+async function initAuth(){try{const{data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){profile=await getProfile(user.id);if(!profile)setTimeout(()=>openOnboarding(),600);}else{if(!introHasSeen())setTimeout(()=>showIntro(),900);}updateAuthUI();db.auth.onAuthStateChange(async(ev,sess)=>{try{const was=!!user;user=sess?.user||null;if(user){profile=await getProfile(user.id);if(ev==='SIGNED_IN'&&!was){closeModal('authOverlay');if(!profile)setTimeout(()=>openOnboarding(),400);else{toast('Bon retour !');await loadData();renderGrid();await loadGroups();}}}else profile=null;updateAuthUI();renderGrid();}catch(e){console.error('onAuthStateChange:',e);}});}catch(e){user=null;profile=null;updateAuthUI();if(!introHasSeen())setTimeout(()=>showIntro(),900);}}
 
 document.getElementById('signupBtn').addEventListener('click',async()=>{const e=document.getElementById('signupEmail').value.trim(),p=document.getElementById('signupPwd').value,p2=document.getElementById('signupPwd2').value,err=document.getElementById('signupErr');err.className='auth-err';if(!e||!e.includes('@')){err.textContent='Email invalide.';err.className='auth-err on';return;}if(p.length<6){err.textContent='Mot de passe trop court (min. 6 caractères).';err.className='auth-err on';return;}if(p!==p2){err.textContent='Les mots de passe ne correspondent pas.';err.className='auth-err on';return;}const btn=document.getElementById('signupBtn');btn.disabled=true;btn.textContent='Création…';try{const{error}=await db.auth.signUp({email:e,password:p,options:{emailRedirectTo:SITE}});btn.disabled=false;btn.textContent='Créer mon compte';if(error){err.textContent=error.message==='User already registered'?'Ce compte existe déjà.':error.message;err.className='auth-err on';return;}document.getElementById('signupSentEmail').textContent=e;authPane('pSignupSent');}catch(e2){btn.disabled=false;btn.textContent='Créer mon compte';err.textContent='Erreur réseau. Réessayez.';err.className='auth-err on';}});
 document.getElementById('loginBtn').addEventListener('click',async()=>{const e=document.getElementById('loginEmail').value.trim(),p=document.getElementById('loginPwd').value,err=document.getElementById('loginErr');err.className='auth-err';if(!e||!p){err.textContent='Email et mot de passe requis.';err.className='auth-err on';return;}const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Connexion…';try{const{error}=await db.auth.signInWithPassword({email:e,password:p});btn.disabled=false;btn.textContent='Se connecter';if(error){err.textContent=error.message.includes('not confirmed')?'Email non vérifié.':'Identifiants incorrects.';err.className='auth-err on';}}catch(e2){btn.disabled=false;btn.textContent='Se connecter';err.textContent='Erreur réseau.';err.className='auth-err on';}});
@@ -1440,7 +1833,7 @@ function checkPseudoAvailable(val){
   },380);
 }
 
-// ── ONBOARDING ──
+// ── ONBOARDING (finalisation profil) ──
 document.getElementById('onboardBtn').addEventListener('click',async()=>{
   const nom=document.getElementById('onboardNom').value.trim(),age=parseInt(document.getElementById('onboardAge').value)||0,err=document.getElementById('onboardErr');
   err.className='auth-err';
@@ -1466,8 +1859,112 @@ document.getElementById('onboardBtn').addEventListener('click',async()=>{
 });
 function openOnboarding(){openModal('onboardOverlay');}
 
+/* ───────────────────── PROFIL — onglets étendus ───────────────────── */
+const DIET_OPTIONS=[
+  {k:'vegetarien',l:'Végétarien'},{k:'vegan',l:'Vegan'},{k:'sans_gluten',l:'Sans gluten'},
+  {k:'sans_lactose',l:'Sans lactose'},{k:'sans_fruits_a_coque',l:'Allergie fruits à coque'},
+  {k:'sans_porc',l:'Sans porc'},{k:'faible_sucre',l:'Faible en sucre'},{k:'pescetarien',l:'Pescétarien'}
+];
+const EQUIP_OPTIONS=[
+  {k:'four',l:'Four',svg:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="7" cy="8" r="1"/><rect x="5" y="11" width="14" height="7" rx="1"/>'},
+  {k:'robot',l:'Robot pâtissier',svg:'<rect x="6" y="10" width="12" height="9" rx="1"/><path d="M9 10V6a3 3 0 0 1 6 0"/>'},
+  {k:'micro_ondes',l:'Micro-ondes',svg:'<rect x="3" y="6" width="18" height="13" rx="1"/><rect x="6" y="9" width="9" height="7"/>'},
+  {k:'mixeur',l:'Mixeur',svg:'<path d="M7 3h10l-2 9H9z"/><rect x="9" y="12" width="6" height="9" rx="1"/>'},
+  {k:'cocotte',l:'Cocotte-minute',svg:'<ellipse cx="12" cy="14" rx="8" ry="5"/><path d="M4 14V9a8 4 0 0 1 16 0v5"/><circle cx="12" cy="6" r="1"/>'},
+  {k:'plancha',l:'Plancha / BBQ',svg:'<rect x="3" y="9" width="18" height="6" rx="1"/><path d="M6 9V6h12v3"/>'},
+  {k:'friteuse',l:'Friteuse',svg:'<path d="M5 9h14l-1 10H6z"/><path d="M9 9V6h6v3"/>'},
+  {k:'spatule',l:'Ustensiles de base',svg:'<path d="M6 3v8a3 3 0 0 0 6 0V3"/><line x1="9" y1="11" x2="9" y2="21"/><path d="M16 3c-2 2-2 6 0 8v10"/>'}
+];
+function renderPrefToggles(){
+  const wrap=document.getElementById('prefTogglesWrap');
+  wrap.innerHTML=DIET_OPTIONS.map(o=>`<div class="pref-toggle-row"><div class="pt-label">${esc(o.l)}</div><label class="pswitch"><input type="checkbox" data-diet="${o.k}" ${localPrefs.diet[o.k]?'checked':''}><span class="pswitch-track"></span></label></div>`).join('');
+}
+function renderEquipGrid(){
+  const grid=document.getElementById('equipGrid');
+  grid.innerHTML=EQUIP_OPTIONS.map(o=>`<div class="equip-chip${localPrefs.equip[o.k]?' active':''}" data-equip="${o.k}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${o.svg}</svg><span>${esc(o.l)}</span></div>`).join('');
+  grid.querySelectorAll('.equip-chip').forEach(chip=>chip.addEventListener('click',()=>chip.classList.toggle('active')));
+}
+document.getElementById('pfEquipSave').addEventListener('click',()=>{
+  document.querySelectorAll('#equipGrid .equip-chip').forEach(chip=>{localPrefs.equip[chip.dataset.equip]=chip.classList.contains('active');});
+  saveLocalPrefs();toast('Vos équipements ont été enregistrés.');
+});
+document.getElementById('pfPrefsSave').addEventListener('click',()=>{
+  document.querySelectorAll('#prefTogglesWrap input[data-diet]').forEach(inp=>{localPrefs.diet[inp.dataset.diet]=inp.checked;});
+  saveLocalPrefs();toast('Vos préférences alimentaires ont été enregistrées.');
+});
+document.getElementById('pfFoyerSave').addEventListener('click',()=>{
+  localPrefs.foyer.adultes=parseInt(document.getElementById('pfAdultes').value)||1;
+  localPrefs.foyer.enfants=parseInt(document.getElementById('pfEnfants').value)||0;
+  saveLocalPrefs();toast('Votre foyer a été mis à jour.');
+});
+document.getElementById('pfParamsSave').addEventListener('click',()=>{
+  localPrefs.newsletter=document.getElementById('pfNewsletter').checked;
+  localPrefs.notifs=document.getElementById('pfNotifs').checked;
+  saveLocalPrefs();
+  const wantDark=document.getElementById('pfDarkSwitch').checked;
+  const cur=document.body.classList.contains('dark');
+  if(wantDark!==cur){const n=wantDark?'dark':'light';try{localStorage.setItem(THEME_KEY,n);}catch(e){}applyTheme(n);}
+  toast('Paramètres enregistrés.');
+});
+document.getElementById('pfInfosSave').addEventListener('click',async()=>{
+  if(!user||!profile)return;
+  const nom=document.getElementById('pfNom').value.trim();const age=parseInt(document.getElementById('pfAge').value)||null;
+  const err=document.getElementById('pfInfosErr');err.className='auth-err';
+  if(!nom){err.textContent='Le pseudo ne peut pas être vide.';err.className='auth-err on';return;}
+  const bad=findBad(nom);if(bad){err.textContent='Ce pseudo contient un mot interdit.';err.className='auth-err on';return;}
+  try{
+    if(nom!==profile.nom){const{data:existing}=await db.from('profils').select('id').ilike('nom',nom).maybeSingle();if(existing&&existing.id!==user.id){err.textContent='Ce pseudo est déjà pris.';err.className='auth-err on';return;}}
+    const{error}=await db.from('profils').update({nom,age}).eq('id',user.id);
+    if(error)throw error;
+    profile=await getProfile(user.id);updateAuthUI();toast('Informations mises à jour.');
+  }catch(e){err.textContent='Erreur : '+(e.message||e);err.className='auth-err on';}
+});
+document.getElementById('pfDeleteAccount').addEventListener('click',async()=>{
+  if(!confirm('Supprimer définitivement votre compte et votre profil ? Cette action est irréversible.'))return;
+  try{
+    await db.from('profils').delete().eq('id',user.id);
+    await db.auth.signOut();
+    user=null;profile=null;updateAuthUI();closeModal('profileOverlay');renderGrid();
+    toast('Votre compte a été supprimé.');
+  }catch(e){toast('Erreur : '+(e.message||e));}
+});
+document.querySelectorAll('.profile-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.profile-pane').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('ptab-'+tab.dataset.ptab).classList.add('active');
+  });
+});
+
 // ── PROFIL ──
-function openProfile(){if(!user||!profile)return;const nom=profile.nom||user.email.split('@')[0];document.getElementById('profAvatarWrap').innerHTML=profile.avatar?`<img class="profile-avatar" src="${esc(profile.avatar)}" alt="">`:`<div class="profile-avatar-init">${nom[0].toUpperCase()}</div>`;document.getElementById('profName').textContent=nom;const since=new Date(profile.created_at||Date.now());document.getElementById('profSince').textContent='Membre depuis '+since.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});document.getElementById('profStatA').textContent=profile.age||'—';const mine=recipes.filter(r=>r.user_id===user.id);document.getElementById('profStatR').textContent=mine.length;document.getElementById('profStatV').textContent=mine.reduce((s,r)=>s+(r.views||0),0);document.getElementById('profRecipes').innerHTML=mine.length?mine.map(r=>`<div class="profile-rec-row"><img class="profile-rec-thumb" src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.src='${getDefaultImg(r.categorie)}'" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-info" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-name">${esc(r.nom)}</div><div class="profile-rec-meta">${esc(r.difficulte||'')} · ${esc(r.temps||'')}</div></div><select class="f-select" style="width:auto;padding:.28rem .52rem;font-size:.66rem;margin-right:.35rem;" onclick="event.stopPropagation()" onchange="event.stopPropagation();assignRecipeGroup('${r.id}',this.value)"><option value="">Aucun groupe</option>${groups.map(g=>`<option value="${g.id}" ${r.groupe_id===g.id?'selected':''}>${esc(g.name)}</option>`).join('')}</select><span style="font-size:.68rem;color:var(--accent);font-style:italic;white-space:nowrap;">vues : ${r.views||0}</span></div>`).join(''):`<div style="text-align:center;padding:1.8rem;color:var(--text-soft);">Pas encore de recette.<br><button class="btn btn-accent" style="margin-top:.85rem;font-size:.74rem;" onclick="closeModal('profileOverlay');openForm()">+ Partager une recette</button></div>`;openModal('profileOverlay');}
+function openProfile(){
+  if(!user||!profile)return;
+  const nom=profile.nom||user.email.split('@')[0];
+  document.getElementById('profAvatarWrap').innerHTML=profile.avatar?`<img class="profile-avatar" src="${esc(profile.avatar)}" alt="">`:`<div class="profile-avatar-init">${nom[0].toUpperCase()}</div>`;
+  document.getElementById('profName').textContent=nom;
+  const since=new Date(profile.created_at||Date.now());
+  document.getElementById('profSince').textContent='Membre depuis '+since.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+  document.getElementById('profStatA').textContent=profile.age||'—';
+  const mine=recipes.filter(r=>r.user_id===user.id);
+  document.getElementById('profStatR').textContent=mine.length;
+  document.getElementById('profStatV').textContent=mine.reduce((s,r)=>s+(r.views||0),0);
+  document.getElementById('profRecipes').innerHTML=mine.length?mine.map(r=>`<div class="profile-rec-row"><img class="profile-rec-thumb" src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.src='${getDefaultImg(r.categorie)}'" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-info" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-name">${esc(r.nom)}</div><div class="profile-rec-meta">${esc(r.difficulte||'')} · ${esc(r.temps||'')}</div></div><select class="f-select" style="width:auto;padding:.28rem .52rem;font-size:.66rem;margin-right:.35rem;" onclick="event.stopPropagation()" onchange="event.stopPropagation();assignRecipeGroup('${r.id}',this.value)"><option value="">Aucun groupe</option>${groups.map(g=>`<option value="${g.id}" ${r.groupe_id===g.id?'selected':''}>${esc(g.name)}</option>`).join('')}</select><span style="font-size:.68rem;color:var(--accent);font-style:italic;white-space:nowrap;">vues : ${r.views||0}</span></div>`).join(''):`<div style="text-align:center;padding:1.8rem;color:var(--text-soft);">Pas encore de recette.<br><button class="btn btn-accent" style="margin-top:.85rem;font-size:.74rem;" onclick="closeModal('profileOverlay');openForm()">+ Partager une recette</button></div>`;
+  // Onglets infos / foyer / params préremplis
+  document.getElementById('pfNom').value=profile.nom||'';
+  document.getElementById('pfEmail').value=user.email||'';
+  document.getElementById('pfAge').value=profile.age||'';
+  document.getElementById('pfAdultes').value=localPrefs.foyer.adultes;
+  document.getElementById('pfEnfants').value=localPrefs.foyer.enfants;
+  document.getElementById('pfNewsletter').checked=!!localPrefs.newsletter;
+  document.getElementById('pfNotifs').checked=localPrefs.notifs!==false;
+  document.getElementById('pfDarkSwitch').checked=document.body.classList.contains('dark');
+  renderPrefToggles();renderEquipGrid();
+  // reset au premier onglet
+  document.querySelectorAll('.profile-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('.profile-pane').forEach((p,i)=>p.classList.toggle('active',i===0));
+  openModal('profileOverlay');
+}
 async function assignRecipeGroup(recId,groupId){try{const{error}=await db.from('recettes').update({groupe_id:groupId||null}).eq('id',recId);if(error)throw error;recipes=recipes.map(r=>r.id===recId?{...r,groupe_id:groupId||null}:r);toast(groupId?'Recette ajoutée au groupe.':'Recette retirée du groupe.');renderGrid();}catch(e){toast('Erreur : '+(e.message||e));}}
 document.getElementById('profileClose').addEventListener('click',()=>closeModal('profileOverlay'));
 
@@ -1485,16 +1982,94 @@ const TKW={gateau:['gâteau','gateau','cake','madeleine','brownie','cookie','fon
 function matchTheme(r,k){if(!k)return true;const t=(r.nom+' '+(r.description||'')+' '+(r.categorie||'')).toLowerCase();const catmap={gateau:'gâteau',pates:'pate',viande:'viande',poisson:'poisson',vegeta:'végét',soupe:'soup',pizza:'pizza',dessert:'dessert',pain:'pain'};if(catmap[k]&&(r.categorie||'').toLowerCase().includes(catmap[k]))return true;return(TKW[k]||[]).some(kw=>t.includes(kw));}
 function buildThemes(){const bar=document.getElementById('themesBar'),lbl=bar.firstElementChild;bar.innerHTML='';bar.appendChild(lbl);THEMES.forEach(th=>{const btn=document.createElement('button');btn.className='theme-pill'+(activeTheme===th.k?' active':'');btn.textContent=th.l;btn.addEventListener('click',()=>{activeTheme=th.k;buildThemes();renderGrid();});bar.appendChild(btn);});}
 
+/* ── FILTRES AVANCÉS ── */
+function parseTempsMinutes(t){if(!t)return null;const m=String(t).match(/(\d+)/);return m?parseInt(m[1]):null;}
+function matchAdvancedFilters(r){
+  if(activeFilters.temps){
+    const mins=parseTempsMinutes(r.temps);
+    if(mins==null)return false;
+    if(activeFilters.temps==='rapide'&&!(mins<20))return false;
+    if(activeFilters.temps==='moyen'&&!(mins>=20&&mins<=45))return false;
+    if(activeFilters.temps==='long'&&!(mins>45))return false;
+  }
+  if(activeFilters.difficulte&&r.difficulte!==activeFilters.difficulte)return false;
+  if(activeFilters.saison&&r.saison&&r.saison!=='toute'&&r.saison!==activeFilters.saison)return false;
+  if(activeFilters.budget&&r.budget&&r.budget!==activeFilters.budget)return false;
+  if(filterIngredients.length){
+    const ingrText=imgNorm(r.ingredients||'');
+    const allFound=filterIngredients.every(fi=>ingrText.includes(imgNorm(fi)));
+    if(!allFound)return false;
+  }
+  return true;
+}
+document.getElementById('filtersToggleBtn').addEventListener('click',()=>{
+  const panel=document.getElementById('filtersPanel');
+  panel.classList.toggle('open');
+  document.getElementById('filtersToggleBtn').classList.toggle('active',panel.classList.contains('open'));
+  document.getElementById('ingrFilterPanel').classList.remove('open');
+  document.getElementById('ingrFilterToggleBtn').classList.remove('active');
+});
+document.getElementById('ingrFilterToggleBtn').addEventListener('click',()=>{
+  const panel=document.getElementById('ingrFilterPanel');
+  panel.classList.toggle('open');
+  document.getElementById('ingrFilterToggleBtn').classList.toggle('active',panel.classList.contains('open'));
+  document.getElementById('filtersPanel').classList.remove('open');
+  document.getElementById('filtersToggleBtn').classList.remove('active');
+});
+document.querySelectorAll('.filter-chip-row').forEach(row=>{
+  row.addEventListener('click',e=>{
+    const chip=e.target.closest('.filter-chip');if(!chip)return;
+    const key=row.dataset.filter;
+    const wasActive=chip.classList.contains('active');
+    row.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    if(!wasActive){chip.classList.add('active');activeFilters[key]=chip.dataset.val;}
+    else activeFilters[key]=null;
+    renderGrid();
+  });
+});
+document.getElementById('filtersClearBtn').addEventListener('click',()=>{
+  activeFilters={temps:null,difficulte:null,saison:null,budget:null};
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  renderGrid();
+});
+function addIngrFilter(){
+  const input=document.getElementById('ingrFilterInput');
+  const v=input.value.trim();
+  if(!v)return;
+  v.split(',').map(s=>s.trim()).filter(Boolean).forEach(ing=>{if(!filterIngredients.includes(ing))filterIngredients.push(ing);});
+  input.value='';renderIngrChips();renderGrid();
+}
+document.getElementById('ingrFilterAddBtn').addEventListener('click',addIngrFilter);
+document.getElementById('ingrFilterInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addIngrFilter();}});
+function renderIngrChips(){
+  document.getElementById('ingrChipList').innerHTML=filterIngredients.map((ing,i)=>`<span class="ingr-chip">${esc(ing)}<span onclick="removeIngrFilter(${i})">✕</span></span>`).join('');
+}
+function removeIngrFilter(i){filterIngredients.splice(i,1);renderIngrChips();renderGrid();}
+
+/* ── BLOCS "SEMAINE" / "IDÉES" ── */
+function renderSpotlights(){
+  if(!recipes.length){document.getElementById('weekSpotWrap').style.display='none';document.getElementById('ideaSpotWrap').style.display='none';return;}
+  const sortedByViews=[...recipes].sort((a,b)=>(b.views||0)-(a.views||0));
+  const week=sortedByViews.slice(0,8);
+  document.getElementById('weekSpotWrap').style.display=week.length?'block':'none';
+  document.getElementById('weekSpotScroll').innerHTML=week.map(r=>`<div class="spot-card" onclick="openRecipe('${r.id}')"><div class="spot-card-img"><img src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" loading="lazy" onerror="this.style.display='none'"><span class="spot-card-tag">${esc(r.categorie||'Sélection')}</span></div><div class="spot-card-body"><h4>${esc(r.nom)}</h4><span>${esc(r.temps||'')}</span></div></div>`).join('');
+  const shuffled=[...recipes].sort(()=>Math.random()-.5).slice(0,8);
+  document.getElementById('ideaSpotWrap').style.display=shuffled.length?'block':'none';
+  document.getElementById('ideaSpotSub').textContent=`${recipes.length} recette${recipes.length!==1?'s':''} pour toutes vos envies`;
+  document.getElementById('ideaSpotScroll').innerHTML=shuffled.map(r=>`<div class="spot-card" onclick="openRecipe('${r.id}')"><div class="spot-card-img"><img src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" loading="lazy" onerror="this.style.display='none'"><span class="spot-card-tag">${esc(r.difficulte||'')}</span></div><div class="spot-card-body"><h4>${esc(r.nom)}</h4><span>Par ${esc(r.auteur||'—')}</span></div></div>`).join('');
+}
+
 // ── RENDER GRID ──
 function renderGrid(){
   const n=recipes.length;
   [document.getElementById('statCount'),document.getElementById('countTag'),document.getElementById('bannerCount')].forEach(el=>{if(el)el.textContent=n;});
   const q=searchQ.toLowerCase().trim();
-  const list=recipes.filter(r=>{if(activeTheme&&!matchTheme(r,activeTheme))return false;if(!q)return true;return(r.nom||'').toLowerCase().includes(q)||(r.description||'').toLowerCase().includes(q)||(r.auteur||'').toLowerCase().includes(q)||(r.region||'').toLowerCase().includes(q)||(r.categorie||'').toLowerCase().includes(q);});
+  const list=recipes.filter(r=>{if(activeTheme&&!matchTheme(r,activeTheme))return false;if(!matchAdvancedFilters(r))return false;if(!q)return true;return(r.nom||'').toLowerCase().includes(q)||(r.description||'').toLowerCase().includes(q)||(r.auteur||'').toLowerCase().includes(q)||(r.region||'').toLowerCase().includes(q)||(r.categorie||'').toLowerCase().includes(q);});
   const sc=document.getElementById('searchCount');
-  if(q||activeTheme){sc.textContent=list.length+' résultat'+(list.length!==1?'s':'');sc.style.display='block';}else sc.style.display='none';
+  const anyFilterActive=q||activeTheme||Object.values(activeFilters).some(Boolean)||filterIngredients.length;
+  if(anyFilterActive){sc.textContent=list.length+' résultat'+(list.length!==1?'s':'');sc.style.display='block';}else sc.style.display='none';
   const grid=document.getElementById('recipeGrid');
-  if(!list.length){grid.innerHTML=`<div class="no-results"><p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--text)">Aucune recette trouvée</p><p style="font-size:.8rem;margin-top:.4rem"><a href="#" onclick="clearSearch();return false" style="color:var(--accent)">Effacer la recherche</a></p></div>`;return;}
+  if(!list.length){grid.innerHTML=`<div class="no-results"><p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--text)">Aucune recette trouvée</p><p style="font-size:.8rem;margin-top:.4rem"><a href="#" onclick="clearSearch();return false" style="color:var(--accent)">Effacer la recherche</a></p></div>`;renderSpotlights();return;}
   const frag=document.createDocumentFragment();
   const tmp=document.createElement('div');
   tmp.innerHTML=list.map(r=>{
@@ -1522,6 +2097,7 @@ function renderGrid(){
   while(tmp.firstChild)frag.appendChild(tmp.firstChild);
   grid.innerHTML='';grid.appendChild(frag);
   if(isAdmin){document.getElementById('aR').textContent=n;document.getElementById('aS').textContent=MAX-n;document.getElementById('aV').textContent=recipes.reduce((s,r)=>s+(r.views||0),0);}
+  renderSpotlights();
 }
 function clearSearch(){searchQ='';document.getElementById('navSearch').value='';document.getElementById('secSearch').value='';document.getElementById('mobSearchInput').value='';renderGrid();}
 
@@ -1540,11 +2116,11 @@ document.getElementById('mCommentBtn').addEventListener('click',()=>{if(!current
 
 // ── FORM ──
 function populateGroupSelect(){const sel=document.getElementById('fGroupe');if(!sel)return;const cur=sel.value;sel.innerHTML='<option value="">Aucun</option>'+groups.map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('');if(cur)sel.value=cur;}
-function openForm(recId){if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour ajouter une recette.');return;}editId=recId||null;document.getElementById('formTitle').textContent=editId?'Modifier la recette':'Partager ma recette';document.getElementById('submitBtn').textContent=editId?'Enregistrer':'Publier ma recette';document.getElementById('formSuccess').style.display='none';document.querySelectorAll('.bad-warn').forEach(w=>{w.classList.remove('on');w.textContent='';});document.querySelectorAll('.f-input.bad,.f-textarea.bad').forEach(el=>el.classList.remove('bad'));populateGroupSelect();updateOfflineBadge();if(editId){const r=recipes.find(x=>x.id==editId);if(r){['Nom','Auteur','Couverts','Temps','Cuisson'].forEach(k=>{const el=document.getElementById('f'+k);if(el)el.value=r[k.toLowerCase()]||'';});document.getElementById('fDiff').value=r.difficulte||'Intermédiaire';document.getElementById('fCategorie').value=r.categorie||'';document.getElementById('fDesc').value=r.description||'';document.getElementById('fIngr').value=r.ingredients||'';document.getElementById('fEtapes').value=r.etapes||'';document.getElementById('fUst').value=r.ustensiles||'';document.getElementById('fAstuce').value=r.astuce||'';document.getElementById('fGeste').value=r.geste||'';document.getElementById('fRegion').value=r.region||'';document.getElementById('fGroupe').value=r.groupe_id||'';if(r.img){photoB64=r.img;document.getElementById('photoPreview').src=r.img;document.getElementById('photoZone').classList.add('has-photo');}else removePhoto();}}else{const has=loadDraft();if(!has){CENS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('fCouverts').value='4';document.getElementById('fTemps').value='';document.getElementById('fDiff').value='Intermédiaire';document.getElementById('fCategorie').value='';document.getElementById('fGroupe').value='';removePhoto();}if(!document.getElementById('fAuteur').value&&profile)document.getElementById('fAuteur').value=profile.nom||'';}openModal('formOverlay');startDraft();}
+function openForm(recId){if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour ajouter une recette.');return;}editId=recId||null;document.getElementById('formTitle').textContent=editId?'Modifier la recette':'Partager ma recette';document.getElementById('submitBtn').textContent=editId?'Enregistrer':'Publier ma recette';document.getElementById('formSuccess').style.display='none';document.querySelectorAll('.bad-warn').forEach(w=>{w.classList.remove('on');w.textContent='';});document.querySelectorAll('.f-input.bad,.f-textarea.bad').forEach(el=>el.classList.remove('bad'));populateGroupSelect();updateOfflineBadge();if(editId){const r=recipes.find(x=>x.id==editId);if(r){['Nom','Auteur','Couverts','Temps','Cuisson'].forEach(k=>{const el=document.getElementById('f'+k);if(el)el.value=r[k.toLowerCase()]||'';});document.getElementById('fDiff').value=r.difficulte||'Intermédiaire';document.getElementById('fCategorie').value=r.categorie||'';document.getElementById('fSaison').value=r.saison||'';document.getElementById('fBudget').value=r.budget||'';document.getElementById('fDesc').value=r.description||'';document.getElementById('fIngr').value=r.ingredients||'';document.getElementById('fEtapes').value=r.etapes||'';document.getElementById('fUst').value=r.ustensiles||'';document.getElementById('fAstuce').value=r.astuce||'';document.getElementById('fGeste').value=r.geste||'';document.getElementById('fRegion').value=r.region||'';document.getElementById('fGroupe').value=r.groupe_id||'';if(r.img){photoB64=r.img;document.getElementById('photoPreview').src=r.img;document.getElementById('photoZone').classList.add('has-photo');}else removePhoto();}}else{const has=loadDraft();if(!has){CENS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('fCouverts').value='4';document.getElementById('fTemps').value='';document.getElementById('fDiff').value='Intermédiaire';document.getElementById('fCategorie').value='';document.getElementById('fSaison').value='';document.getElementById('fBudget').value='';document.getElementById('fGroupe').value='';removePhoto();}if(!document.getElementById('fAuteur').value&&profile)document.getElementById('fAuteur').value=profile.nom||'';}openModal('formOverlay');startDraft();}
 document.getElementById('formClose').addEventListener('click',()=>{stopDraft();saveDraft();editId=null;closeModal('formOverlay');});
 document.getElementById('formCancel').addEventListener('click',()=>{stopDraft();saveDraft();editId=null;closeModal('formOverlay');});
 let saving=false;
-document.getElementById('submitBtn').addEventListener('click',async()=>{if(saving)return;const nom=document.getElementById('fNom').value.trim(),auteur=document.getElementById('fAuteur').value.trim(),temps=document.getElementById('fTemps').value.trim(),desc=document.getElementById('fDesc').value.trim(),ingr=document.getElementById('fIngr').value.trim(),etapes=document.getElementById('fEtapes').value.trim();if(!nom||!auteur||!temps||!desc||!ingr||!etapes){toast('Remplissez tous les champs obligatoires (*).');return;}const allText=[nom,auteur,desc,ingr,etapes,document.getElementById('fAstuce').value,document.getElementById('fGeste').value,document.getElementById('fRegion').value,document.getElementById('fUst').value].join(' ');const bad=findBad(allText);if(bad){banScreen(bad);return;}if(!editId&&recipes.length>=MAX){toast('Les 1000 places sont prises !');return;}const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,description:desc,ingredients:ingr,etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),groupe_id:document.getElementById('fGroupe').value||null,img:null,user_id:user?.id||null};if(!navigator.onLine){payload.img=(photoB64&&photoB64.startsWith('data:'))?null:(photoB64||null);payload.views=0;payload.created_at=new Date().toISOString();const queue=getOfflineQueue();queue.push({nom:payload.nom,payload,queuedAt:Date.now()});saveOfflineQueue(queue);document.getElementById('formSuccess').textContent='Hors ligne : votre recette sera publiée à la reconnexion.';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;toast('Recette mise en attente (hors ligne).');setTimeout(()=>closeModal('formOverlay'),2200);return;}saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent=photoFile?'Envoi image…':'Publication…';try{payload.img=await resolveRecipeImg();}catch(e){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';toast('Erreur image : '+e.message);return;}let error,data;try{if(editId){({error,data}=await db.from('recettes').update(payload).eq('id',editId).select().single());}else{payload.views=0;payload.created_at=new Date().toISOString();({error,data}=await db.from('recettes').insert([payload]).select().single());}}catch(e){error=e;}saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';if(error){toast('Erreur : '+(error.message||error));return;}if(data){if(editId)recipes=recipes.map(r=>r.id===data.id?data:r);else recipes=[data,...recipes];}else await loadData();document.getElementById('formSuccess').textContent=editId?'Recette modifiée !':'Recette publiée ! Merci';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;renderGrid();setTimeout(()=>closeModal('formOverlay'),1600);});
+document.getElementById('submitBtn').addEventListener('click',async()=>{if(saving)return;const nom=document.getElementById('fNom').value.trim(),auteur=document.getElementById('fAuteur').value.trim(),temps=document.getElementById('fTemps').value.trim(),desc=document.getElementById('fDesc').value.trim(),ingr=document.getElementById('fIngr').value.trim(),etapes=document.getElementById('fEtapes').value.trim();if(!nom||!auteur||!temps||!desc||!ingr||!etapes){toast('Remplissez tous les champs obligatoires (*).');return;}const allText=[nom,auteur,desc,ingr,etapes,document.getElementById('fAstuce').value,document.getElementById('fGeste').value,document.getElementById('fRegion').value,document.getElementById('fUst').value].join(' ');const bad=findBad(allText);if(bad){banScreen(bad);return;}if(!editId&&recipes.length>=MAX){toast('Les 1000 places sont prises !');return;}const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,saison:document.getElementById('fSaison').value,budget:document.getElementById('fBudget').value,description:desc,ingredients:ingr,etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),groupe_id:document.getElementById('fGroupe').value||null,img:null,user_id:user?.id||null};if(!navigator.onLine){payload.img=(photoB64&&photoB64.startsWith('data:'))?null:(photoB64||null);payload.views=0;payload.created_at=new Date().toISOString();const queue=getOfflineQueue();queue.push({nom:payload.nom,payload,queuedAt:Date.now()});saveOfflineQueue(queue);document.getElementById('formSuccess').textContent='Hors ligne : votre recette sera publiée à la reconnexion.';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;toast('Recette mise en attente (hors ligne).');setTimeout(()=>closeModal('formOverlay'),2200);return;}saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent=photoFile?'Envoi image…':'Publication…';try{payload.img=await resolveRecipeImg();}catch(e){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';toast('Erreur image : '+e.message);return;}let error,data;try{if(editId){({error,data}=await db.from('recettes').update(payload).eq('id',editId).select().single());}else{payload.views=0;payload.created_at=new Date().toISOString();({error,data}=await db.from('recettes').insert([payload]).select().single());}}catch(e){error=e;}saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';if(error){toast('Erreur : '+(error.message||error));return;}if(data){if(editId)recipes=recipes.map(r=>r.id===data.id?data:r);else recipes=[data,...recipes];}else await loadData();document.getElementById('formSuccess').textContent=editId?'Recette modifiée !':'Recette publiée ! Merci';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;renderGrid();setTimeout(()=>closeModal('formOverlay'),1600);});
 
 // ── DELETE ──
 async function deleteRecipe(id){if(!confirm('Supprimer cette recette ?'))return;const r=recipes.find(x=>x.id==id);if(!isAdmin&&!(user&&r?.user_id===user.id)){toast('Vous ne pouvez supprimer que vos propres recettes.');return;}try{const{error}=await db.from('recettes').delete().eq('id',id);if(error){toast('Erreur : '+error.message);return;}recipes=recipes.filter(x=>x.id!=id);toast('Recette supprimée.');renderGrid();if(document.getElementById('adminOverlay').classList.contains('open'))populateAdmin();if(document.getElementById('recipeOverlay').classList.contains('open'))closeModal('recipeOverlay');}catch(e){toast('Erreur : '+e.message);}}
@@ -1820,6 +2396,7 @@ document.getElementById('cookieDecline')?.addEventListener('click',()=>{cookieCh
   try{initTheme();}catch(e){}
   try{loadCustomImages();}catch(e){}
   try{loadCookieChoice();}catch(e){}
+  try{loadLocalPrefs();}catch(e){}
   try{buildThemes();}catch(e){}
   try{setupCensorship();}catch(e){}
   try{initCookieBar();}catch(e){}
