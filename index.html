@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Les Délices Partagées</title>
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -46,9 +47,8 @@ body.dark nav#nav{background:rgba(12,12,12,.88);}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);
   font-family:'Cormorant Garamond',serif;font-size:1.25rem;white-space:nowrap;}
 .nav-logo em{color:var(--accent);font-style:italic;}
-.logo-mark{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));
-  display:flex;align-items:center;justify-content:center;color:white;font-family:'Cormorant Garamond',serif;
-  font-style:italic;font-size:.8rem;flex-shrink:0;}
+.logo-mark{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.logo-mark img{width:100%;height:100%;object-fit:contain;display:block;}
 .nav-right{display:flex;align-items:center;gap:.45rem;}
 .nav-pill{display:inline-flex;align-items:center;height:32px;background:rgba(255,255,255,.55);
   border:1px solid rgba(255,255,255,.65);border-radius:50px;padding:0 1rem;font-size:.68rem;
@@ -421,7 +421,7 @@ body.dark .auth-modal{background:#0f0f0f;}
 body.dark .intro-overlay{background:var(--dark);}
 .intro-topbar{display:flex;align-items:center;justify-content:center;padding:1.4rem 1.4rem .4rem;position:relative;}
 .intro-logo{display:flex;align-items:center;gap:8px;font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--accent);}
-.intro-logo .logo-mark{width:28px;height:28px;font-size:.62rem;}
+.intro-logo .logo-mark{width:28px;height:28px;}
 .intro-skip{position:absolute;right:1.4rem;top:1.4rem;background:none;border:none;color:var(--text-soft);font-size:.68rem;letter-spacing:.08em;cursor:pointer;text-decoration:underline;}
 .intro-slides{flex:1;position:relative;overflow:hidden;}
 .intro-slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;text-align:center;
@@ -520,7 +520,6 @@ body.dark .equip-chip{background:#191919;}
 /* ── ADMIN ── */
 .login-box{background:white;max-width:350px;border-radius:var(--radius-lg);padding:2rem;text-align:center;}
 body.dark .login-box{background:#0f0f0f;}
-.login-box h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;color:var(--text);margin-bottom:.3rem;}
 .admin-panel{background:white;max-width:1040px;width:100%;max-height:92vh;overflow-y:auto;border-radius:var(--radius-lg);}
 body.dark .admin-panel{background:#0f0f0f;}
 .admin-head{background:linear-gradient(135deg,#0B0B0B,#1a1208);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1;}
@@ -581,56 +580,6 @@ body.dark .image-mini-btn{background:#252525;}
   padding:.75rem 1.3rem;border-radius:var(--radius-sm);font-size:.78rem;border-left:3px solid var(--accent);
   transform:translateY(60px);opacity:0;transition:all .32s var(--ease);pointer-events:none;max-width:300px;}
 .toast.show{transform:translateY(0);opacity:1;}
-
-/* ── GROUPES ── */
-.group-list-item{display:flex;align-items:center;gap:.75rem;padding:.85rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s;}
-.group-list-item:hover{opacity:.72;}
-.group-list-item .g-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);flex:1;}
-.group-list-item .g-meta{font-size:.68rem;color:var(--text-soft);}
-.group-list-item .g-members{font-size:.68rem;color:var(--accent);white-space:nowrap;}
-.groupe-member-tag{display:inline-flex;align-items:center;gap:.32rem;background:white;border:1px solid var(--border);
-  border-radius:50px;padding:.2rem .6rem .2rem .2rem;font-size:.72rem;color:var(--text);}
-body.dark .groupe-member-tag{background:rgba(28,28,28,.9);}
-.groupe-member-tag img,.groupe-member-tag .gm-init{width:20px;height:20px;border-radius:50%;object-fit:cover;flex-shrink:0;}
-.groupe-member-tag .gm-init{background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:.58rem;}
-.groupe-member-tag span.gm-name{max-width:115px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.group-recette-card{display:flex;align-items:center;gap:.75rem;padding:.62rem 0;border-bottom:1px solid var(--border);cursor:pointer;}
-.group-recette-card img{width:44px;height:44px;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0;}
-.group-recette-card .gr-name{font-size:.84rem;font-weight:500;color:var(--text);}
-.group-recette-card .gr-meta{font-size:.68rem;color:var(--text-soft);margin-top:.08rem;}
-.group-empty{text-align:center;color:var(--text-soft);padding:2.2rem 0;font-size:.82rem;}
-
-/* ── RECHERCHE DE PROFIL — style Instagram ── */
-.profile-search-wrap{position:relative;}
-.profile-search-input-row{display:flex;align-items:center;gap:.5rem;background:var(--cream);border:1px solid var(--border);
-  border-radius:50px;padding:.55rem .55rem .55rem 1rem;}
-body.dark .profile-search-input-row{background:rgba(20,20,20,.9);}
-.profile-search-input-row input{flex:1;border:none;background:transparent;outline:none;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--text);}
-.profile-search-results{margin-top:.5rem;background:white;border:1px solid var(--border);border-radius:var(--radius);
-  max-height:230px;overflow-y:auto;box-shadow:var(--shadow-sm);}
-body.dark .profile-search-results{background:rgba(20,20,20,.96);}
-.profile-search-results:empty{display:none;}
-.profile-result-row{display:flex;align-items:center;gap:.65rem;padding:.6rem .85rem;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;}
-.profile-result-row:last-child{border-bottom:none;}
-.profile-result-row:hover{background:var(--beige);}
-.profile-result-row img,.profile-result-row .pr-init{width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;}
-.profile-result-row .pr-init{background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:.72rem;}
-.profile-result-name{font-size:.82rem;color:var(--text);font-weight:500;}
-.profile-result-empty{padding:.85rem;font-size:.76rem;color:var(--text-soft);display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;}
-.profile-result-invite{background:var(--accent);color:white;border:none;border-radius:50px;padding:.32rem .8rem;font-size:.66rem;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;}
-.selected-members-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem;}
-.selected-member-chip{display:inline-flex;align-items:center;gap:.35rem;background:var(--accent);color:white;border-radius:50px;
-  padding:.22rem .5rem .22rem .22rem;font-size:.72rem;}
-.selected-member-chip img,.selected-member-chip .sm-init{width:20px;height:20px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.3);display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0;}
-.selected-member-chip .sm-rm{cursor:pointer;background:rgba(255,255,255,.22);border-radius:50%;width:15px;height:15px;display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;}
-
-/* ── ADMIN — onglet GROUPES ── */
-.admin-group-card{background:var(--beige);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.85rem;}
-body.dark .admin-group-card{background:#191919;}
-.admin-group-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem;}
-.admin-group-head h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--text);}
-.admin-group-meta{font-size:.7rem;color:var(--text-soft);margin-bottom:.55rem;}
-.admin-group-members{display:flex;flex-wrap:wrap;gap:.35rem;}
 
 /* ── VALIDATION INSCRIPTION (pseudo unique) ── */
 .pseudo-check-row{display:flex;align-items:center;gap:.45rem;margin-top:.4rem;font-size:.72rem;min-height:18px;}
@@ -739,7 +688,6 @@ svg.icon{display:block;}
   .stat-n{font-size:1.5rem;}
   .section,.about-section{padding:3.8rem 5vw;}
   .about-section,.two-cols,.f-grid{grid-template-columns:1fr;}
-  /* Mobile: single column recipe grid */
   .recipe-grid{grid-template-columns:1fr;gap:1rem;}
   .card-img{height:190px;}
   .overlay{left:0;padding:.4rem;align-items:flex-end;}
@@ -768,7 +716,7 @@ svg.icon{display:block;}
 <!-- ── DESKTOP NAV ── -->
 <nav id="nav">
   <a href="#" class="nav-logo">
-    <div class="logo-mark">LD</div>
+    <div class="logo-mark"><img src="logo.png" alt="Les Délices Partagées"></div>
     Les <em>Délices</em> Partagées
   </a>
   <div class="nav-right">
@@ -778,7 +726,6 @@ svg.icon{display:block;}
       <input type="text" id="navSearch" placeholder="Rechercher…" autocomplete="off">
     </div>
     <a href="#a-propos" class="nav-pill">À propos</a>
-    <button class="nav-pill" id="navGroupsBtn">Groupes</button>
     <div class="nav-user-area" id="navUserArea">
       <button class="nav-user-btn" id="navUserBtn">
         <span id="navUserAvatar"></span>
@@ -812,12 +759,6 @@ svg.icon{display:block;}
     </button>
     <button class="mob-nav-fab" id="mobFab" onclick="openForm()">
       <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
-    <button class="mob-nav-item" id="mobGroupsBtn2" onclick="mobGroupsClick()">
-      <span class="mob-nav-icon">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </span>
-      <span class="mob-nav-label">Groupes</span>
     </button>
     <button class="mob-nav-item" id="mobProfile" onclick="mobProfileClick()">
       <span class="mob-nav-icon" id="mobProfileIcon">
@@ -991,7 +932,6 @@ svg.icon{display:block;}
         <li><a href="#communaute">Communauté</a></li>
         <li><a href="#a-propos">À propos</a></li>
         <li><a href="#" id="footAddBtn">Ajouter une recette</a></li>
-        <li><a href="#" id="footGroupsBtn">Groupes</a></li>
       </ul>
     </div>
   </div>
@@ -1031,7 +971,7 @@ svg.icon{display:block;}
 <!-- ── ONBOARDING 3 ÉCRANS (DA originale, non liée à Marmiton) ── -->
 <div class="intro-overlay" id="introOverlay">
   <div class="intro-topbar">
-    <div class="intro-logo"><div class="logo-mark">LD</div>Les Délices Partagées</div>
+    <div class="intro-logo"><div class="logo-mark"><img src="logo.png" alt=""></div>Les Délices Partagées</div>
     <button class="intro-skip" id="introSkip">Passer</button>
   </div>
   <div class="intro-slides">
@@ -1042,7 +982,6 @@ svg.icon{display:block;}
         <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
           <circle cx="160" cy="168" r="128" fill="#F2EDE4"/>
           <ellipse cx="160" cy="270" rx="92" ry="10" fill="#E4D9C4" opacity=".5"/>
-          <!-- livre de recettes ouvert -->
           <g transform="translate(70,118)">
             <path d="M10 12 Q90 -8 90 18 L90 132 Q10 110 10 132 Z" fill="#fff" stroke="#C9A76A" stroke-width="2"/>
             <path d="M170 12 Q90 -8 90 18 L90 132 Q170 110 170 132 Z" fill="#fff" stroke="#C9A76A" stroke-width="2"/>
@@ -1054,7 +993,6 @@ svg.icon{display:block;}
             <circle cx="130" cy="80" r="22" fill="#FBF1DE" stroke="#C9A76A" stroke-width="2"/>
             <path d="M118 80 a12 12 0 0 1 24 0" fill="none" stroke="#9b7b45" stroke-width="2.5" stroke-linecap="round"/>
           </g>
-          <!-- étoiles flottantes -->
           <g fill="#C9A76A">
             <path d="M244 90 l4 9 9 1 -7 6 2 9 -8-5 -8 5 2-9 -7-6 9-1z"/>
             <path d="M70 70 l3 7 7 1 -5 5 1 7 -6-4 -6 4 1-7 -5-5 7-1z" opacity=".7"/>
@@ -1075,7 +1013,6 @@ svg.icon{display:block;}
         <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
           <circle cx="160" cy="168" r="128" fill="#F2EDE4"/>
           <ellipse cx="160" cy="270" rx="92" ry="10" fill="#E4D9C4" opacity=".5"/>
-          <!-- panier de courses stylisé -->
           <g transform="translate(95,110)">
             <path d="M10 40 L120 40 L108 130 Q65 142 22 130 Z" fill="#fff" stroke="#C9A76A" stroke-width="2.5"/>
             <path d="M30 40 L48 6" stroke="#9b7b45" stroke-width="3" stroke-linecap="round"/>
@@ -1087,7 +1024,6 @@ svg.icon{display:block;}
             <circle cx="62" cy="22" r="11" fill="#9b7b45"/>
             <circle cx="82" cy="30" r="9" fill="#D6C2A8"/>
           </g>
-          <!-- horloge -->
           <g transform="translate(208,84)">
             <circle r="30" fill="#fff" stroke="#9b7b45" stroke-width="2.5"/>
             <line x1="0" y1="0" x2="0" y2="-17" stroke="#9b7b45" stroke-width="2.5" stroke-linecap="round"/>
@@ -1109,13 +1045,11 @@ svg.icon{display:block;}
         <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
           <circle cx="160" cy="168" r="128" fill="#F2EDE4"/>
           <ellipse cx="160" cy="270" rx="92" ry="10" fill="#E4D9C4" opacity=".5"/>
-          <!-- table partagée avec assiettes -->
           <ellipse cx="160" cy="186" rx="86" ry="30" fill="#fff" stroke="#C9A76A" stroke-width="2.5"/>
           <circle cx="116" cy="172" r="16" fill="#FBF1DE" stroke="#C9A76A" stroke-width="2"/>
           <circle cx="160" cy="166" r="20" fill="#FBF1DE" stroke="#9b7b45" stroke-width="2.5"/>
           <circle cx="204" cy="172" r="16" fill="#FBF1DE" stroke="#C9A76A" stroke-width="2"/>
           <path d="M152 158 a8 6 0 0 1 16 0" fill="none" stroke="#C9A76A" stroke-width="2"/>
-          <!-- mains qui se rejoignent -->
           <path d="M70 220 Q100 196 140 206" fill="none" stroke="#9b7b45" stroke-width="6" stroke-linecap="round"/>
           <path d="M250 220 Q220 196 180 206" fill="none" stroke="#C9A76A" stroke-width="6" stroke-linecap="round"/>
           <g fill="#9b7b45">
@@ -1193,7 +1127,6 @@ svg.icon{display:block;}
       </div>
       <div class="tip-box" id="mTip" style="display:none"><strong>Astuce</strong><span id="mTipTxt"></span></div>
       <div id="mGestBlock" style="display:none;margin-top:1.1rem;"><div class="col-title">Geste important</div><p style="font-size:.82rem;line-height:1.65;" id="mGestTxt"></p></div>
-      <div id="mGroupBlock" style="display:none;margin-top:1.1rem;"><div class="col-title">Groupe</div><span class="tag-pill" id="mGroupTag" style="cursor:pointer;"></span></div>
       <div class="edit-bar" id="mEditBar" style="display:none;">
         <button class="btn btn-outline" id="mEditBtn" style="font-size:.7rem;color:var(--text);border-color:var(--border);">Modifier cette recette</button>
       </div>
@@ -1254,84 +1187,10 @@ svg.icon{display:block;}
       <div class="f-group"><label class="f-label">Astuce du chef</label><textarea class="f-textarea" id="fAstuce" rows="2" maxlength="500"></textarea></div>
       <div class="f-group"><label class="f-label">Geste important</label><textarea class="f-textarea" id="fGeste" rows="2" maxlength="500"></textarea></div>
       <div class="f-group"><label class="f-label">Région / Origine</label><input type="text" class="f-input" id="fRegion" placeholder="ex. Bretagne, Provence…" maxlength="60"></div>
-      <div class="f-group"><label class="f-label">Groupe (optionnel)</label><select class="f-select" id="fGroupe"><option value="">Aucun</option></select></div>
     </div>
     <div class="form-foot">
       <button class="btn btn-accent" id="submitBtn">Publier ma recette</button>
       <button class="btn btn-outline" id="formCancel" style="color:var(--text);border-color:var(--border);">Annuler</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODAL GROUPES ── -->
-<div class="overlay" id="groupsOverlay">
-  <div class="modal" style="max-width:700px;">
-    <div class="modal-topbar"><button class="close-btn" id="groupsClose">✕</button></div>
-    <div class="modal-body">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.65rem;margin-bottom:1.5rem;">
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:300;color:var(--text);">Groupes</h2>
-        <button class="btn btn-accent" id="groupCreateBtn" style="font-size:.68rem;padding:.5rem 1.2rem;">+ Créer un groupe</button>
-      </div>
-      <div id="groupsList"></div>
-      <div id="noGroups" class="group-empty" style="display:none;">Aucun groupe. Créez-en un pour réunir vos proches !</div>
-      <div id="groupsLoading" style="text-align:center;padding:2rem;"><div class="spinner"></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODAL CRÉATION GROUPE ── -->
-<div class="overlay" id="groupCreateOverlay">
-  <div class="modal form-modal" style="max-width:510px;">
-    <div class="form-head">
-      <h2>Nouveau groupe</h2>
-      <button class="close-btn" id="groupCreateClose">✕</button>
-    </div>
-    <div class="form-body">
-      <div class="f-group"><label class="f-label">Nom du groupe <em>*</em></label><input type="text" class="f-input" id="gName" placeholder="ex. Cuisine provençale" maxlength="80"></div>
-      <div class="f-group"><label class="f-label">Description</label><textarea class="f-textarea" id="gDesc" rows="2" placeholder="Quelques mots…" maxlength="300"></textarea></div>
-      <div class="f-grid">
-        <div class="f-group"><label class="f-label">Lieu</label><input type="text" class="f-input" id="gLieu" placeholder="ex. Marseille" maxlength="80"></div>
-        <div class="f-group"><label class="f-label">Thème</label><input type="text" class="f-input" id="gTheme" placeholder="ex. Méditerranéen" maxlength="80"></div>
-      </div>
-      <div class="f-group">
-        <label class="f-label">Inviter des membres</label>
-        <div class="profile-search-wrap">
-          <div class="profile-search-input-row">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="gMemberSearch" placeholder="Tapez un prénom…" autocomplete="off" oninput="profileSearchInput(this.value,'gMemberResults','gSelected')">
-          </div>
-          <div class="profile-search-results" id="gMemberResults"></div>
-        </div>
-        <div class="selected-members-row" id="gSelectedRow"></div>
-        <p class="f-hint">Recherchez un profil par prénom, comme sur Instagram. Si la personne n'a pas de compte, vous pouvez lui envoyer une invitation par email.</p>
-      </div>
-      <div class="auth-err" id="groupErr"></div>
-      <div style="margin-top:.9rem;"><button class="btn btn-accent" id="groupSaveBtn">Créer le groupe</button></div>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODAL DÉTAIL GROUPE ── -->
-<div class="overlay" id="groupDetailOverlay">
-  <div class="modal" style="max-width:700px;">
-    <div class="modal-topbar"><button class="close-btn" id="groupDetailClose">✕</button></div>
-    <div class="modal-body" id="groupDetailBody"></div>
-  </div>
-</div>
-
-<!-- ── MODAL INVITATION EMAIL ── -->
-<div class="overlay" id="inviteOverlay">
-  <div class="modal form-modal" style="max-width:430px;">
-    <div class="form-head">
-      <h2>Inviter par email</h2>
-      <button class="close-btn" id="inviteClose">✕</button>
-    </div>
-    <div class="form-body">
-      <p style="font-size:.8rem;color:var(--text-soft);margin-bottom:1.1rem;line-height:1.6;">Aucun profil ne correspond à <strong id="inviteSearchedName" style="color:var(--accent);"></strong>. Envoyez-lui une invitation par email pour rejoindre Les Délices Partagées.</p>
-      <div class="f-group"><label class="f-label">Adresse email <em>*</em></label><input type="email" class="f-input" id="inviteEmail" placeholder="prenom@email.com"></div>
-      <div class="auth-err" id="inviteErr"></div>
-      <div class="auth-ok" id="inviteOk">Invitation envoyée !</div>
-      <div style="margin-top:1rem;"><button class="btn btn-accent" style="width:100%" id="inviteSendBtn">Envoyer l'invitation</button></div>
     </div>
   </div>
 </div>
@@ -1494,7 +1353,7 @@ svg.icon{display:block;}
           <label class="pswitch"><input type="checkbox" id="pfNewsletter"><span class="pswitch-track"></span></label>
         </div>
         <div class="pref-toggle-row">
-          <div><div class="pt-label">Notifications</div><div class="pt-sub">Likes, commentaires et invitations de groupe</div></div>
+          <div><div class="pt-label">Notifications</div><div class="pt-sub">Likes et commentaires</div></div>
           <label class="pswitch"><input type="checkbox" id="pfNotifs" checked><span class="pswitch-track"></span></label>
         </div>
         <div class="pref-toggle-row">
@@ -1537,7 +1396,6 @@ svg.icon{display:block;}
       <button class="admin-tab active" data-tab="stats">Vue d'ensemble</button>
       <button class="admin-tab" data-tab="recipes">Recettes</button>
       <button class="admin-tab" data-tab="members">Membres</button>
-      <button class="admin-tab" data-tab="groups">Groupes</button>
       <button class="admin-tab" data-tab="images">Images</button>
       <button class="admin-tab" data-tab="email">Email</button>
     </div>
@@ -1563,13 +1421,8 @@ svg.icon{display:block;}
     </div>
     <div class="admin-pane" id="tab-members">
       <div style="margin-bottom:.85rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);">Membres — <span id="aMembersCount">0</span></div>
-      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Avatar</th><th>Prénom</th><th>Âge</th><th>Inscrit le</th></tr></thead><tbody id="aMembersTbody"></tbody></table></div>
+      <div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Avatar</th><th>Prénom</th><th>Email</th><th>Âge</th><th>Inscrit le</th></tr></thead><tbody id="aMembersTbody"></tbody></table></div>
       <div id="aNoMembers" style="text-align:center;color:var(--text-soft);padding:3rem;font-size:.82rem;display:none;">Aucun membre.</div>
-    </div>
-    <div class="admin-pane" id="tab-groups">
-      <div style="margin-bottom:.85rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);">Tous les groupes — <span id="aGroupsCount">0</span></div>
-      <div id="aGroupsList"></div>
-      <div id="aNoGroups" style="text-align:center;color:var(--text-soft);padding:3rem;font-size:.82rem;display:none;">Aucun groupe.</div>
     </div>
     <div class="admin-pane" id="tab-images">
       <input type="file" id="adminImageInput" accept="image/*" style="display:none">
@@ -1620,7 +1473,6 @@ const CUSTOM_IMG_KEY='ldp_imgs';const OFFLINE_QUEUE_KEY='ldp_offline_queue';cons
 const INTRO_KEY='ldp_intro_seen_v1';const PREFS_KEY='ldp_prefs_local';
 
 let recipes=[],profiles={},members=[],user=null,profile=null,isAdmin=false;
-let groups=[],groupMembers=[],recipeGroups=[];
 let currentRec=null,curSrv=4,photoB64='',photoFile=null,avatarB64='',avatarFile=null,editId=null;
 let searchQ='',activeTheme='';
 let customImages={ingredients:{},categories:{}};
@@ -1628,8 +1480,6 @@ let customImagePaths={ingredients:{},categories:{}};
 let imageAdminMode='ingredients';
 let pendingImageTarget=null;
 let cookieChoice={essential:true,video:true,media:true};
-let gSelectedMembers=[];
-let inviteContext=null;
 const _viewedIds=new Set();
 let activeFilters={temps:null,difficulte:null,saison:null,budget:null};
 let filterIngredients=[];
@@ -1659,7 +1509,7 @@ function pfEmailVal(){return user?.email||'';}
 function initHeroVideo(){
   const video=document.getElementById('heroVideo');
   if(!video)return;
-  if(!cookieChoice.video){return;} // catégorie refusée : on ne charge rien
+  if(!cookieChoice.video){return;}
   video.preload='auto';
   video.load();
   const tryPlay=()=>{video.play().then(()=>video.classList.add('ready')).catch(()=>{video.muted=true;video.play().then(()=>video.classList.add('ready')).catch(()=>{});});};
@@ -1673,7 +1523,7 @@ const introSlideCount=3;
 function introHasSeen(){try{return !!localStorage.getItem(INTRO_KEY);}catch(e){return true;}}
 function introMarkSeen(){try{localStorage.setItem(INTRO_KEY,'1');}catch(e){}}
 function showIntro(){
-  if(user)return; // utilisateur déjà connecté : pas d'onboarding
+  if(user)return;
   introIndex=0;updateIntroUI();
   openModal('introOverlay');
 }
@@ -1709,7 +1559,6 @@ document.getElementById('mobSearchInput').addEventListener('input',e=>{
   document.getElementById('secSearch').value=v;
   doSearch(v);
 });
-function mobGroupsClick(){if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour accéder aux groupes.');return;}document.getElementById('navGroupsBtn').click();}
 function mobProfileClick(){if(!user){authTab('login');openModal('authOverlay');}else openProfile();setMobActive('mobProfile');}
 function updateMobProfileIcon(){
   const icon=document.getElementById('mobProfileIcon');
@@ -1759,7 +1608,7 @@ const CENS=['fNom','fAuteur','fDesc','fIngr','fEtapes','fAstuce','fGeste','fRegi
 function setupCensorship(){CENS.forEach(id=>{const el=document.getElementById(id);if(!el)return;const wid='warn'+id.charAt(1).toUpperCase()+id.slice(2);const warn=document.getElementById(wid);el.addEventListener('input',function(){const bad=findBad(this.value);if(bad){this.classList.add('bad');if(warn){warn.textContent=`Mot interdit : "${bad}"`;warn.classList.add('on');}}else{this.classList.remove('bad');if(warn)warn.classList.remove('on');}});el.addEventListener('paste',function(e){const p=(e.clipboardData||window.clipboardData).getData('text');const bad=findBad(p);if(bad){e.preventDefault();banScreen(bad);}});});}
 
 // ── DRAFT ──
-const DRAFT_FIELDS=['fNom','fAuteur','fCouverts','fTemps','fCuisson','fDiff','fCategorie','fSaison','fBudget','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion','fGroupe'];
+const DRAFT_FIELDS=['fNom','fAuteur','fCouverts','fTemps','fCuisson','fDiff','fCategorie','fSaison','fBudget','fDesc','fIngr','fEtapes','fUst','fAstuce','fGeste','fRegion'];
 function saveDraft(){if(editId)return;const d={};DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});if(photoB64&&photoB64.startsWith('data:'))d.__photo=photoB64;try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));}catch(e){}}
 function loadDraft(){try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return false;const d=JSON.parse(raw);let ok=false;DRAFT_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]){el.value=d[id];if(d[id].trim())ok=true;}});if(d.__photo){photoB64=d.__photo;document.getElementById('photoPreview').src=d.__photo;document.getElementById('photoZone').classList.add('has-photo');ok=true;}return ok;}catch(e){return false;}}
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
@@ -1792,7 +1641,7 @@ function updateAuthUI(){
   document.getElementById('mobProfileLabel').textContent=user?(profile?.nom||'Profil'):'Profil';
 }
 async function getProfile(uid){try{const{data,error}=await db.from('profils').select('*').eq('id',uid).single();if(error)return null;return data||null;}catch(e){return null;}}
-async function initAuth(){try{const{data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){profile=await getProfile(user.id);if(!profile)setTimeout(()=>openOnboarding(),600);}else{if(!introHasSeen())setTimeout(()=>showIntro(),900);}updateAuthUI();db.auth.onAuthStateChange(async(ev,sess)=>{try{const was=!!user;user=sess?.user||null;if(user){profile=await getProfile(user.id);if(ev==='SIGNED_IN'&&!was){closeModal('authOverlay');if(!profile)setTimeout(()=>openOnboarding(),400);else{toast('Bon retour !');await loadData();renderGrid();await loadGroups();}}}else profile=null;updateAuthUI();renderGrid();}catch(e){console.error('onAuthStateChange:',e);}});}catch(e){user=null;profile=null;updateAuthUI();if(!introHasSeen())setTimeout(()=>showIntro(),900);}}
+async function initAuth(){try{const{data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){profile=await getProfile(user.id);if(!profile)setTimeout(()=>openOnboarding(),600);}else{if(!introHasSeen())setTimeout(()=>showIntro(),900);}updateAuthUI();db.auth.onAuthStateChange(async(ev,sess)=>{try{const was=!!user;user=sess?.user||null;if(user){profile=await getProfile(user.id);if(ev==='SIGNED_IN'&&!was){closeModal('authOverlay');if(!profile)setTimeout(()=>openOnboarding(),400);else{toast('Bon retour !');await loadData();renderGrid();}}}else profile=null;updateAuthUI();renderGrid();}catch(e){console.error('onAuthStateChange:',e);}});}catch(e){user=null;profile=null;updateAuthUI();if(!introHasSeen())setTimeout(()=>showIntro(),900);}}
 
 document.getElementById('signupBtn').addEventListener('click',async()=>{const e=document.getElementById('signupEmail').value.trim(),p=document.getElementById('signupPwd').value,p2=document.getElementById('signupPwd2').value,err=document.getElementById('signupErr');err.className='auth-err';if(!e||!e.includes('@')){err.textContent='Email invalide.';err.className='auth-err on';return;}if(p.length<6){err.textContent='Mot de passe trop court (min. 6 caractères).';err.className='auth-err on';return;}if(p!==p2){err.textContent='Les mots de passe ne correspondent pas.';err.className='auth-err on';return;}const btn=document.getElementById('signupBtn');btn.disabled=true;btn.textContent='Création…';try{const{error}=await db.auth.signUp({email:e,password:p,options:{emailRedirectTo:SITE}});btn.disabled=false;btn.textContent='Créer mon compte';if(error){err.textContent=error.message==='User already registered'?'Ce compte existe déjà.':error.message;err.className='auth-err on';return;}document.getElementById('signupSentEmail').textContent=e;authPane('pSignupSent');}catch(e2){btn.disabled=false;btn.textContent='Créer mon compte';err.textContent='Erreur réseau. Réessayez.';err.className='auth-err on';}});
 document.getElementById('loginBtn').addEventListener('click',async()=>{const e=document.getElementById('loginEmail').value.trim(),p=document.getElementById('loginPwd').value,err=document.getElementById('loginErr');err.className='auth-err';if(!e||!p){err.textContent='Email et mot de passe requis.';err.className='auth-err on';return;}const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Connexion…';try{const{error}=await db.auth.signInWithPassword({email:e,password:p});btn.disabled=false;btn.textContent='Se connecter';if(error){err.textContent=error.message.includes('not confirmed')?'Email non vérifié.':'Identifiants incorrects.';err.className='auth-err on';}}catch(e2){btn.disabled=false;btn.textContent='Se connecter';err.textContent='Erreur réseau.';err.className='auth-err on';}});
@@ -1841,7 +1690,6 @@ document.getElementById('onboardBtn').addEventListener('click',async()=>{
   if(findBad(nom)){err.textContent='Ce pseudo contient un mot interdit.';err.className='auth-err on';return;}
   if(age<1||age>120){err.textContent='Âge invalide.';err.className='auth-err on';return;}
   const btn=document.getElementById('onboardBtn');btn.disabled=true;btn.textContent='Vérification…';
-  // double-check unicité juste avant l'envoi (contre les doublons concurrents)
   try{
     const{data:existing}=await db.from('profils').select('id').ilike('nom',nom).maybeSingle();
     if(existing){btn.disabled=false;btn.textContent='Commencer';err.textContent='Ce pseudo est déjà pris, choisissez-en un autre.';err.className='auth-err on';return;}
@@ -1854,7 +1702,7 @@ document.getElementById('onboardBtn').addEventListener('click',async()=>{
     if(error){err.textContent=error.code==='23505'?'Ce pseudo vient d\'être pris, choisissez-en un autre.':error.message;err.className='auth-err on';return;}
     profile=await getProfile(user.id);closeModal('onboardOverlay');updateAuthUI();if(profile)document.getElementById('fAuteur').value=profile.nom;toast(`Bienvenue ${nom} !`);
     avatarB64='';avatarFile=null;document.getElementById('avatarZone').classList.remove('has-img');document.getElementById('avatarPreview').src='';document.getElementById('onboardNom').value='';document.getElementById('onboardAge').value='';document.getElementById('pseudoCheckRow').innerHTML='';
-    await loadData();renderGrid();await loadGroups();
+    await loadData();renderGrid();
   }catch(e2){btn.disabled=false;btn.textContent='Commencer';err.textContent='Erreur réseau.';err.className='auth-err on';}
 });
 function openOnboarding(){openModal('onboardOverlay');}
@@ -1949,8 +1797,7 @@ function openProfile(){
   const mine=recipes.filter(r=>r.user_id===user.id);
   document.getElementById('profStatR').textContent=mine.length;
   document.getElementById('profStatV').textContent=mine.reduce((s,r)=>s+(r.views||0),0);
-  document.getElementById('profRecipes').innerHTML=mine.length?mine.map(r=>`<div class="profile-rec-row"><img class="profile-rec-thumb" src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.src='${getDefaultImg(r.categorie)}'" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-info" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-name">${esc(r.nom)}</div><div class="profile-rec-meta">${esc(r.difficulte||'')} · ${esc(r.temps||'')}</div></div><select class="f-select" style="width:auto;padding:.28rem .52rem;font-size:.66rem;margin-right:.35rem;" onclick="event.stopPropagation()" onchange="event.stopPropagation();assignRecipeGroup('${r.id}',this.value)"><option value="">Aucun groupe</option>${groups.map(g=>`<option value="${g.id}" ${r.groupe_id===g.id?'selected':''}>${esc(g.name)}</option>`).join('')}</select><span style="font-size:.68rem;color:var(--accent);font-style:italic;white-space:nowrap;">vues : ${r.views||0}</span></div>`).join(''):`<div style="text-align:center;padding:1.8rem;color:var(--text-soft);">Pas encore de recette.<br><button class="btn btn-accent" style="margin-top:.85rem;font-size:.74rem;" onclick="closeModal('profileOverlay');openForm()">+ Partager une recette</button></div>`;
-  // Onglets infos / foyer / params préremplis
+  document.getElementById('profRecipes').innerHTML=mine.length?mine.map(r=>`<div class="profile-rec-row"><img class="profile-rec-thumb" src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.src='${getDefaultImg(r.categorie)}'" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-info" onclick="closeModal('profileOverlay');openRecipe('${r.id}')"><div class="profile-rec-name">${esc(r.nom)}</div><div class="profile-rec-meta">${esc(r.difficulte||'')} · ${esc(r.temps||'')}</div></div><span style="font-size:.68rem;color:var(--accent);font-style:italic;white-space:nowrap;">vues : ${r.views||0}</span></div>`).join(''):`<div style="text-align:center;padding:1.8rem;color:var(--text-soft);">Pas encore de recette.<br><button class="btn btn-accent" style="margin-top:.85rem;font-size:.74rem;" onclick="closeModal('profileOverlay');openForm()">+ Partager une recette</button></div>`;
   document.getElementById('pfNom').value=profile.nom||'';
   document.getElementById('pfEmail').value=user.email||'';
   document.getElementById('pfAge').value=profile.age||'';
@@ -1960,12 +1807,10 @@ function openProfile(){
   document.getElementById('pfNotifs').checked=localPrefs.notifs!==false;
   document.getElementById('pfDarkSwitch').checked=document.body.classList.contains('dark');
   renderPrefToggles();renderEquipGrid();
-  // reset au premier onglet
   document.querySelectorAll('.profile-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
   document.querySelectorAll('.profile-pane').forEach((p,i)=>p.classList.toggle('active',i===0));
   openModal('profileOverlay');
 }
-async function assignRecipeGroup(recId,groupId){try{const{error}=await db.from('recettes').update({groupe_id:groupId||null}).eq('id',recId);if(error)throw error;recipes=recipes.map(r=>r.id===recId?{...r,groupe_id:groupId||null}:r);toast(groupId?'Recette ajoutée au groupe.':'Recette retirée du groupe.');renderGrid();}catch(e){toast('Erreur : '+(e.message||e));}}
 document.getElementById('profileClose').addEventListener('click',()=>closeModal('profileOverlay'));
 
 // ── DATA ──
@@ -2105,7 +1950,7 @@ function clearSearch(){searchQ='';document.getElementById('navSearch').value='';
 function parseIngr(raw,newSrv,origSrv){return(raw||'').split('\n').filter(l=>l.trim()).map(l=>{const p=l.split('·').map(s=>s.trim());if(p.length>=3){const q=parseFloat(p[0]);let adj;if(isNaN(q)||q===0){adj=p[0];}else{const r=q*(newSrv/origSrv);adj=Number.isInteger(r)?String(r):r.toFixed(1).replace(/\.0$/,'');}return{qty:adj,unit:p[1],name:p.slice(2).join(' ')};}return{qty:'',unit:'',name:l};});}
 function renderIngr(r){const orig=parseInt(r.couverts)||4;const ingrs=parseIngr(r.ingredients,curSrv,orig);document.getElementById('mIngr').innerHTML=ingrs.map(i=>`<li><span class="ingr-qty">${esc(i.qty)}${i.unit?' '+esc(i.unit):''}</span>${esc(i.name)}</li>`).join('');document.getElementById('mIngrVisual').innerHTML=ingrs.map(i=>{const src=getIngrImg(i.name);return`<div class="ingr-card">${src?`<img class="ingr-card-img" src="${src}" alt="${esc(i.name)}" loading="lazy" onerror="this.style.display='none'">`:''}<span class="ingr-card-qty">${esc(i.qty)}${i.unit?' '+esc(i.unit):''}</span><span class="ingr-card-name">${esc(i.name)}</span></div>`;}).join('');}
 function renderSocial(r){if(!r)return;const data=getSocial();const s=data[r.id]||{liked:false,likes:0,comments:[]};const comments=s.comments||[];const likeBtn=document.getElementById('mLikeBtn');likeBtn.classList.toggle('on',!!s.liked);document.getElementById('mLikeCount').textContent=s.likes||0;document.getElementById('mCommentCount').textContent=comments.length+' commentaire'+(comments.length>1?'s':'');document.getElementById('mCommentInput').value='';document.getElementById('mCommentList').innerHTML=comments.length?comments.map(c=>`<div class="comment-item"><div class="comment-meta">${esc(c.author||'Anonyme')} · ${esc(c.date||'')}</div><div class="comment-text">${esc(c.text)}</div></div>`).join(''):'<div style="color:var(--text-soft);font-size:.8rem;padding:.4rem 0;">Aucun commentaire pour le moment.</div>';}
-async function openRecipe(id){const r=recipes.find(x=>x.id==id);if(!r)return;currentRec=r;curSrv=parseInt(r.couverts)||4;if(!_viewedIds.has(id)){_viewedIds.add(id);const v=(r.views||0)+1;r.views=v;db.from('recettes').update({views:v}).eq('id',id).catch(()=>{});}const img=document.getElementById('mImg');const imgSrc=r.img||getDefaultImg(r.categorie);if(imgSrc){img.src=imgSrc;img.style.display='block';img.onerror=()=>{img.style.display='none';};}else img.style.display='none';document.getElementById('mTag').textContent=r.categorie||'';document.getElementById('mTitle').textContent=r.nom||'';document.getElementById('mDesc').textContent=r.description||'';const pr=profiles[r.user_id];const auteur=r.auteur||(pr?pr.nom:null);const ar=document.getElementById('mAuthorRow');if(auteur){ar.style.display='flex';document.getElementById('mAuthorAvatar').innerHTML=pr?.avatar&&cookieChoice.media?`<img src="${esc(pr.avatar)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="">`:`<span style="width:24px;height:24px;border-radius:50%;background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;font-size:.68rem;color:white;">${auteur[0].toUpperCase()}</span>`;document.getElementById('mAuthorName').textContent='Recette de '+auteur;}else ar.style.display='none';document.getElementById('srvN').textContent=curSrv;renderIngr(r);document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';document.getElementById('mSteps').innerHTML=(r.etapes||'').split('\n').filter(l=>l.trim()).map(s=>`<li>${esc(s)}</li>`).join('');renderSocial(r);const ub=document.getElementById('mUstBlock');if(r.ustensiles){ub.style.display='block';document.getElementById('mUst').innerHTML=r.ustensiles.split(',').map(u=>`<span class="tag-pill">${esc(u.trim())}</span>`).join('');}else ub.style.display='none';if(r.astuce){document.getElementById('mTip').style.display='block';document.getElementById('mTipTxt').textContent=r.astuce;}else document.getElementById('mTip').style.display='none';if(r.geste){document.getElementById('mGestBlock').style.display='block';document.getElementById('mGestTxt').textContent=r.geste;}else document.getElementById('mGestBlock').style.display='none';const gb=document.getElementById('mGroupBlock');if(r.groupe_id){const g=groups.find(x=>x.id===r.groupe_id);if(g){gb.style.display='block';const tag=document.getElementById('mGroupTag');tag.textContent='Groupe : '+g.name;tag.onclick=()=>{closeModal('recipeOverlay');openGroupDetail(g.id);};}else gb.style.display='none';}else gb.style.display='none';const canEdit=isAdmin||(user&&r.user_id===user.id);document.getElementById('mEditBar').style.display=canEdit?'block':'none';document.getElementById('mEditBtn').onclick=()=>{closeModal('recipeOverlay');openForm(id);};openModal('recipeOverlay');}
+async function openRecipe(id){const r=recipes.find(x=>x.id==id);if(!r)return;currentRec=r;curSrv=parseInt(r.couverts)||4;if(!_viewedIds.has(id)){_viewedIds.add(id);const v=(r.views||0)+1;r.views=v;db.from('recettes').update({views:v}).eq('id',id).catch(()=>{});}const img=document.getElementById('mImg');const imgSrc=r.img||getDefaultImg(r.categorie);if(imgSrc){img.src=imgSrc;img.style.display='block';img.onerror=()=>{img.style.display='none';};}else img.style.display='none';document.getElementById('mTag').textContent=r.categorie||'';document.getElementById('mTitle').textContent=r.nom||'';document.getElementById('mDesc').textContent=r.description||'';const pr=profiles[r.user_id];const auteur=r.auteur||(pr?pr.nom:null);const ar=document.getElementById('mAuthorRow');if(auteur){ar.style.display='flex';document.getElementById('mAuthorAvatar').innerHTML=pr?.avatar&&cookieChoice.media?`<img src="${esc(pr.avatar)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="">`:`<span style="width:24px;height:24px;border-radius:50%;background:var(--accent-light);display:inline-flex;align-items:center;justify-content:center;font-size:.68rem;color:white;">${auteur[0].toUpperCase()}</span>`;document.getElementById('mAuthorName').textContent='Recette de '+auteur;}else ar.style.display='none';document.getElementById('srvN').textContent=curSrv;renderIngr(r);document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';document.getElementById('mSteps').innerHTML=(r.etapes||'').split('\n').filter(l=>l.trim()).map(s=>`<li>${esc(s)}</li>`).join('');renderSocial(r);const ub=document.getElementById('mUstBlock');if(r.ustensiles){ub.style.display='block';document.getElementById('mUst').innerHTML=r.ustensiles.split(',').map(u=>`<span class="tag-pill">${esc(u.trim())}</span>`).join('');}else ub.style.display='none';if(r.astuce){document.getElementById('mTip').style.display='block';document.getElementById('mTipTxt').textContent=r.astuce;}else document.getElementById('mTip').style.display='none';if(r.geste){document.getElementById('mGestBlock').style.display='block';document.getElementById('mGestTxt').textContent=r.geste;}else document.getElementById('mGestBlock').style.display='none';const canEdit=isAdmin||(user&&r.user_id===user.id);document.getElementById('mEditBar').style.display=canEdit?'block':'none';document.getElementById('mEditBtn').onclick=()=>{closeModal('recipeOverlay');openForm(id);};openModal('recipeOverlay');}
 document.getElementById('srvDown').addEventListener('click',()=>{if(curSrv>1){curSrv--;document.getElementById('srvN').textContent=curSrv;if(currentRec)renderIngr(currentRec);}});
 document.getElementById('srvUp').addEventListener('click',()=>{if(curSrv<50){curSrv++;document.getElementById('srvN').textContent=curSrv;if(currentRec)renderIngr(currentRec);}});
 document.getElementById('modeVisual').addEventListener('click',()=>{document.getElementById('modeVisual').classList.add('active');document.getElementById('modeList').classList.remove('active');document.getElementById('ingrVisualWrap').style.display='block';document.getElementById('ingrListWrap').style.display='none';});
@@ -2115,217 +1960,24 @@ document.getElementById('mLikeBtn').addEventListener('click',()=>{if(!currentRec
 document.getElementById('mCommentBtn').addEventListener('click',()=>{if(!currentRec)return;const input=document.getElementById('mCommentInput');const text=input.value.trim();if(!text){toast('Écrivez un commentaire.');return;}const bad=findBad(text);if(bad){toast('Mot interdit.');return;}const data=getSocial();const s=data[currentRec.id]||{liked:false,likes:0,comments:[]};const author=profile?.nom||user?.email?.split('@')[0]||'Anonyme';s.comments=s.comments||[];s.comments.push({author,text,date:new Date().toLocaleDateString('fr-FR')});data[currentRec.id]=s;saveSocial(data);renderSocial(currentRec);renderGrid();toast('Commentaire ajouté.');});
 
 // ── FORM ──
-function populateGroupSelect(){const sel=document.getElementById('fGroupe');if(!sel)return;const cur=sel.value;sel.innerHTML='<option value="">Aucun</option>'+groups.map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('');if(cur)sel.value=cur;}
-function openForm(recId){if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour ajouter une recette.');return;}editId=recId||null;document.getElementById('formTitle').textContent=editId?'Modifier la recette':'Partager ma recette';document.getElementById('submitBtn').textContent=editId?'Enregistrer':'Publier ma recette';document.getElementById('formSuccess').style.display='none';document.querySelectorAll('.bad-warn').forEach(w=>{w.classList.remove('on');w.textContent='';});document.querySelectorAll('.f-input.bad,.f-textarea.bad').forEach(el=>el.classList.remove('bad'));populateGroupSelect();updateOfflineBadge();if(editId){const r=recipes.find(x=>x.id==editId);if(r){['Nom','Auteur','Couverts','Temps','Cuisson'].forEach(k=>{const el=document.getElementById('f'+k);if(el)el.value=r[k.toLowerCase()]||'';});document.getElementById('fDiff').value=r.difficulte||'Intermédiaire';document.getElementById('fCategorie').value=r.categorie||'';document.getElementById('fSaison').value=r.saison||'';document.getElementById('fBudget').value=r.budget||'';document.getElementById('fDesc').value=r.description||'';document.getElementById('fIngr').value=r.ingredients||'';document.getElementById('fEtapes').value=r.etapes||'';document.getElementById('fUst').value=r.ustensiles||'';document.getElementById('fAstuce').value=r.astuce||'';document.getElementById('fGeste').value=r.geste||'';document.getElementById('fRegion').value=r.region||'';document.getElementById('fGroupe').value=r.groupe_id||'';if(r.img){photoB64=r.img;document.getElementById('photoPreview').src=r.img;document.getElementById('photoZone').classList.add('has-photo');}else removePhoto();}}else{const has=loadDraft();if(!has){CENS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('fCouverts').value='4';document.getElementById('fTemps').value='';document.getElementById('fDiff').value='Intermédiaire';document.getElementById('fCategorie').value='';document.getElementById('fSaison').value='';document.getElementById('fBudget').value='';document.getElementById('fGroupe').value='';removePhoto();}if(!document.getElementById('fAuteur').value&&profile)document.getElementById('fAuteur').value=profile.nom||'';}openModal('formOverlay');startDraft();}
+function openForm(recId){if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour ajouter une recette.');return;}editId=recId||null;document.getElementById('formTitle').textContent=editId?'Modifier la recette':'Partager ma recette';document.getElementById('submitBtn').textContent=editId?'Enregistrer':'Publier ma recette';document.getElementById('formSuccess').style.display='none';document.querySelectorAll('.bad-warn').forEach(w=>{w.classList.remove('on');w.textContent='';});document.querySelectorAll('.f-input.bad,.f-textarea.bad').forEach(el=>el.classList.remove('bad'));updateOfflineBadge();if(editId){const r=recipes.find(x=>x.id==editId);if(r){['Nom','Auteur','Couverts','Temps','Cuisson'].forEach(k=>{const el=document.getElementById('f'+k);if(el)el.value=r[k.toLowerCase()]||'';});document.getElementById('fDiff').value=r.difficulte||'Intermédiaire';document.getElementById('fCategorie').value=r.categorie||'';document.getElementById('fSaison').value=r.saison||'';document.getElementById('fBudget').value=r.budget||'';document.getElementById('fDesc').value=r.description||'';document.getElementById('fIngr').value=r.ingredients||'';document.getElementById('fEtapes').value=r.etapes||'';document.getElementById('fUst').value=r.ustensiles||'';document.getElementById('fAstuce').value=r.astuce||'';document.getElementById('fGeste').value=r.geste||'';document.getElementById('fRegion').value=r.region||'';if(r.img){photoB64=r.img;document.getElementById('photoPreview').src=r.img;document.getElementById('photoZone').classList.add('has-photo');}else removePhoto();}}else{const has=loadDraft();if(!has){CENS.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('fCouverts').value='4';document.getElementById('fTemps').value='';document.getElementById('fDiff').value='Intermédiaire';document.getElementById('fCategorie').value='';document.getElementById('fSaison').value='';document.getElementById('fBudget').value='';removePhoto();}if(!document.getElementById('fAuteur').value&&profile)document.getElementById('fAuteur').value=profile.nom||'';}openModal('formOverlay');startDraft();}
 document.getElementById('formClose').addEventListener('click',()=>{stopDraft();saveDraft();editId=null;closeModal('formOverlay');});
 document.getElementById('formCancel').addEventListener('click',()=>{stopDraft();saveDraft();editId=null;closeModal('formOverlay');});
 let saving=false;
-document.getElementById('submitBtn').addEventListener('click',async()=>{if(saving)return;const nom=document.getElementById('fNom').value.trim(),auteur=document.getElementById('fAuteur').value.trim(),temps=document.getElementById('fTemps').value.trim(),desc=document.getElementById('fDesc').value.trim(),ingr=document.getElementById('fIngr').value.trim(),etapes=document.getElementById('fEtapes').value.trim();if(!nom||!auteur||!temps||!desc||!ingr||!etapes){toast('Remplissez tous les champs obligatoires (*).');return;}const allText=[nom,auteur,desc,ingr,etapes,document.getElementById('fAstuce').value,document.getElementById('fGeste').value,document.getElementById('fRegion').value,document.getElementById('fUst').value].join(' ');const bad=findBad(allText);if(bad){banScreen(bad);return;}if(!editId&&recipes.length>=MAX){toast('Les 1000 places sont prises !');return;}const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,saison:document.getElementById('fSaison').value,budget:document.getElementById('fBudget').value,description:desc,ingredients:ingr,etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),groupe_id:document.getElementById('fGroupe').value||null,img:null,user_id:user?.id||null};if(!navigator.onLine){payload.img=(photoB64&&photoB64.startsWith('data:'))?null:(photoB64||null);payload.views=0;payload.created_at=new Date().toISOString();const queue=getOfflineQueue();queue.push({nom:payload.nom,payload,queuedAt:Date.now()});saveOfflineQueue(queue);document.getElementById('formSuccess').textContent='Hors ligne : votre recette sera publiée à la reconnexion.';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;toast('Recette mise en attente (hors ligne).');setTimeout(()=>closeModal('formOverlay'),2200);return;}saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent=photoFile?'Envoi image…':'Publication…';try{payload.img=await resolveRecipeImg();}catch(e){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';toast('Erreur image : '+e.message);return;}let error,data;try{if(editId){({error,data}=await db.from('recettes').update(payload).eq('id',editId).select().single());}else{payload.views=0;payload.created_at=new Date().toISOString();({error,data}=await db.from('recettes').insert([payload]).select().single());}}catch(e){error=e;}saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';if(error){toast('Erreur : '+(error.message||error));return;}if(data){if(editId)recipes=recipes.map(r=>r.id===data.id?data:r);else recipes=[data,...recipes];}else await loadData();document.getElementById('formSuccess').textContent=editId?'Recette modifiée !':'Recette publiée ! Merci';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;renderGrid();setTimeout(()=>closeModal('formOverlay'),1600);});
+document.getElementById('submitBtn').addEventListener('click',async()=>{if(saving)return;const nom=document.getElementById('fNom').value.trim(),auteur=document.getElementById('fAuteur').value.trim(),temps=document.getElementById('fTemps').value.trim(),desc=document.getElementById('fDesc').value.trim(),ingr=document.getElementById('fIngr').value.trim(),etapes=document.getElementById('fEtapes').value.trim();if(!nom||!auteur||!temps||!desc||!ingr||!etapes){toast('Remplissez tous les champs obligatoires (*).');return;}const allText=[nom,auteur,desc,ingr,etapes,document.getElementById('fAstuce').value,document.getElementById('fGeste').value,document.getElementById('fRegion').value,document.getElementById('fUst').value].join(' ');const bad=findBad(allText);if(bad){banScreen(bad);return;}if(!editId&&recipes.length>=MAX){toast('Les 1000 places sont prises !');return;}const payload={nom,auteur,couverts:parseInt(document.getElementById('fCouverts').value)||4,temps,cuisson:document.getElementById('fCuisson').value.trim(),difficulte:document.getElementById('fDiff').value,categorie:document.getElementById('fCategorie').value,saison:document.getElementById('fSaison').value,budget:document.getElementById('fBudget').value,description:desc,ingredients:ingr,etapes,ustensiles:document.getElementById('fUst').value.trim(),astuce:document.getElementById('fAstuce').value.trim(),geste:document.getElementById('fGeste').value.trim(),region:document.getElementById('fRegion').value.trim(),img:null,user_id:user?.id||null};if(!navigator.onLine){payload.img=(photoB64&&photoB64.startsWith('data:'))?null:(photoB64||null);payload.views=0;payload.created_at=new Date().toISOString();const queue=getOfflineQueue();queue.push({nom:payload.nom,payload,queuedAt:Date.now()});saveOfflineQueue(queue);document.getElementById('formSuccess').textContent='Hors ligne : votre recette sera publiée à la reconnexion.';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;toast('Recette mise en attente (hors ligne).');setTimeout(()=>closeModal('formOverlay'),2200);return;}saving=true;const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent=photoFile?'Envoi image…':'Publication…';try{payload.img=await resolveRecipeImg();}catch(e){saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';toast('Erreur image : '+e.message);return;}let error,data;try{if(editId){({error,data}=await db.from('recettes').update(payload).eq('id',editId).select().single());}else{payload.views=0;payload.created_at=new Date().toISOString();({error,data}=await db.from('recettes').insert([payload]).select().single());}}catch(e){error=e;}saving=false;btn.disabled=false;btn.textContent=editId?'Enregistrer':'Publier ma recette';if(error){toast('Erreur : '+(error.message||error));return;}if(data){if(editId)recipes=recipes.map(r=>r.id===data.id?data:r);else recipes=[data,...recipes];}else await loadData();document.getElementById('formSuccess').textContent=editId?'Recette modifiée !':'Recette publiée ! Merci';document.getElementById('formSuccess').style.display='block';clearDraft();stopDraft();photoB64='';photoFile=null;editId=null;renderGrid();setTimeout(()=>closeModal('formOverlay'),1600);});
 
 // ── DELETE ──
 async function deleteRecipe(id){if(!confirm('Supprimer cette recette ?'))return;const r=recipes.find(x=>x.id==id);if(!isAdmin&&!(user&&r?.user_id===user.id)){toast('Vous ne pouvez supprimer que vos propres recettes.');return;}try{const{error}=await db.from('recettes').delete().eq('id',id);if(error){toast('Erreur : '+error.message);return;}recipes=recipes.filter(x=>x.id!=id);toast('Recette supprimée.');renderGrid();if(document.getElementById('adminOverlay').classList.contains('open'))populateAdmin();if(document.getElementById('recipeOverlay').classList.contains('open'))closeModal('recipeOverlay');}catch(e){toast('Erreur : '+e.message);}}
 
-// ── RECHERCHE DE PROFIL — style Instagram (réutilisable) ──
-let _profileSearchDebounce=null;
-async function profileSearchInput(val,resultsId,selectedArrName){
-  const wrap=document.getElementById(resultsId);
-  const v=(val||'').trim();
-  if(!v){wrap.innerHTML='';return;}
-  clearTimeout(_profileSearchDebounce);
-  _profileSearchDebounce=setTimeout(async()=>{
-    try{
-      const{data,error}=await db.from('profils').select('id,nom,avatar').ilike('nom',v+'%').limit(8);
-      if(error)throw error;
-      const already=selectedArrName==='gSelected'?gSelectedMembers:[];
-      const results=(data||[]).filter(p=>p.id!==user?.id&&!already.some(m=>m.id===p.id));
-      if(!results.length){
-        wrap.innerHTML=`<div class="profile-result-empty"><span>Aucun profil "${esc(v)}"</span><button class="profile-result-invite" onclick="openInvite('${esc(v).replace(/'/g,"&#39;")}')">Inviter par email</button></div>`;
-        return;
-      }
-      wrap.innerHTML=results.map(p=>`<div class="profile-result-row" onclick='selectProfileResult(${JSON.stringify(p)},"${selectedArrName}")'>${p.avatar?`<img src="${esc(p.avatar)}" alt="">`:`<span class="pr-init">${esc(p.nom[0].toUpperCase())}</span>`}<span class="profile-result-name">${esc(p.nom)}</span></div>`).join('');
-    }catch(e){wrap.innerHTML='';}
-  },280);
-}
-function selectProfileResult(p,selectedArrName){
-  if(selectedArrName==='gSelected'){
-    if(!gSelectedMembers.some(m=>m.id===p.id))gSelectedMembers.push(p);
-    renderSelectedMembers();
-    document.getElementById('gMemberSearch').value='';
-    document.getElementById('gMemberResults').innerHTML='';
-  }
-}
-function renderSelectedMembers(){
-  const row=document.getElementById('gSelectedRow');
-  if(!row)return;
-  row.innerHTML=gSelectedMembers.map(p=>`<span class="selected-member-chip">${p.avatar?`<img src="${esc(p.avatar)}" alt="">`:`<span class="sm-init">${esc(p.nom[0].toUpperCase())}</span>`}${esc(p.nom)}<span class="sm-rm" onclick="removeSelectedMember('${p.id}')">✕</span></span>`).join('');
-}
-function removeSelectedMember(id){gSelectedMembers=gSelectedMembers.filter(m=>m.id!==id);renderSelectedMembers();}
-
-// ── INVITATION EMAIL (Resend via Supabase Edge Function) ──
-function openInvite(searchedName){
-  inviteContext=searchedName;
-  document.getElementById('inviteSearchedName').textContent=searchedName;
-  document.getElementById('inviteEmail').value='';
-  document.getElementById('inviteErr').className='auth-err';
-  document.getElementById('inviteOk').className='auth-ok';
-  openModal('inviteOverlay');
-}
-document.getElementById('inviteClose').addEventListener('click',()=>closeModal('inviteOverlay'));
-document.getElementById('inviteSendBtn').addEventListener('click',async()=>{
-  const email=document.getElementById('inviteEmail').value.trim();
-  const err=document.getElementById('inviteErr'),ok=document.getElementById('inviteOk');
-  err.className='auth-err';ok.className='auth-ok';
-  if(!email||!email.includes('@')){err.textContent='Email invalide.';err.className='auth-err on';return;}
-  const btn=document.getElementById('inviteSendBtn');btn.disabled=true;btn.textContent='Envoi…';
-  try{
-    // Appelle une Supabase Edge Function "send-invite" qui utilise Resend côté serveur.
-    const{data:{session}}=await db.auth.getSession();
-    const res=await fetch(`${SB_URL}/functions/v1/send-invite`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':`Bearer ${session?.access_token||SB_KEY}`,'apikey':SB_KEY},
-      body:JSON.stringify({to:email,inviterName:profile?.nom||'Un membre',siteUrl:SITE})
-    });
-    if(!res.ok)throw new Error('Edge Function indisponible');
-    btn.disabled=false;btn.textContent='Envoyer l\'invitation';
-    ok.className='auth-ok on';toast('Invitation envoyée à '+email);
-    setTimeout(()=>closeModal('inviteOverlay'),1400);
-  }catch(e){
-    btn.disabled=false;btn.textContent='Envoyer l\'invitation';
-    // Repli : ouvre le client email de l'utilisateur
-    window.open(`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Rejoignez Les Délices Partagées')}&body=${encodeURIComponent((profile?.nom||'Un ami')+' vous invite à rejoindre Les Délices Partagées : '+SITE)}`,'_blank');
-    err.textContent='Fonction d\'envoi automatique indisponible — votre client email s\'est ouvert à la place.';err.className='auth-err on';
-  }
-});
-
-// ── GROUPES — utilisateurs ──
-async function loadGroups(){const loading=document.getElementById('groupsLoading');if(loading)loading.style.display='block';try{const{data:g,error:ge}=await db.from('groups').select('*').order('created_at',{ascending:false});if(ge)throw ge;groups=g||[];const ids=groups.map(x=>x.id);if(ids.length){const{data:gm}=await db.from('group_members').select('*, profils(nom,avatar)').in('group_id',ids);groupMembers=gm||[];const{data:rg}=await db.from('recipe_groups').select('*').in('group_id',ids).catch(()=>({data:[]}));recipeGroups=rg||[];}else{groupMembers=[];recipeGroups=[];}}catch(e){console.error('loadGroups:',e);groups=groups||[];groupMembers=groupMembers||[];recipeGroups=recipeGroups||[];}finally{if(loading)loading.style.display='none';populateGroupSelect();}}
-function isUserMemberOf(gid){if(!user)return false;return groupMembers.some(m=>m.group_id===gid&&m.user_id===user.id);}
-
-function renderGroupsUI(){
-  const container=document.getElementById('groupsList');
-  const no=document.getElementById('noGroups');
-  if(!container)return;
-  if(!groups.length){container.innerHTML='';no.style.display='block';return;}
-  no.style.display='none';
-  container.innerHTML=groups.map(g=>{
-    const members_list=groupMembers.filter(m=>m.group_id===g.id);
-    const cnt=members_list.length;
-    const meta=[g.lieu,g.theme].filter(Boolean).join(' · ');
-    const isMember=isUserMemberOf(g.id);
-    return`<div class="group-list-item" onclick="${isMember?`openGroupDetail('${g.id}')`:`toast('Accès réservé aux membres de ce groupe.')`}">
-      <div style="flex:1;">
-        <div class="g-name">${esc(g.name)}${!isMember?' <span style="font-size:.65rem;color:var(--text-soft);font-family:sans-serif;">Privé</span>':''}</div>
-        ${meta?`<div class="g-meta">${esc(meta)}</div>`:''}
-      </div>
-      <div class="g-members">${cnt} membre${cnt!==1?'s':''}</div>
-    </div>`;
-  }).join('');
-}
-
-async function openGroupDetail(gid){
-  const g=groups.find(x=>x.id===gid);
-  if(!g)return;
-  if(!isUserMemberOf(gid)&&!isAdmin){toast('Accès réservé aux membres de ce groupe.');return;}
-  const isCreator=user&&g.created_by===user.id;
-  const membersOfGroup=groupMembers.filter(m=>m.group_id===gid);
-  const groupRecipes=recipes.filter(r=>r.groupe_id===gid);
-  const body=document.getElementById('groupDetailBody');
-  body.innerHTML=`
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.72rem;font-weight:300;color:var(--text);">${esc(g.name)}</h2>
-    <p style="color:var(--text-soft);margin:.25rem 0 .85rem;font-size:.84rem;">${esc(g.description||'')}</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem;">
-      ${g.lieu?`<span style="font-size:.78rem;color:var(--text-soft);">${esc(g.lieu)}</span>`:''}
-      ${g.theme?`<span style="font-size:.78rem;color:var(--accent);">${esc(g.theme)}</span>`:''}
-      <span style="font-size:.78rem;color:var(--text-soft);">${membersOfGroup.length} membre${membersOfGroup.length!==1?'s':''}</span>
-    </div>
-    <div style="margin-bottom:1.2rem;">
-      <div style="font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.55rem;">Membres</div>
-      <div style="display:flex;flex-wrap:wrap;gap:.4rem;">${membersOfGroup.length?membersOfGroup.map(m=>{const nom=m.pseudo||m.profils?.nom||'Anonyme';const av=m.profils?.avatar;return`<div class="groupe-member-tag">${av?`<img src="${esc(av)}" alt="">`:`<span class="gm-init">${esc(nom[0].toUpperCase())}</span>`}<span class="gm-name">${esc(nom)}</span></div>`;}).join(''):'<span style="color:var(--text-soft);font-size:.8rem;">Aucun membre.</span>'}</div>
-    </div>
-    <div style="margin-bottom:1.2rem;">
-      <div style="font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.55rem;">Recettes du groupe</div>
-      ${groupRecipes.length?groupRecipes.map(r=>`<div class="group-recette-card" onclick="closeModal('groupDetailOverlay');openRecipe('${r.id}')"><img src="${esc(r.img||getDefaultImg(r.categorie))}" alt="${esc(r.nom)}" onerror="this.style.display='none'"><div><div class="gr-name">${esc(r.nom)}</div><div class="gr-meta">${esc(r.auteur||'')} · ${r.views||0} vues</div></div></div>`).join(''):'<div class="group-empty">Aucune recette associée à ce groupe.</div>'}
-    </div>
-    ${isCreator?`
-    <div class="add-member-form" style="background:var(--beige);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;">
-      <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:.65rem;">Ajouter un membre</div>
-      <div class="profile-search-wrap">
-        <div class="profile-search-input-row">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="addMemberSearch" placeholder="Tapez un prénom…" autocomplete="off" oninput="profileSearchForGroup(this.value,'${g.id}')">
-        </div>
-        <div class="profile-search-results" id="addMemberResults"></div>
-      </div>
-    </div>`:''}
-  `;
-  openModal('groupDetailOverlay');
-}
-
-let _addMemberDebounce=null;
-async function profileSearchForGroup(val,gid){
-  const wrap=document.getElementById('addMemberResults');
-  const v=(val||'').trim();
-  if(!v){wrap.innerHTML='';return;}
-  clearTimeout(_addMemberDebounce);
-  _addMemberDebounce=setTimeout(async()=>{
-    try{
-      const{data}=await db.from('profils').select('id,nom,avatar').ilike('nom',v+'%').limit(8);
-      const existingIds=groupMembers.filter(m=>m.group_id===gid).map(m=>m.user_id);
-      const results=(data||[]).filter(p=>!existingIds.includes(p.id));
-      if(!results.length){
-        wrap.innerHTML=`<div class="profile-result-empty"><span>Aucun profil "${esc(v)}"</span><button class="profile-result-invite" onclick="openInvite('${esc(v).replace(/'/g,"&#39;")}')">Inviter par email</button></div>`;
-        return;
-      }
-      wrap.innerHTML=results.map(p=>`<div class="profile-result-row" onclick="addMemberToGroup('${gid}','${p.id}','${esc(p.nom).replace(/'/g,"&#39;")}')">${p.avatar?`<img src="${esc(p.avatar)}" alt="">`:`<span class="pr-init">${esc(p.nom[0].toUpperCase())}</span>`}<span class="profile-result-name">${esc(p.nom)}</span></div>`).join('');
-    }catch(e){wrap.innerHTML='';}
-  },280);
-}
-async function addMemberToGroup(gid,uid,nom){
-  try{
-    const{error}=await db.from('group_members').insert({group_id:gid,user_id:uid,pseudo:nom});
-    if(error)throw error;
-    toast(`${nom} ajouté(e) au groupe !`);
-    await loadGroups();
-    openGroupDetail(gid);
-  }catch(e){toast('Erreur : '+(e.message||e));}
-}
-
-async function createGroup(name,description,lieu,theme){
-  if(!user){toast('Connectez-vous pour créer un groupe.');return false;}
-  try{
-    const{data,error}=await db.from('groups').insert({name,description:description||null,lieu:lieu||null,theme:theme||null,created_by:user.id,created_at:new Date().toISOString()}).select().single();
-    if(error)throw error;
-    const gid=data.id;
-    const toAdd=[{group_id:gid,user_id:user.id,pseudo:profile?.nom||user.email.split('@')[0]}];
-    gSelectedMembers.forEach(p=>{if(p.id!==user.id)toAdd.push({group_id:gid,user_id:p.id,pseudo:p.nom});});
-    if(toAdd.length)await db.from('group_members').insert(toAdd);
-    toast('Groupe créé !');
-    await loadGroups();renderGroupsUI();
-    return true;
-  }catch(e){
-    const errEl=document.getElementById('groupErr');
-    errEl.textContent='Erreur : '+(e.message||e);errEl.className='auth-err on';
-    return false;
-  }
-}
-
-document.getElementById('navGroupsBtn').addEventListener('click',async()=>{if(!user){authTab('login');openModal('authOverlay');toast('Connectez-vous pour accéder aux groupes.');return;}openModal('groupsOverlay');await loadGroups();renderGroupsUI();});
-document.getElementById('footGroupsBtn').addEventListener('click',e=>{e.preventDefault();document.getElementById('navGroupsBtn').click();});
-document.getElementById('groupsClose').addEventListener('click',()=>closeModal('groupsOverlay'));
-document.getElementById('groupCreateBtn').addEventListener('click',()=>{document.getElementById('gName').value='';document.getElementById('gDesc').value='';document.getElementById('gLieu').value='';document.getElementById('gTheme').value='';document.getElementById('gMemberSearch').value='';document.getElementById('gMemberResults').innerHTML='';gSelectedMembers=[];renderSelectedMembers();document.getElementById('groupErr').className='auth-err';openModal('groupCreateOverlay');});
-document.getElementById('groupCreateClose').addEventListener('click',()=>closeModal('groupCreateOverlay'));
-document.getElementById('groupSaveBtn').addEventListener('click',async()=>{const name=document.getElementById('gName').value.trim();const errEl=document.getElementById('groupErr');errEl.className='auth-err';if(!name){errEl.textContent='Le nom du groupe est requis.';errEl.className='auth-err on';return;}const bad=findBad([name,document.getElementById('gDesc').value,document.getElementById('gLieu').value,document.getElementById('gTheme').value].join(' '));if(bad){banScreen(bad);return;}const btn=document.getElementById('groupSaveBtn');btn.disabled=true;btn.textContent='Création…';const ok=await createGroup(name,document.getElementById('gDesc').value.trim(),document.getElementById('gLieu').value.trim(),document.getElementById('gTheme').value.trim());btn.disabled=false;btn.textContent='Créer le groupe';if(ok)closeModal('groupCreateOverlay');});
-document.getElementById('groupDetailClose').addEventListener('click',()=>closeModal('groupDetailOverlay'));
-
-// ── ADMIN ── (gestion + onglet Groupes)
+// ── ADMIN ──
 document.getElementById('adminTrigger').addEventListener('click',()=>{if(isAdmin){populateAdmin();openModal('adminOverlay');}else{openModal('loginOverlay');setTimeout(()=>document.getElementById('adminPwd').focus(),100);}});
 document.getElementById('adminPwd').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('adminLoginBtn').click();});
 document.getElementById('adminLoginBtn').addEventListener('click',()=>{if(document.getElementById('adminPwd').value===ADMIN_PWD){isAdmin=true;document.body.classList.add('admin-mode');document.getElementById('adminBar').classList.add('on');closeModal('loginOverlay');document.getElementById('adminPwd').value='';document.getElementById('adminErr').style.display='none';populateAdmin();openModal('adminOverlay');renderGrid();toast('Bienvenue Léonard.');}else{document.getElementById('adminErr').style.display='block';document.getElementById('adminPwd').value='';}});
 document.getElementById('loginCancel').addEventListener('click',()=>closeModal('loginOverlay'));
 document.getElementById('adminClose').addEventListener('click',()=>closeModal('adminOverlay'));
-document.getElementById('adminPanelBtn').addEventListener('click',async()=>{await loadData();await loadMembers();await loadGroups();populateAdmin();openModal('adminOverlay');});
+document.getElementById('adminPanelBtn').addEventListener('click',async()=>{await loadData();await loadMembers();populateAdmin();openModal('adminOverlay');});
 document.getElementById('adminQuitBtn').addEventListener('click',()=>{isAdmin=false;document.body.classList.remove('admin-mode');document.getElementById('adminBar').classList.remove('on');renderGrid();toast('Mode admin désactivé.');});
-document.querySelectorAll('.admin-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-'+btn.dataset.tab).classList.add('active');if(btn.dataset.tab==='images')renderImageAdmin();if(btn.dataset.tab==='groups')renderAdminGroups();});});
+document.querySelectorAll('.admin-tab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.admin-pane').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('tab-'+btn.dataset.tab).classList.add('active');if(btn.dataset.tab==='images')renderImageAdmin();});});
 
 function ingredientAdminKeys(){const s=new Set(Object.keys(INGR_PHOTOS).filter(k=>k!=='default'));Object.keys(customImages.ingredients||{}).forEach(k=>s.add(k));recipes.forEach(r=>String(r.ingredients||'').split('\n').forEach(l=>{const p=l.split('·').map(x=>x.trim());const name=p.length>=3?p.slice(2).join(' '):l.replace(/^[\d,.\/\s]+/,'').trim();if(name&&name.length<70)s.add(name.toLowerCase());}));return Array.from(s).sort((a,b)=>a.localeCompare(b,'fr')).slice(0,400);}
 function renderImageAdmin(){const grid=document.getElementById('imageAdminGrid');if(!grid)return;const isIngr=imageAdminMode==='ingredients';document.getElementById('imgTabIngredients').classList.toggle('active',isIngr);document.getElementById('imgTabCategories').classList.toggle('active',!isIngr);document.getElementById('ingredientAddRow').style.display=isIngr?'flex':'none';const q=imgNorm(document.getElementById('imageAdminSearch').value);const keys=(isIngr?ingredientAdminKeys():Object.keys(CAT_IMAGES)).filter(k=>!q||imgNorm(k).includes(q));if(!keys.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--text-soft);padding:2rem;">Aucune image trouvée.</div>';return;}grid.innerHTML=keys.map(key=>{const custom=isIngr?customImages.ingredients[key]:customImages.categories[key];const src=esc(custom||(isIngr?(INGR_PHOTOS[key]||INGR_PHOTOS.default):(CAT_IMAGES[key]||CAT_IMAGES.default)));const type=isIngr?'ingredients':'categories';return`<div class="image-admin-card"><img src="${src}" alt="${esc(key)}" loading="lazy"><div><div class="image-admin-name">${esc(key)}</div><div class="image-admin-state">${custom?'Personnalisée':'Automatique'}</div><div class="image-admin-actions"><button class="image-mini-btn" data-img-action="upload" data-img-type="${type}" data-img-key="${esc(key)}">Modifier</button>${custom?`<button class="image-mini-btn red" data-img-action="reset" data-img-type="${type}" data-img-key="${esc(key)}">Réinitialiser</button>`:''}</div></div></div>`;}).join('');}
@@ -2336,30 +1988,7 @@ document.getElementById('addIngredientImageBtn').addEventListener('click',()=>{c
 document.getElementById('imageAdminGrid').addEventListener('click',e=>{const btn=e.target.closest('[data-img-action]');if(!btn)return;const type=btn.dataset.imgType,key=btn.dataset.imgKey,action=btn.dataset.imgAction;if(action==='upload'){pendingImageTarget={type,key};document.getElementById('adminImageInput').click();}else if(action==='reset'){deleteSiteImage(type,key).then(()=>{renderImageAdmin();renderGrid();if(currentRec)renderIngr(currentRec);toast('Image réinitialisée.');});}});
 document.getElementById('adminImageInput').addEventListener('change',async e=>{const file=e.target.files[0];if(!file||!pendingImageTarget)return;try{await uploadSiteImage(pendingImageTarget.type,pendingImageTarget.key,file);renderImageAdmin();renderGrid();if(currentRec)renderIngr(currentRec);toast('Image mise à jour.');}catch(err){toast('Erreur upload : '+(err.message||err));}e.target.value='';pendingImageTarget=null;});
 
-// ── ADMIN — Onglet GROUPES (supervision globale) ──
-async function deleteGroupAdmin(gid){if(!confirm('Supprimer ce groupe et tous ses membres ?'))return;try{await db.from('group_members').delete().eq('group_id',gid);await db.from('recettes').update({groupe_id:null}).eq('groupe_id',gid);const{error}=await db.from('groups').delete().eq('id',gid);if(error)throw error;toast('Groupe supprimé.');await loadGroups();renderAdminGroups();renderGroupsUI();}catch(e){toast('Erreur : '+(e.message||e));}}
-async function removeMemberAdmin(gid,uid){try{const{error}=await db.from('group_members').delete().eq('group_id',gid).eq('user_id',uid);if(error)throw error;toast('Membre retiré.');await loadGroups();renderAdminGroups();}catch(e){toast('Erreur : '+(e.message||e));}}
-function renderAdminGroups(){
-  const list=document.getElementById('aGroupsList');
-  const no=document.getElementById('aNoGroups');
-  document.getElementById('aGroupsCount').textContent=groups.length;
-  if(!groups.length){list.innerHTML='';no.style.display='block';return;}
-  no.style.display='none';
-  list.innerHTML=groups.map(g=>{
-    const mList=groupMembers.filter(m=>m.group_id===g.id);
-    const creator=profiles[g.created_by]?.nom||mList.find(m=>m.user_id===g.created_by)?.pseudo||'—';
-    return`<div class="admin-group-card">
-      <div class="admin-group-head">
-        <h4>${esc(g.name)}</h4>
-        <button class="t-del" onclick="deleteGroupAdmin('${g.id}')">Supprimer le groupe</button>
-      </div>
-      <div class="admin-group-meta">Créé par ${esc(creator)} · ${[g.lieu,g.theme].filter(Boolean).map(esc).join(' · ')||'—'} · ${mList.length} membre${mList.length!==1?'s':''}</div>
-      <div class="admin-group-members">${mList.map(m=>`<span class="groupe-member-tag">${m.profils?.avatar?`<img src="${esc(m.profils.avatar)}" alt="">`:`<span class="gm-init">${esc((m.pseudo||'?')[0].toUpperCase())}</span>`}<span class="gm-name">${esc(m.pseudo||m.profils?.nom||'—')}</span><span class="sm-rm" style="margin-left:.3rem;background:rgba(192,97,75,.5);" onclick="removeMemberAdmin('${g.id}','${m.user_id}')">✕</span></span>`).join('')||'<span style="color:var(--text-soft);font-size:.78rem;">Aucun membre.</span>'}</div>
-    </div>`;
-  }).join('');
-}
-
-async function populateAdmin(){const total=recipes.reduce((s,r)=>s+(r.views||0),0);document.getElementById('aR').textContent=recipes.length;document.getElementById('aV').textContent=total;document.getElementById('aS').textContent=MAX-recipes.length;await loadMembers();document.getElementById('aM').textContent=members.length;document.getElementById('aMembersCount').textContent=members.length;document.getElementById('aRecent').innerHTML=recipes.slice(0,6).map(r=>`<div style="padding:.2rem 0;border-bottom:1px solid var(--border)"><strong>${esc(r.nom)}</strong>${r.auteur?' — '+esc(r.auteur):''} <span style="color:var(--accent-light);font-size:.72rem;">(${r.views||0} vues)</span></div>`).join('')||'<div>Aucune recette.</div>';document.getElementById('aNoRecipes').style.display=recipes.length?'none':'block';document.getElementById('aRecipesTbody').innerHTML=recipes.map(r=>`<tr><td><strong>${esc(r.nom)}</strong></td><td>${esc(r.auteur||'—')}</td><td>${esc(r.region||'—')}</td><td>${r.views||0}</td><td style="font-size:.74rem">${r.created_at?new Date(r.created_at).toLocaleDateString('fr-FR'):'—'}</td><td><button class="t-edit" onclick="closeModal('adminOverlay');openForm('${r.id}')">Modifier</button><button class="t-del" onclick="deleteRecipe('${r.id}')">Supprimer</button></td></tr>`).join('');document.getElementById('aNoMembers').style.display=members.length?'none':'block';document.getElementById('aMembersTbody').innerHTML=members.map(m=>`<tr><td>${m.avatar?`<img src="${esc(m.avatar)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">`:`<span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent-light);align-items:center;justify-content:center;color:white;font-size:.68rem;">${(m.nom||'?')[0].toUpperCase()}</span>`}</td><td><strong>${esc(m.nom||'—')}</strong></td><td>${m.age||'—'}</td><td style="font-size:.74rem">${m.created_at?new Date(m.created_at).toLocaleDateString('fr-FR'):'—'}</td></tr>`).join('');renderImageAdmin();renderAdminGroups();}
+async function populateAdmin(){const total=recipes.reduce((s,r)=>s+(r.views||0),0);document.getElementById('aR').textContent=recipes.length;document.getElementById('aV').textContent=total;document.getElementById('aS').textContent=MAX-recipes.length;await loadMembers();document.getElementById('aM').textContent=members.length;document.getElementById('aMembersCount').textContent=members.length;document.getElementById('aRecent').innerHTML=recipes.slice(0,6).map(r=>`<div style="padding:.2rem 0;border-bottom:1px solid var(--border)"><strong>${esc(r.nom)}</strong>${r.auteur?' — '+esc(r.auteur):''} <span style="color:var(--accent-light);font-size:.72rem;">(${r.views||0} vues)</span></div>`).join('')||'<div>Aucune recette.</div>';document.getElementById('aNoRecipes').style.display=recipes.length?'none':'block';document.getElementById('aRecipesTbody').innerHTML=recipes.map(r=>`<tr><td><strong>${esc(r.nom)}</strong></td><td>${esc(r.auteur||'—')}</td><td>${esc(r.region||'—')}</td><td>${r.views||0}</td><td style="font-size:.74rem">${r.created_at?new Date(r.created_at).toLocaleDateString('fr-FR'):'—'}</td><td><button class="t-edit" onclick="closeModal('adminOverlay');openForm('${r.id}')">Modifier</button><button class="t-del" onclick="deleteRecipe('${r.id}')">Supprimer</button></td></tr>`).join('');document.getElementById('aNoMembers').style.display=members.length?'none':'block';document.getElementById('aMembersTbody').innerHTML=members.map(m=>`<tr><td>${m.avatar?`<img src="${esc(m.avatar)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">`:`<span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--accent-light);align-items:center;justify-content:center;color:white;font-size:.68rem;">${(m.nom||'?')[0].toUpperCase()}</span>`}</td><td><strong>${esc(m.nom||'—')}</strong></td><td style="font-size:.76rem">${esc(m.email||'—')}</td><td>${m.age||'—'}</td><td style="font-size:.74rem">${m.created_at?new Date(m.created_at).toLocaleDateString('fr-FR'):'—'}</td></tr>`).join('');renderImageAdmin();}
 document.getElementById('deleteAllBtn').addEventListener('click',async()=>{if(!confirm('Supprimer TOUTES les recettes ?'))return;const{error}=await db.from('recettes').delete().neq('id','00000000-0000-0000-0000-000000000000');if(error){toast('Erreur : '+error.message);return;}toast('Toutes les recettes supprimées.');await loadData();renderGrid();populateAdmin();});
 document.getElementById('emailSendBtn').addEventListener('click',async()=>{if(!members.length)await loadMembers();const emails=members.map(m=>m.email||m.id).filter(Boolean);if(!emails.length){toast('Aucun membre.');return;}const s=encodeURIComponent(document.getElementById('emailSubject').value||'Les Délices Partagées');const b=encodeURIComponent(document.getElementById('emailBody').value||'');for(let i=0;i<emails.length;i+=20)window.open(`mailto:?bcc=${encodeURIComponent(emails.slice(i,i+20).join(','))}&subject=${s}&body=${b}`,'_blank');toast('Email(s) ouvert(s).');});
 
@@ -2405,7 +2034,6 @@ document.getElementById('cookieDecline')?.addEventListener('click',()=>{cookieCh
   await Promise.allSettled([initAuth(),loadRemoteImages()]);
   await loadData();
   try{renderGrid();}catch(e){console.error('renderGrid:',e);}
-  try{await loadGroups();}catch(e){}
   try{await processOfflineQueue();}catch(e){}
   db.from('profils').select('*',{count:'exact',head:true}).then(({count})=>{if(document.getElementById('statMembers'))document.getElementById('statMembers').textContent=count||0;}).catch(()=>{});
 })();
