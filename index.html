@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -1488,6 +1488,109 @@ let filterIngredients=[];
 let localPrefs={diet:{},equip:{},foyer:{adultes:2,enfants:0},newsletter:false,notifs:true};
 
 const BUILTIN_RECIPES=[
+  {
+    id:'builtin-pita-poulet-egyptien',
+    local_seed:true,
+    nom:'Pita poulet mariné aux épices',
+    auteur:'Léonard',
+    couverts:4,
+    temps:'3 h 30',
+    cuisson:'12 min',
+    difficulte:'Facile',
+    categorie:'Plats du monde',
+    saison:'toute',
+    budget:'moyen',
+    region:'Égypte',
+    description:'Des pains pita roulés avec du poulet mariné au citron et aux épices, du yaourt au tahiné, du persil, de la tomate et de l’oignon.',
+    ingredients:[
+      '1 · bouquet · persil',
+      '1 · pièce · citron',
+      '2 · c. à soupe · huile d’olive',
+      '1 · c. à café · cannelle',
+      '1 · c. à café · coriandre en grains pilée',
+      '0.5 · c. à café · poivre doux',
+      '2 · pièces · clous de girofle',
+      '5 · grains · cardamome',
+      '1 · pièce · tomate',
+      '1 · pièce · oignon',
+      '4 · filets · poulet',
+      '4 · pièces · pains pita',
+      '2 · pots · yaourts brassés',
+      '1 · c. à soupe · tahiné',
+      'sel'
+    ].join('\n'),
+    etapes:[
+      'Mélanger la cannelle, la coriandre pilée, le poivre doux, les clous de girofle et la cardamome.',
+      'Couper les filets de poulet en morceaux.',
+      'Dans un saladier, mélanger le jus de citron, les épices et les morceaux de poulet.',
+      'Filmer et laisser mariner au frais au moins 3 heures, idéalement toute une nuit.',
+      'Ciseler le persil, puis couper finement la tomate et l’oignon.',
+      'Mélanger le tahiné avec les yaourts, saler et poivrer.',
+      'Faire revenir doucement le poulet avec sa marinade et un filet d’huile d’olive dans une poêle.',
+      'Ouvrir les pains pita à moitié et étaler la sauce au yaourt sur la diagonale.',
+      'Ajouter le persil, un peu d’oignon, la tomate et les morceaux de poulet égouttés.',
+      'Rouler les pains pita et servir aussitôt.'
+    ].join('\n'),
+    ustensiles:'saladier, film alimentaire, poêle, couteau',
+    astuce:'Une nuit de marinade donne un poulet plus parfumé et plus tendre.',
+    geste:'Rouler les pains en serrant doucement pour garder la garniture bien en place.',
+    img:'assets/pita-poulet-egyptien.png',
+    user_id:null,
+    views:0,
+    created_at:'2026-07-29T00:00:00.000Z'
+  },
+  {
+    id:'builtin-soupe-lentilles-corail-egyptienne',
+    local_seed:true,
+    nom:'Soupe de lentilles corail égyptienne',
+    auteur:'leonard',
+    couverts:4,
+    temps:'35 min',
+    cuisson:'25 min',
+    difficulte:'Facile',
+    categorie:'Soupes & veloutés',
+    saison:'hiver',
+    budget:'petit',
+    region:'Égypte',
+    description:'Une soupe végétarienne aux lentilles corail, parfumée au cumin, au curcuma, à la coriandre et au citron.',
+    ingredients:[
+      '2.5 · tasses · bouillon de légume',
+      '2.5 · tasses · eau',
+      '1 · tasse · lentilles corail',
+      '1 · pièce · oignon',
+      '1 · pièce · pomme de terre',
+      '1 · branche · céleri',
+      '4 · gousses · ail',
+      '1 · c. à soupe · huile',
+      '2 · c. à café · cumin',
+      '0.5 · c. à café · curcuma',
+      '0.5 · c. à café · sel',
+      '0.33 · tasse · coriandre',
+      '3 · c. à soupe · jus de citron',
+      'poivre blanc',
+      '1 · pincée · Cayenne'
+    ].join('\n'),
+    etapes:[
+      'Faire revenir l’oignon et l’ail dans une marmite avec un peu d’huile pendant quelques minutes.',
+      'Ajouter les lentilles corail, la pomme de terre, le céleri et un peu de poivre blanc.',
+      'Verser le bouillon et l’eau, couvrir et porter à ébullition.',
+      'Réduire le feu et laisser mijoter 15 à 20 minutes, jusqu’à ce que les légumes et les lentilles soient cuits.',
+      'Mixer la soupe, puis réserver.',
+      'Dans une petite poêle, chauffer l’huile sans la brûler, puis ajouter le cumin, le curcuma et le sel.',
+      'Cuire les épices 2 à 3 minutes en remuant, jusqu’à ce que le cumin parfume bien l’huile.',
+      'Laisser tiédir 1 minute.',
+      'Verser le mélange d’épices sur la soupe, ajouter la coriandre et mélanger.',
+      'Ajouter le jus de citron, remuer et servir chaud.'
+    ].join('\n'),
+    ustensiles:'marmite, mixeur plongeant, petite poêle',
+    astuce:'Surveillez bien les épices dans l’huile : elles doivent parfumer sans brûler.',
+    geste:'Mixer longuement pour obtenir une texture bien lisse.',
+    img:'assets/soupe-lentilles-corail-egyptienne.png',
+    user_id:null,
+    views:0,
+    created_at:'2026-07-29T00:00:00.000Z'
+  }
+];
 
 // ── THEME ──
 function applyTheme(t){
